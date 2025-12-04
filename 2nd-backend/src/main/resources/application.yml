@@ -1,10 +1,11 @@
 #spring.application.name=2nd-backend
 spring:
   datasource:
+    url: jdbc:mariadb://dev.macacolabs.site:3306/readwedb
+    username: readwe
+    password: readwe
     driver-class-name: org.mariadb.jdbc.Driver
-    url:
-    username:
-    password:
+
   jpa:
     show-sql: true
     hibernate:
@@ -14,3 +15,13 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        show_sql: true
+
+  #Redis 설정자리
+#  data:
+#    redis:
+#      host:
+#        port:
+
+jwt:
+  secret: aVeryLongAndSecureSecretKeyForHS256AlgorithmThatMustBeAtLeast32Bytes
