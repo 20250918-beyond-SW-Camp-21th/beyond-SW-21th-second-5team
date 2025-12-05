@@ -1,4 +1,4 @@
-package com.ohgiraffers._ndbackend;
+package com.ohgiraffers.secondbackend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
