@@ -1,10 +1,13 @@
 package com.ohgiraffers.secondbackend.readingclub.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
+@Getter
+@NoArgsConstructor
 @Entity
 @Table(name = "reading_club")
 public class ReadingClub {
@@ -27,4 +30,16 @@ public class ReadingClub {
     @Column(name = "category", nullable = false)      // category 테이블 fk
     private int categoryId;
 
+    @Builder
+    public ReadingClub(String name, String description, int userId, int categoryId, ReadingClubStatus status) {
+        this.name = name;
+        this.description = description;
+        this.userId = userId;
+        this.categoryId = categoryId;
+        this.status = status;
+    }
+
+    public void changeStatus(ReadingClubStatus status) {
+        this.status = status;
+    }
 }
