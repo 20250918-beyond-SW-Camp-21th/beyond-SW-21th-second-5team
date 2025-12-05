@@ -17,11 +17,10 @@ spring:
         format_sql: true
         show_sql: true
 
-  #Redis 설정자리
-#  data:
-#    redis:
-#      host:
-#        port:
+  data:
+    redis:
+      host: dev.macacolabs.site
+      port: 6789
 
 jwt:
   secret: aVeryLongAndSecureSecretKeyForHS256AlgorithmThatMustBeAtLeast32Bytes
