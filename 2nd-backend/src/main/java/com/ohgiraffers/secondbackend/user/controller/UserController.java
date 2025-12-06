@@ -29,4 +29,21 @@ public class UserController {
         }
     }
 
+    //로그인
+    @PostMapping("/login")
+    public ResponseEntity<Map<String,String>> login(@RequestBody Map<String,String> request){
+        String username=request.get("username");
+        String password=request.get("password");
+
+        try{
+            String[] tokens=userService.login(username,password);
+            return ResponseEntity.ok(Map.of(
+                    "accessToken",tokens[0],
+                    "refreshToken",tokens[1]
+            ));
+        }catch(Exception e){
+            return ResponseEntity.status(401).body(Map.of("error",e.getMessage()));
+        }
+    }
+
 }

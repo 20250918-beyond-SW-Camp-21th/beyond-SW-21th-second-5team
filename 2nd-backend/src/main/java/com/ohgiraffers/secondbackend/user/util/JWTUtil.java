@@ -18,10 +18,9 @@ public class JWTUtil {
         this.key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
     }
     //토큰생성
-    private String createToken(String username,String nickname, String role, long expireTime) {
+    private String createToken(String username,String role, long expireTime) {
         Claims claims=Jwts.claims();
         claims.put("username",username);
-        claims.put("nickname",nickname);
         claims.put("role",role);
 
 
@@ -36,13 +35,13 @@ public class JWTUtil {
                 .compact();
     }
     // Access토큰 생성
-    public String createAccessToken(String username,String nickname,String role){
-        return createToken(username,nickname,role, TimeUnit.MINUTES.toMillis(30));
+    public String createAccessToken(String username,String role){
+        return createToken(username,role, TimeUnit.MINUTES.toMillis(30));
     }
 
     // Refresh토큰 생성
-    public String createRefreshToken(String username,String nickname,String role){
-        return createToken(username,nickname,role, TimeUnit.DAYS.toMillis(1));
+    public String createRefreshToken(String username,String role){
+        return createToken(username,role, TimeUnit.DAYS.toMillis(1));
     }
 
     // 토큰 만료 여부
@@ -80,11 +79,6 @@ public class JWTUtil {
                 .get("username",String.class);
     }
 
-    public String getNickname(String token){
-        return Jwts.parserBuilder().setSigningKey(key).build()
-                .parseClaimsJws(token).getBody()
-                .get("nickname",String.class);
-    }
 
     public String getRole(String token){
         String role=Jwts.parserBuilder().setSigningKey(key).build()
