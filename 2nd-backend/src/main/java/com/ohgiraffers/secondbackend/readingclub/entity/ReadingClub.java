@@ -14,7 +14,7 @@ public class ReadingClub {
     @Id
     @Column(name = "club_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     @Column(name = "club_name", nullable = false)
     private String name;
     @Column(name = "club_description")
@@ -26,12 +26,12 @@ public class ReadingClub {
     @CreationTimestamp
     private LocalDateTime createdAt;
     @Column(name = "host_user_id", nullable = false)  // user 테이블 fk
-    private int userId;
+    private long userId;
     @Column(name = "category", nullable = false)      // category 테이블 fk
-    private int categoryId;
+    private long categoryId;
 
     @Builder
-    public ReadingClub(String name, String description, int userId, int categoryId, ReadingClubStatus status) {
+    public ReadingClub(String name, String description, long userId, long categoryId, ReadingClubStatus status) {
         this.name = name;
         this.description = description;
         this.userId = userId;
@@ -41,5 +41,11 @@ public class ReadingClub {
 
     public void changeStatus(ReadingClubStatus status) {
         this.status = status;
+    }
+
+    public void update(String name, String description, Long categoryId) {
+        this.name = name;
+        this.description = description;
+        this.categoryId = categoryId;
     }
 }

@@ -10,5 +10,5 @@ public class ReadingClubRequestDTO {
 
     private String name;
     private String description;
-    private int categoryId;
+    private long categoryId;
 }
