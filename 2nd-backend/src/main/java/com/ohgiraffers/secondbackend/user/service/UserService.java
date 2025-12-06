@@ -2,6 +2,7 @@ package com.ohgiraffers.secondbackend.user.service;
 
 import com.ohgiraffers.secondbackend.user.entity.User;
 import com.ohgiraffers.secondbackend.user.entity.UserRole;
+import com.ohgiraffers.secondbackend.user.filter.JWTAuthenticationFilter;
 import com.ohgiraffers.secondbackend.user.repository.UserRepository;
 import com.ohgiraffers.secondbackend.user.util.JWTUtil;
 import io.netty.util.internal.StringUtil;
@@ -77,6 +78,24 @@ public class UserService  implements UserDetailsService{
         redisTemplate.opsForValue().set(refreshKey,refreshToken,28, TimeUnit.DAYS);
 
         return new String[]{accessToken,refreshToken};
+    }
+
+    /*로그아웃*/
+    public void logout(String accessToken){
+        String username=jwtUtil.getUsername(accessToken);
+        String refreshKey="refresh:"+username;
+        redisTemplate.delete(refreshKey);
+
+        if(!jwtUtil.isTokenExpired(accessToken)){
+            String blacklistKey= "blacklist:"+accessToken;
+            long expriation = jwtUtil.getExpriation(accessToken)-System.currentTimeMillis();
+
+            if(expriation>0){
+                redisTemplate.opsForValue().set(blacklistKey,"logout",expriation, TimeUnit.MILLISECONDS);
+            }else{
+                redisTemplate.delete(blacklistKey);
+            }
+        }
     }
 
 
