@@ -29,6 +29,10 @@ public class ReadingClub {
     private long userId;
     @Column(name = "category", nullable = false)      // category 테이블 fk
     private long categoryId;
+    @Column(name = "max_member")
+    private int maxMember;
+    @Column(name = "current_member")
+    private int currentMember;
 
     @Builder
     public ReadingClub(String name, String description, long userId, long categoryId, ReadingClubStatus status) {
@@ -51,5 +55,33 @@ public class ReadingClub {
 
     public void finish(){
         this.status = ReadingClubStatus.FINISHED;
+    }
+
+    public void addMember(){
+        if(status == ReadingClubStatus.FINISHED){
+            throw new IllegalStateException("이미 종료된 모임입니다.")
+        }
+        if (currentMember >= maxMember){
+            throw new IllegalStateException("이미 정원이 가득 찬 모임입니다.");
+        }
+
+        currentMember++;
+
+        if(currentMember >= maxMember){
+            status = ReadingClubStatus.CLOSED;
+        }
+    }
+
+    public void removeMember() {
+        if (currentMember <= 0) {
+            throw new IllegalStateException("모임 인원이 0명입니다.");
+        }
+        if (status == ReadingClubStatus.FINISHED) {
+            throw new IllegalStateException("종료된 모임에서는 탈퇴할 수 없습니다.");
+        }
+        currentMember--;
+        if (status == ReadingClubStatus.CLOSED && currentMember < maxMember) {
+            status = ReadingClubStatus.OPEN;
+        }
     }
 }
