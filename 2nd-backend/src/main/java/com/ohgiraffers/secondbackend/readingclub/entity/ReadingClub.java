@@ -59,7 +59,7 @@ public class ReadingClub {
 
     public void addMember(){
         if(status == ReadingClubStatus.FINISHED){
-            throw new IllegalStateException("이미 종료된 모임입니다.")
+            throw new IllegalStateException("이미 종료된 모임입니다.");
         }
         if (currentMember >= maxMember){
             throw new IllegalStateException("이미 정원이 가득 찬 모임입니다.");
