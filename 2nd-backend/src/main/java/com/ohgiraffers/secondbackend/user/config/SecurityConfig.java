@@ -28,13 +28,16 @@ public class SecurityConfig {
         JWTAuthenticationFilter jwtAuthenticationFilter=
                 new JWTAuthenticationFilter(jwtUtil,userService,redisTemplate);
 
+
+
+        /*URL 추가해서 권한 부여하면 됩니다!*/
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
 
-                        .requestMatchers("/user/signup").permitAll()
+                        .requestMatchers("/user/signup","/user/login").permitAll()
 
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
