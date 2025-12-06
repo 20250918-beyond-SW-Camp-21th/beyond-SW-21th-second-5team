@@ -53,10 +53,21 @@ public class ReadingClubService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 모임입니다."));
 
         if (club.getUserId() != hostId) {
-            throw new SecurityException("본인이 만든 모임만 수정할 수 있습니다.");
+            throw new SecurityException("모임을 삭제할 권한이 없습니다.");
         }
 
         club.update(req.getName(), req.getDescription(), req.getCategoryId());
         return convert(club);
+    }
+
+    @Transactional
+    public void deleteReadingClub(Long clubId, long hostId){
+        ReadingClub club = readingClubRepository.findById(clubId)
+                .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 모임입니다."));
+
+        if (club.getUserId() != hostId){
+            throw new SecurityException("모임을 삭제할 권한이 없습니다.");
+        }
+        club.finish();
     }
 }
