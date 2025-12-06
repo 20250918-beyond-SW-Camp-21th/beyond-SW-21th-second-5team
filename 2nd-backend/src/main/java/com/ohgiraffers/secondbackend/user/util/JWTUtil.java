@@ -56,6 +56,11 @@ public class JWTUtil {
         }
     }
 
+    public long getExpriation(String token){
+        return Jwts.parserBuilder().setSigningKey(key).build()
+                .parseClaimsJws(token).getBody().getExpiration().getTime();
+    }
+
     // 토큰 검증
     public Boolean validateToken(String token){
         try{

@@ -3,9 +3,10 @@ package com.ohgiraffers.secondbackend.user.controller;
 import com.ohgiraffers.secondbackend.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/user")
@@ -14,36 +15,19 @@ public class UserController {
 
     private final UserService userService;
 
-    //회원가입
-
-    @PostMapping("/signup")
-    public ResponseEntity<String> signup(@RequestBody Map<String, String> request){
-        String username=request.get("username");
-        String password= request.get("password");
-        String nickname=request.get("nickname");
-        try{
-            userService.signup(username,password,nickname);
-            return ResponseEntity.ok("등록 성공");
-        }catch(IllegalArgumentException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
+    //로그아웃
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(@RequestHeader("Authorization")String authorizationHeader){
+        if(authorizationHeader==null || !authorizationHeader.startsWith("Bearer ")){
+            return ResponseEntity.badRequest().body("받은게 없거나 잘못된 헤더입니다.");
         }
-    }
 
-    //로그인
-    @PostMapping("/login")
-    public ResponseEntity<Map<String,String>> login(@RequestBody Map<String,String> request){
-        String username=request.get("username");
-        String password=request.get("password");
-
+        String accessToken=authorizationHeader.substring(7);
         try{
-            String[] tokens=userService.login(username,password);
-            return ResponseEntity.ok(Map.of(
-                    "accessToken",tokens[0],
-                    "refreshToken",tokens[1]
-            ));
+            userService.logout(accessToken);
+            return ResponseEntity.ok("logout 성공");
         }catch(Exception e){
-            return ResponseEntity.status(401).body(Map.of("error",e.getMessage()));
+            return ResponseEntity.badRequest().body("로그아웃 실패: "+e.getMessage());
         }
     }
-
 }
