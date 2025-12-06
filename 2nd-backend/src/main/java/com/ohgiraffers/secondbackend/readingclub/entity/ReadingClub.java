@@ -48,4 +48,8 @@ public class ReadingClub {
         this.description = description;
         this.categoryId = categoryId;
     }
+
+    public void finish(){
+        this.status = ReadingClubStatus.FINISHED;
+    }
 }

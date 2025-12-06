@@ -6,7 +6,6 @@ import com.ohgiraffers.secondbackend.readingclub.service.ReadingClubService;
 import com.ohgiraffers.secondbackend.user.entity.User;
 import com.ohgiraffers.secondbackend.user.repository.UserRepository;
 import com.ohgiraffers.secondbackend.user.util.JWTUtil;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +36,7 @@ public class ReadingClubController {
         return ResponseEntity.status(HttpStatus.CREATED).body(res);
     }
 
-    @PatchMapping
+    @PatchMapping("/update/{clubId}")
     public ResponseEntity<ReadingClubResponseDTO> updateReadingClub(@PathVariable long clubId, @RequestBody ReadingClubRequestDTO req
                                                                      , Authentication authentication) {
         String username = authentication.getName();
@@ -48,5 +47,17 @@ public class ReadingClubController {
 
         ReadingClubResponseDTO res = readingClubService.updateReadingClub(clubId, req, hostId);
         return ResponseEntity.ok(res);
+    }
+
+    @DeleteMapping("/delete/{clubId}")
+    public ResponseEntity<Void> deleteReadingClub(@PathVariable long clubId, Authentication authentication) {
+        String username = authentication.getName();
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
+
+        long hostId = user.getId();
+
+        readingClubService.deleteReadingClub(clubId, hostId);
+        return ResponseEntity.noContent().build();
     }
 }
