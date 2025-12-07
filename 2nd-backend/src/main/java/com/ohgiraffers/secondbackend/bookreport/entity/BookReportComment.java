@@ -26,7 +26,7 @@ public class BookReportComment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_report_id")
-    private BookReport bookReportId;    //독후감 id(fk)
+    private BookReport bookReport;    //독후감 id(fk)
 
     @Column(name = "user_id")
     private Long userId;  //댓글 작성자 id
@@ -50,8 +50,8 @@ public class BookReportComment {
     private List<BookReportComment> children = new ArrayList<>();    // 자식 댓글 목록(대댓글)
 
     @Builder
-    public BookReportComment(BookReport bookReportId, Long userId, String content, BookReportComment parent){
-        this.bookReportId = bookReportId;
+    public BookReportComment(BookReport bookReport, Long userId, String content, BookReportComment parent){
+        this.bookReport = bookReport;
         this.userId = userId;
         this.content = content;
         this.parent = parent;

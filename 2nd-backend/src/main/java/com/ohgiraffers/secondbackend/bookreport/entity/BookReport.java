@@ -36,7 +36,10 @@ public class BookReport {
 
     @UpdateTimestamp
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    private LocalDateTime updatedAt;    //변경일
+
+    @Column(name = "total_like")
+    private int likeCount;      //좋아요 개수
 
     @Builder
     public BookReport(Long bookId, Long userId, String title, String description){
@@ -50,6 +53,15 @@ public class BookReport {
     public void update(String title, String description){
         this.title = title;
         this.description = description;
-        this.updatedAt = LocalDateTime.now();
+    }
+
+    //좋아요 개수 증가
+    public void increaseLike() {
+        this.likeCount++;
+    }
+
+    //좋아요 개수 감소
+    public void decreaseLike() {
+        this.likeCount--;
     }
 }
