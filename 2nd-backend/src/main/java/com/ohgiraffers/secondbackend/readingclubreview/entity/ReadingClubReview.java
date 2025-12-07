@@ -49,4 +49,9 @@ public class ReadingClubReview {
         this.reviewContent = reviewContent;
         this.likeTotal = 0L;
     }
+
+    public void update(String reviewTitle, String reviewContent) {
+        this.reviewTitle = reviewTitle;
+        this.reviewContent = reviewContent;
+    }
 }

@@ -27,4 +27,16 @@ public class ReadingClubReviewController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
+    @PutMapping("/review-modify/{reviewId}")
+    public ResponseEntity<ReadingClubReviewResponseDTO> modifyReview(@PathVariable Long reviewId,
+                                                                     @RequestBody ReadingClubReviewRequestDTO request,
+                                                                     Authentication authentication){
+
+        String username = authentication.getName();
+
+        ReadingClubReviewResponseDTO response = reviewService.modifyReview(reviewId, request, username);
+
+        return ResponseEntity.ok(response);
+    }
 }
