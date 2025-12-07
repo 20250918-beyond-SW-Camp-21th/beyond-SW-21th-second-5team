@@ -33,9 +33,14 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String nickname;
 
+    @Column(nullable=true)
+    private String profileImageUrl;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserRole role;
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities(){
