@@ -3,6 +3,9 @@ package com.ohgiraffers.secondbackend.readingclub.controller;
 import com.ohgiraffers.secondbackend.readingclub.dto.request.JoinDecisionDTO;
 import com.ohgiraffers.secondbackend.readingclub.dto.request.JoinRequestDTO;
 import com.ohgiraffers.secondbackend.readingclub.dto.request.ReadingClubRequestDTO;
+import com.ohgiraffers.secondbackend.readingclub.dto.response.JoinResponseDTO;
+import com.ohgiraffers.secondbackend.readingclub.dto.response.MyClubResponseDTO;
+import com.ohgiraffers.secondbackend.readingclub.dto.response.ReadingClubMemberResponseDTO;
 import com.ohgiraffers.secondbackend.readingclub.dto.response.ReadingClubResponseDTO;
 import com.ohgiraffers.secondbackend.readingclub.service.ReadingClubService;
 import com.ohgiraffers.secondbackend.user.entity.User;
@@ -14,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/reading-club")
@@ -116,5 +121,37 @@ public class ReadingClubController {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
         readingClubService.kickMember(clubId, user.getId(), userId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/join/{clubId}")
+    public ResponseEntity<List<JoinResponseDTO>>getJoinRequests(@PathVariable long clubId, Authentication authentication){
+        String username = authentication.getName();
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
+        List<JoinResponseDTO> res = readingClubService.getJoinRequestsForClub(clubId, user.getId());
+        return ResponseEntity.ok(res);
+    }
+
+    @GetMapping("/join/me")
+    public ResponseEntity<List<JoinResponseDTO>> getMyJoinRequests(Authentication authentication){
+        String username = authentication.getName();
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
+        List<JoinResponseDTO> res = readingClubService.getMyJoinRequests(user.getId());
+        return ResponseEntity.ok(res);
+    }
+
+    @GetMapping("/member/{clubId}")
+    public ResponseEntity<List<ReadingClubMemberResponseDTO>> getMembersOfClub(@PathVariable long clubId, Authentication authentication){
+        String username = authentication.getName();
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
+        List<ReadingClubMemberResponseDTO> res = readingClubService.getMembersOfClub(clubId, user.getId());
+        return ResponseEntity.ok(res);
+    }
+
+    @GetMapping("/my-clubs")
+    public ResponseEntity<MyClubResponseDTO> getMyClubs(Authentication authentication){
+        String username = authentication.getName();
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
+        MyClubResponseDTO res = readingClubService.getMyClubs(user.getId());
+        return ResponseEntity.ok(res);
     }
 }
