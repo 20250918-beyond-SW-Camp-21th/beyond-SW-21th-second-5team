@@ -1,5 +1,6 @@
 package com.ohgiraffers.secondbackend.readingclub.controller;
 
+import com.ohgiraffers.secondbackend.readingclub.dto.request.JoinDecisionDTO;
 import com.ohgiraffers.secondbackend.readingclub.dto.request.JoinRequestDTO;
 import com.ohgiraffers.secondbackend.readingclub.dto.request.ReadingClubRequestDTO;
 import com.ohgiraffers.secondbackend.readingclub.dto.response.ReadingClubResponseDTO;
@@ -74,5 +75,19 @@ public class ReadingClubController {
 
         readingClubService.requestJoin(clubId, user.getId(), message);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PatchMapping("/decide/{clubId}/{joinId}")
+    public ResponseEntity<Void> decideJoinRequest(@PathVariable Long clubId, @PathVariable Long joinId, @RequestBody JoinDecisionDTO dto, Authentication authentication){
+        String username = authentication.getName();
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
+
+        readingClubService.decideJoinRequest(
+                clubId,
+                user.getId(),
+                joinId,
+                dto.getStatus()
+        );
+        return ResponseEntity.noContent().build();
     }
 }
