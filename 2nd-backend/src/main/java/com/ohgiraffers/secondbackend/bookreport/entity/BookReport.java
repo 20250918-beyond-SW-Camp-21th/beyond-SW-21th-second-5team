@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Table(name = "book_report")
 public class BookReport {
     @Id
-    @Column(name = "book_report_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bookReportId;      //독후감 id(pk)
 

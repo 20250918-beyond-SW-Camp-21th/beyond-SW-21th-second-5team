@@ -37,7 +37,7 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
 
-                        .requestMatchers("/auth/signup","/auth/login","/reading-club/**").permitAll()
+                        .requestMatchers("/auth/signup","/auth/login","/reading-club/**", "/book-report/**", "book-report-comment/**").permitAll()
                         .requestMatchers("/booklike/**","/userlike/**").hasAuthority("USER")
                         .requestMatchers("/user/**","/book/**").hasAnyAuthority("USER","ADMIN")
 
