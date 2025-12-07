@@ -5,14 +5,14 @@ import com.ohgiraffers.secondbackend.readingclub.repository.ReadingClubRepositor
 import com.ohgiraffers.secondbackend.readingclubreview.dto.request.ReadingClubReviewRequestDTO;
 import com.ohgiraffers.secondbackend.readingclubreview.dto.response.ReadingClubReviewResponseDTO;
 import com.ohgiraffers.secondbackend.readingclubreview.entity.ReadingClubReview;
-import com.ohgiraffers.secondbackend.readingclubreview.exception.NotFoundException;
 import com.ohgiraffers.secondbackend.readingclubreview.repository.ReadingClubReviewRepository;
+import com.ohgiraffers.secondbackend.readingclubreview.repository.ReviewCommentRepository;
+import com.ohgiraffers.secondbackend.readingclubreview.repository.ReviewLikeRepository;
 import com.ohgiraffers.secondbackend.user.entity.User;
 import com.ohgiraffers.secondbackend.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.crossstore.ChangeSetPersister.*;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -26,6 +26,8 @@ public class ReadingClubReviewService {
     private final ReadingClubReviewRepository reviewRepository;
     private final ReadingClubRepository readingClubRepository;
     private final ReadingClubMemberRepository memberRepository;
+    private final ReviewCommentRepository reviewCommentRepository;
+    private final ReviewLikeRepository reviewLikeRepository;
 
     @Transactional
     public ReadingClubReviewResponseDTO createReview(long clubId, ReadingClubReviewRequestDTO request, String username) {
@@ -64,6 +66,7 @@ public class ReadingClubReviewService {
     }
 
 
+    @Transactional
     public ReadingClubReviewResponseDTO modifyReview(Long reviewId, ReadingClubReviewRequestDTO request, String username) {
 
         // 1. username으로 유저 조회
@@ -84,5 +87,24 @@ public class ReadingClubReviewService {
         // 4. 저장 후 DTO로 변환
         ReadingClubReview saved = reviewRepository.save(review);
         return ReadingClubReviewResponseDTO.from(saved);
+    }
+
+    @Transactional
+    public void deleteReview(Long reviewId, String username) {
+
+        // 1. username으로 유저 조회
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
+
+        Long userId = user.getId();
+
+        // 2. 이 유저가 쓴 해당 리뷰 찾기
+        ReadingClubReview review = reviewRepository
+                .findByReviewIdAndWriterId(reviewId, userId)
+                .orElseThrow(() -> new AccessDeniedException("해당 리뷰를 삭제할 수 있는 권한이 없습니다."));
+
+        reviewLikeRepository.deleteByClubReviewId(reviewId);
+        reviewCommentRepository.deleteByClubReviewId(reviewId);
+        reviewRepository.delete(review);
     }
 }
