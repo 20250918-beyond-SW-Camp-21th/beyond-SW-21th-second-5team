@@ -6,14 +6,11 @@ import com.ohgiraffers.secondbackend.readingclub.entity.*;
 import com.ohgiraffers.secondbackend.readingclub.repository.ReadingClubJoinRepository;
 import com.ohgiraffers.secondbackend.readingclub.repository.ReadingClubMemberRepository;
 import com.ohgiraffers.secondbackend.readingclub.repository.ReadingClubRepository;
-import com.ohgiraffers.secondbackend.user.entity.User;
 import com.ohgiraffers.secondbackend.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -108,6 +105,10 @@ public class ReadingClubService {
             throw new IllegalStateException("이미 신청했습니다.");
         }
 
+        if (club.getStatus() != ReadingClubStatus.OPEN) {
+            throw new IllegalStateException("현재 신청이 불가능한 모임입니다.");
+        }
+
         ReadingClubJoin request = ReadingClubJoin.builder()
                 .clubId(clubId)
                 .userId(userId)
@@ -141,6 +142,7 @@ public class ReadingClubService {
         request.setStatus(status);
 
         if(status == JoinRequestStatus.APPROVED){
+            club.addMember();
             if(!readingClubMemberRepository.existsByClubIdAndUserId(clubId, request.getUserId())){
                 ReadingClubMember member = ReadingClubMember.builder()
                         .clubId(clubId)
@@ -161,11 +163,33 @@ public class ReadingClubService {
         if(req.getUserId() != userId){
             throw new SecurityException("본인 신청만 취소할 수 있습니다.");
         }
-        if(req.getStatus() == JoinRequestStatus.PENDING){
+        if(req.getStatus() != JoinRequestStatus.PENDING){
             throw new IllegalStateException("이미 처리된 신청입니다. 클럽 탈퇴를 신청해주세요");
         }
 
         readingClubJoinRepository.delete(req);
+    }
+
+    @Transactional
+    public void kickMember(long clubId, long hostId, long targetId){
+        ReadingClub club = readingClubRepository.findById(clubId).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 모임입니다.")
+        );
+        if(club.getUserId() != hostId){
+            throw new SecurityException("모임장만 회원을 강퇴할 수 있습니다.");
+        }
+        if(club.getUserId() == targetId){
+            throw new IllegalStateException("모임장은 강퇴할 수 없습니다.");
+        }
+
+        ReadingClubMember member = readingClubMemberRepository.findByClubIdAndUserId(clubId, targetId).orElseThrow(
+                () -> new IllegalArgumentException("해당 모임의 멤버가 아닙니다.")
+        );
+        if(member.getRole() == ReadingClubMemberRole.LEFT){
+            throw new IllegalStateException("이미 탈퇴/강퇴된 멤버입니다.");
+        }
+        club.removeMember();
+        member.changeRole(ReadingClubMemberRole.LEFT);
     }
 
 }

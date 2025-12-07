@@ -109,4 +109,12 @@ public class ReadingClubController {
         readingClubService.cancleJoin(joinId, user.getId());
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/kick/{clubId}/{userId}")
+    public ResponseEntity<Void> kickMember(@PathVariable long clubId, @PathVariable long userId, Authentication authentication){
+        String username = authentication.getName();
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
+        readingClubService.kickMember(clubId, user.getId(), userId);
+        return ResponseEntity.noContent().build();
+    }
 }
