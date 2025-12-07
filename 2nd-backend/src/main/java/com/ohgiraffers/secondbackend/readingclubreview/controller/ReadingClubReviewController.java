@@ -4,7 +4,7 @@ import com.ohgiraffers.secondbackend.readingclub.entity.ReadingClub;
 import com.ohgiraffers.secondbackend.readingclubreview.dto.request.ReadingClubReviewRequestDTO;
 import com.ohgiraffers.secondbackend.readingclubreview.dto.response.ReadingClubReviewResponseDTO;
 import com.ohgiraffers.secondbackend.readingclubreview.service.ReadingClubReviewService;
-import com.oracle.svm.core.annotate.Delete;
+//import com.oracle.svm.core.annotate.Delete;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
