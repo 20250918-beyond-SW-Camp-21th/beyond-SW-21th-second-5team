@@ -1,6 +1,10 @@
 package com.ohgiraffers.secondbackend.bookreport.entity;
 
 import com.ohgiraffers.secondbackend.book.entity.Book;
+import com.ohgiraffers.secondbackend.bookreport.dto.request.BookReportCommentRequestDTO;
+import com.ohgiraffers.secondbackend.bookreport.dto.request.BookReportRequestDTO;
+import com.ohgiraffers.secondbackend.bookreport.dto.response.BookReportCommentResponseDTO;
+import com.ohgiraffers.secondbackend.bookreport.dto.response.BookReportResponseDTO;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -66,4 +70,15 @@ public class BookReportComment {
         this.content = content;
     }
 
+    public BookReportCommentResponseDTO toResponseDTO(){
+        return BookReportCommentResponseDTO.builder()
+                .commentId(this.reportCommentId)
+                .bookReportId(this.bookReport.getBookReportId())
+                .userId(this.userId)
+                .content(this.content)
+                .parentId(this.parent != null ? this.parent.getReportCommentId() : null)
+                .createdAt(this.createdAt)
+                .updatedAt(this.updatedAt)
+                .build();
+    }
 }
