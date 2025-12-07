@@ -47,11 +47,21 @@ public class BookReportController {
 
      //독후감 수정
     @PutMapping("/{reportId}")
-    public ResponseEntity<BookReportResponseDTO> modifyBookReport(@PathVariable Long reportId){
+    public ResponseEntity<BookReportResponseDTO> modifyBookReport(
+            @PathVariable Long reportId,
+            @RequestBody BookReportRequestDTO request){
 
-        BookReportResponseDTO response = bookReportService.changeBookReport(reportId);
+        BookReportResponseDTO response = bookReportService.changeBookReport(reportId, request);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    //독후감 삭제
+    @DeleteMapping("/{reportId}")
+    public ResponseEntity<String> deleteBookReport(@PathVariable Long reportId){
+        bookReportService.deleteBookReport(reportId);
+
+        return ResponseEntity.status(HttpStatus.OK).body("정상적으로 삭제되었습니다.");
     }
 
 
