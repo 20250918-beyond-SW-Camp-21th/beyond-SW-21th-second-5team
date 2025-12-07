@@ -53,4 +53,8 @@ public class ReviewComment {
         this.commentDetail = commentDetail;
         this.deleteComment = false;
     }
+
+    public void updateContent(String commentDetail) {
+        this.commentDetail = commentDetail;
+    }
 }
