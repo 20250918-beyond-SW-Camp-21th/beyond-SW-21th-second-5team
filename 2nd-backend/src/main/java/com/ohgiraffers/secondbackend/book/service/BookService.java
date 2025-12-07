@@ -11,7 +11,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BookService {
@@ -25,6 +24,7 @@ public class BookService {
     private BookResponseDTO convert(Book book) {
         return BookResponseDTO.builder()
                 .bookid(book.getBookId())
+                .title(book.getTitle())
                 .author(book.getAuthor())
                 .publisher(book.getPublisher())
                 .publishedDate(book.getPublishedDate())
