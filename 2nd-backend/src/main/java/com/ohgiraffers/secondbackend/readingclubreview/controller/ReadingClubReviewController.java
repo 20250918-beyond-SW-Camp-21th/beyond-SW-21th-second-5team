@@ -1,8 +1,10 @@
 package com.ohgiraffers.secondbackend.readingclubreview.controller;
 
+import com.ohgiraffers.secondbackend.readingclub.entity.ReadingClub;
 import com.ohgiraffers.secondbackend.readingclubreview.dto.request.ReadingClubReviewRequestDTO;
 import com.ohgiraffers.secondbackend.readingclubreview.dto.response.ReadingClubReviewResponseDTO;
 import com.ohgiraffers.secondbackend.readingclubreview.service.ReadingClubReviewService;
+import com.oracle.svm.core.annotate.Delete;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,4 +41,17 @@ public class ReadingClubReviewController {
 
         return ResponseEntity.ok(response);
     }
+
+    @DeleteMapping("/review-delete/{reviewId}")
+    public ResponseEntity<Void> deleteReview(@PathVariable Long reviewId,
+                                             Authentication authentication)
+    {
+        String username = authentication.getName();
+
+        reviewService.deleteReview(reviewId, username);
+
+        return ResponseEntity.noContent().build();
+
+    }
+
 }
