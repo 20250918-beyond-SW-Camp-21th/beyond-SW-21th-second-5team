@@ -1,5 +1,6 @@
 package com.ohgiraffers.secondbackend.readingclubreview.service;
 
+import com.ohgiraffers.secondbackend.readingclub.entity.ReadingClub;
 import com.ohgiraffers.secondbackend.readingclub.repository.ReadingClubMemberRepository;
 import com.ohgiraffers.secondbackend.readingclub.repository.ReadingClubRepository;
 import com.ohgiraffers.secondbackend.readingclubreview.dto.request.ReadingClubReviewRequestDTO;
@@ -30,15 +31,17 @@ public class ReadingClubReviewService {
     private final ReviewLikeRepository reviewLikeRepository;
 
     @Transactional
-    public ReadingClubReviewResponseDTO createReview(long clubId, ReadingClubReviewRequestDTO request, String username) {
+    public ReadingClubReviewResponseDTO createReview(Long club, ReadingClubReviewRequestDTO request, String username) {
 
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
 
-        Long userId = user.getId();
-        // 1) 클럽 존재 여부 체크
-        readingClubRepository.findById(clubId)
+        // 존재하는 클럽인지 체크 + 엔티티로 꺼내기
+        ReadingClub existClub = readingClubRepository.findById(club)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 클럽입니다."));
+
+        Long clubId = existClub.getId();
+        Long userId = user.getId();
 
         // 2) 클럽 회원인지 확인
         boolean isMember = memberRepository.existsByClubIdAndUserId(clubId, userId);
@@ -48,14 +51,14 @@ public class ReadingClubReviewService {
         }
 
         // 3) 이미 작성한 후기 있는지 체크
-        boolean alreadyWritten = reviewRepository.existsByClubIdAndWriterId(clubId, userId);
+        boolean alreadyWritten = reviewRepository.existsByClubIdAndWriterId(existClub, user);
         if (alreadyWritten) {
             throw new IllegalStateException("이 모임에 이미 후기를 작성하셨습니다.");
         }
 
         ReadingClubReview review = ReadingClubReview.builder()
-                .clubId(clubId)
-                .writerId(user.getId())
+                .clubId(existClub)
+                .writerId(user)
                 .reviewTitle(request.getReviewTitle())
                 .reviewContent(request.getReviewContent())
                 .build();
@@ -78,7 +81,7 @@ public class ReadingClubReviewService {
 
         // 2. 이 유저가 쓴 해당 리뷰 찾기
         ReadingClubReview review = reviewRepository
-                .findByReviewIdAndWriterId(reviewId, userId)
+                .findByReviewIdAndWriterId(reviewId, user)
                 .orElseThrow(() -> new AccessDeniedException("해당 리뷰를 수정할 수 있는 권한이 없습니다."));
 
         // 3. 제목/내용 수정
@@ -100,11 +103,9 @@ public class ReadingClubReviewService {
 
         // 2. 이 유저가 쓴 해당 리뷰 찾기
         ReadingClubReview review = reviewRepository
-                .findByReviewIdAndWriterId(reviewId, userId)
+                .findByReviewIdAndWriterId(reviewId, user)
                 .orElseThrow(() -> new AccessDeniedException("해당 리뷰를 삭제할 수 있는 권한이 없습니다."));
 
-        reviewLikeRepository.deleteByClubReviewId(reviewId);
-        reviewCommentRepository.deleteByClubReviewId(reviewId);
         reviewRepository.delete(review);
     }
 }

@@ -1,5 +1,7 @@
 package com.ohgiraffers.secondbackend.readingclubreview.entity;
 
+import com.ohgiraffers.secondbackend.readingclub.entity.ReadingClub;
+import com.ohgiraffers.secondbackend.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,13 +19,17 @@ public class ReadingClubReview {
     @Id
     @Column(name = "club_review_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long reviewId;
+    private Long reviewId;
 
-    @Column(name = "club_id", nullable = false) // reading_club 테이블 fk
-    private long clubId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "club_id", nullable = false)  // FK 컬럼 이름 그대로 사용
+    private ReadingClub clubId;
 
-    @Column(name = "writer_id", nullable = false) // user 테이블 fk
-    private long writerId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "writer_id", nullable = false)  // FK 컬럼 이름 그대로
+    private User writerId;
+
 
     @Column(name = "review_title", nullable = false)
     private String reviewTitle;
@@ -39,8 +45,8 @@ public class ReadingClubReview {
     private LocalDateTime createdAt;
 
     @Builder
-    public ReadingClubReview(long clubId,
-                             long writerId,
+    public ReadingClubReview(ReadingClub clubId,
+                             User writerId,
                              String reviewTitle,
                              String reviewContent) {
         this.clubId = clubId;

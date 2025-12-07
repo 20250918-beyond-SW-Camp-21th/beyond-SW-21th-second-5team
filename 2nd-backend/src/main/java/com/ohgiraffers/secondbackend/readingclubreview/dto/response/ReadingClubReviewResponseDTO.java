@@ -21,8 +21,8 @@ public class ReadingClubReviewResponseDTO {
     public static ReadingClubReviewResponseDTO from(ReadingClubReview review) {
         return ReadingClubReviewResponseDTO.builder()
                 .reviewId(review.getReviewId())
-                .clubId(review.getClubId())
-                .writerId(review.getWriterId())
+                .clubId(review.getClubId().getId())
+                .writerId(review.getWriterId().getId())
                 .reviewTitle(review.getReviewTitle())
                 .reviewContent(review.getReviewContent())
                 .likeTotal(review.getLikeTotal())

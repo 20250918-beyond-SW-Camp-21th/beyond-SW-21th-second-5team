@@ -1,10 +1,8 @@
 package com.ohgiraffers.secondbackend.readingclubreview.controller;
 
-import com.ohgiraffers.secondbackend.readingclub.entity.ReadingClub;
 import com.ohgiraffers.secondbackend.readingclubreview.dto.request.ReadingClubReviewRequestDTO;
 import com.ohgiraffers.secondbackend.readingclubreview.dto.response.ReadingClubReviewResponseDTO;
 import com.ohgiraffers.secondbackend.readingclubreview.service.ReadingClubReviewService;
-import com.oracle.svm.core.annotate.Delete;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +17,7 @@ public class ReadingClubReviewController {
     private final ReadingClubReviewService reviewService;
 
     @PostMapping("/clubId/{clubId}")
-    public ResponseEntity<ReadingClubReviewResponseDTO> createReview(@PathVariable long clubId, @RequestBody ReadingClubReviewRequestDTO request,
+    public ResponseEntity<ReadingClubReviewResponseDTO> createReview(@PathVariable Long clubId, @RequestBody ReadingClubReviewRequestDTO request,
                                                                      Authentication authentication){
 
         // 로그인한 사용자의 username 가져오기
