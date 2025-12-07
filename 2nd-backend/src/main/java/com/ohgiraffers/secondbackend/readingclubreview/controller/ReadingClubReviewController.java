@@ -1,6 +1,5 @@
 package com.ohgiraffers.secondbackend.readingclubreview.controller;
 
-import com.ohgiraffers.secondbackend.readingclub.entity.ReadingClub;
 import com.ohgiraffers.secondbackend.readingclubreview.dto.request.ReadingClubReviewRequestDTO;
 import com.ohgiraffers.secondbackend.readingclubreview.dto.response.ReadingClubReviewResponseDTO;
 import com.ohgiraffers.secondbackend.readingclubreview.service.ReadingClubReviewService;
@@ -12,14 +11,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/reading-club-review")
+@RequestMapping("/review")
 @RequiredArgsConstructor
 public class ReadingClubReviewController {
 
     private final ReadingClubReviewService reviewService;
 
-    @PostMapping("/{clubId}/review-create")
-    public ResponseEntity<ReadingClubReviewResponseDTO> createReview(@PathVariable long clubId, @RequestBody ReadingClubReviewRequestDTO request,
+    @PostMapping("/clubId/{clubId}")
+    public ResponseEntity<ReadingClubReviewResponseDTO> createReview(@PathVariable Long clubId, @RequestBody ReadingClubReviewRequestDTO request,
                                                                      Authentication authentication){
 
         // 로그인한 사용자의 username 가져오기
@@ -30,7 +29,7 @@ public class ReadingClubReviewController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PutMapping("/review-modify/{reviewId}")
+    @PutMapping("/reviewId/{reviewId}")
     public ResponseEntity<ReadingClubReviewResponseDTO> modifyReview(@PathVariable Long reviewId,
                                                                      @RequestBody ReadingClubReviewRequestDTO request,
                                                                      Authentication authentication){
@@ -42,7 +41,7 @@ public class ReadingClubReviewController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/review-delete/{reviewId}")
+    @DeleteMapping("/reviewId/{reviewId}")
     public ResponseEntity<Void> deleteReview(@PathVariable Long reviewId,
                                              Authentication authentication)
     {

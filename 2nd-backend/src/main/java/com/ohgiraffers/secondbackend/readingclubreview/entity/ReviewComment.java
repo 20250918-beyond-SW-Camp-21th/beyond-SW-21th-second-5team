@@ -1,5 +1,6 @@
 package com.ohgiraffers.secondbackend.readingclubreview.entity;
 
+import com.ohgiraffers.secondbackend.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,14 +20,17 @@ public class ReviewComment {
     @Column(name = "review_comment_id")
     private Long reviewCommentId;
 
-    @Column(name = "club_review_id", nullable = false)  // review 테이블 FK
-    private Long clubReviewId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "club_review_id", nullable = false)
+    private ReadingClubReview review;    // ✔ 어떤 리뷰에 달린 댓글인지
 
-    @Column(name = "user_id", nullable = false)         // user 테이블 FK
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;                  // ✔ 누가 썼는지
 
-    @Column(name = "parent_comment_id")                 // 부모 댓글 (대댓글용), 루트 댓글이면 null
-    private Long parentCommentId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_comment_id")
+    private ReviewComment parent;       // ✔ 부모 댓글, 없으면 null
 
     @Column(name = "comment_detail", nullable = false)
     private String commentDetail;
@@ -38,18 +42,26 @@ public class ReviewComment {
     @Column(name = "delete_comment", nullable = false)
     private boolean deleteComment = false;
 
-
     @Builder
-    public ReviewComment(Long clubReviewId,
-                         Long userId,
-                         Long parentCommentId,
+    public ReviewComment(ReadingClubReview review,
+                         User user,
+                         ReviewComment parent,
                          String commentDetail) {
-        this.clubReviewId = clubReviewId;
-        this.userId = userId;
-        this.parentCommentId = parentCommentId; // null이면 루트 댓글
+        this.review = review;
+        this.user = user;
+        this.parent = parent;
         this.commentDetail = commentDetail;
         this.deleteComment = false;
     }
 
+    public void updateContent(String commentDetail) {
+        this.commentDetail = commentDetail;
+    }
+
+    // 소프트 삭제 메서드
+    public void softDelete() {
+        this.deleteComment = true;
+        this.commentDetail = "삭제된 메시지입니다.";
+    }
 
 }
