@@ -76,5 +76,13 @@ public class BookReportService {
         return bookReport.toResponseDTO();
     }
 
+    @Transactional
+    public void deleteBookReport(Long reportId) {
+        // 삭제할거 있는지 없는지부터 확인
+        BookReport bookReport = bookReportRepository.findById(reportId)
+                .orElseThrow(() -> new IllegalArgumentException("삭제할 독후감이 존재하지 않음"));
 
+        // 삭제
+        bookReportRepository.delete(bookReport);
+    }
 }
