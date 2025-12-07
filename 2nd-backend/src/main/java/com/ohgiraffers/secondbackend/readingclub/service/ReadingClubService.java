@@ -2,10 +2,7 @@ package com.ohgiraffers.secondbackend.readingclub.service;
 
 import com.ohgiraffers.secondbackend.readingclub.dto.request.ReadingClubRequestDTO;
 import com.ohgiraffers.secondbackend.readingclub.dto.response.ReadingClubResponseDTO;
-import com.ohgiraffers.secondbackend.readingclub.entity.JoinRequestStatus;
-import com.ohgiraffers.secondbackend.readingclub.entity.ReadingClub;
-import com.ohgiraffers.secondbackend.readingclub.entity.ReadingClubJoin;
-import com.ohgiraffers.secondbackend.readingclub.entity.ReadingClubStatus;
+import com.ohgiraffers.secondbackend.readingclub.entity.*;
 import com.ohgiraffers.secondbackend.readingclub.repository.ReadingClubJoinRepository;
 import com.ohgiraffers.secondbackend.readingclub.repository.ReadingClubMemberRepository;
 import com.ohgiraffers.secondbackend.readingclub.repository.ReadingClubRepository;
@@ -101,4 +98,41 @@ public class ReadingClubService {
 
         readingClubJoinRepository.save(request);
     }
+
+    @Transactional
+    public void decideJoinRequest(Long clubId, Long hostId, Long joinId, JoinRequestStatus status){
+        if(status == JoinRequestStatus.PENDING){
+            throw new IllegalStateException("결정은 APPROVED 또는 REJECTED만 가능");
+        }
+
+        ReadingClub club = readingClubRepository.findById(clubId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 모임입니다."));
+
+        if(club.getUserId() != hostId){
+            throw new SecurityException("모임장만 신청을 승인/거절할 수 있습니다.");
+        }
+
+        ReadingClubJoin request = readingClubJoinRepository.findByIdAndClubId(joinId, clubId).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 신청입니다.")
+        );
+
+        if(request.getStatus() != JoinRequestStatus.PENDING){
+            throw new IllegalStateException("이미 처리된 신청입니다.");
+        }
+
+        request.setStatus(status);
+
+        if(status == JoinRequestStatus.APPROVED){
+            if(!readingClubMemberRepository.existsByClubIdAndUserId(clubId, request.getUserId())){
+                ReadingClubMember member = ReadingClubMember.builder()
+                        .clubId(clubId)
+                        .userId(request.getUserId())
+                        .role(ReadingClubMemberRole.MEMBER)
+                        .build();
+
+                readingClubMemberRepository.save(member);
+            }
+        }
+    }
+
+
 }
