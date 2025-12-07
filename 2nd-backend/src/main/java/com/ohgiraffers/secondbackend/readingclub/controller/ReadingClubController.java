@@ -100,4 +100,13 @@ public class ReadingClubController {
         );
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/join/{joinId}")
+    public ResponseEntity<Void> cancelJoin(@PathVariable long joinId, Authentication authentication){
+        String username = authentication.getName();
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
+
+        readingClubService.cancleJoin(joinId, user.getId());
+        return ResponseEntity.noContent().build();
+    }
 }
