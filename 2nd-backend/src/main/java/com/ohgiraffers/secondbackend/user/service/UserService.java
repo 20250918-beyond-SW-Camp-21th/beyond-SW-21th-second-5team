@@ -1,11 +1,13 @@
 package com.ohgiraffers.secondbackend.user.service;
 
+import com.ohgiraffers.secondbackend.user.dto.request.PasswordUpdateDTO;
+import com.ohgiraffers.secondbackend.user.dto.request.ProfileUpdateDTO;
+import com.ohgiraffers.secondbackend.user.dto.response.UserResponseDTO;
 import com.ohgiraffers.secondbackend.user.entity.User;
 import com.ohgiraffers.secondbackend.user.entity.UserRole;
-import com.ohgiraffers.secondbackend.user.filter.JWTAuthenticationFilter;
 import com.ohgiraffers.secondbackend.user.repository.UserRepository;
 import com.ohgiraffers.secondbackend.user.util.JWTUtil;
-import io.netty.util.internal.StringUtil;
+import jakarta.persistence.Convert;
 import jakarta.transaction.Transactional;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,6 +26,12 @@ public class UserService  implements UserDetailsService{
     private final PasswordEncoder passwordEncoder;
     private final RedisTemplate<String, Object> redisTemplate;
 
+    private UserResponseDTO userResponseDTO(User user){
+        return UserResponseDTO.builder()
+                .id(user.getId())
+                .nickname(user.getNickname())
+                .build();
+    }
 
     public UserService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder,
@@ -98,6 +106,31 @@ public class UserService  implements UserDetailsService{
         }
     }
 
+   /*닉네임 변경*/
+    @Transactional
+    public UserResponseDTO updateNickname(String accessToken, ProfileUpdateDTO profileUpdateDTO){
+        String username= jwtUtil.getUsername(accessToken);
+        User user=userRepository
+                .findByUsername(username).orElseThrow(()-> new IllegalArgumentException("잘못된 접근"));
+
+        user.setNickname(profileUpdateDTO.getNickname());
+        userRepository.save(user);
+
+        return userResponseDTO(user);
+    }
+
+    /*비밀번호 변경*/
+    //기존 비밀번호 검증이 필요하지 않을 거 같아서 빼긴했는데...
+    public UserResponseDTO updatePassword(String accessToken, PasswordUpdateDTO passwordUpdateDTO){
+        String username= jwtUtil.getUsername(accessToken);
+        User user=userRepository
+                .findByUsername(username).orElseThrow(()-> new IllegalArgumentException("잘못된 접근"));
+
+        user.setPassword(passwordEncoder.encode(passwordUpdateDTO.getNewPassword()));
+        userRepository.save(user);
+
+        return userResponseDTO(user);
+    }
 
 
 }
