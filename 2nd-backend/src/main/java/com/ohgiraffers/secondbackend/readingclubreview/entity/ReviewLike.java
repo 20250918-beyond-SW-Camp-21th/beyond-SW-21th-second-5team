@@ -8,6 +8,16 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
+import com.ohgiraffers.secondbackend.user.entity.User;
+import com.ohgiraffers.secondbackend.readingclubreview.entity.ReadingClubReview;
+import jakarta.persistence.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "reading_club_review_like")
 @Getter
@@ -19,19 +29,23 @@ public class ReviewLike {
     @Column(name = "review_like_id")
     private Long reviewLikeId;
 
-    @Column(name = "user_id", nullable = false)   // user 테이블 FK
-    private Long userId;
+    // 여러 좋아요(N) : 한 유저(1)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)   // 컬럼 이름은 그대로
+    private User user;
 
-    @Column(name = "club_review_id", nullable = false)  // club 테이블 FK
-    private Long clubReviewId;
+    // 여러 좋아요(N) : 한 리뷰(1)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "club_review_id", nullable = false)
+    private ReadingClubReview review;
 
     @CreationTimestamp
     @Column(name = "like_datetime", nullable = false, updatable = false)
     private LocalDateTime likeDateTime;
 
     @Builder
-    public ReviewLike(Long userId, Long clubReviewId) {
-        this.userId = userId;
-        this.clubReviewId = clubReviewId;
+    public ReviewLike(User user, ReadingClubReview review) {
+        this.user = user;
+        this.review = review;
     }
 }

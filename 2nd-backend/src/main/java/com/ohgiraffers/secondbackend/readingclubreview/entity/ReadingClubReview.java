@@ -65,4 +65,15 @@ public class ReadingClubReview {
         this.reviewTitle = reviewTitle;
         this.reviewContent = reviewContent;
     }
+
+    public void increaseLike() {
+        this.likeTotal++;
+    }
+
+    public void decreaseLike() {
+        if (this.likeTotal > 0) {
+            this.likeTotal--;
+        }
+    }
+
 }
