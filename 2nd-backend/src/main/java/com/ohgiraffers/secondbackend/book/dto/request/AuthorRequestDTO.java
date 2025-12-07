@@ -1,4 +1,4 @@
-package com.ohgiraffers.secondbackend.user.dto.request;
+package com.ohgiraffers.secondbackend.book.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginRequestDTO {
-    private String username;
-    private String password;
+public class AuthorRequestDTO {
+    private String author;
 }
