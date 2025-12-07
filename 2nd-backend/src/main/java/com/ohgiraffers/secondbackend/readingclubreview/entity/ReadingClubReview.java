@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -43,6 +45,9 @@ public class ReadingClubReview {
     @CreationTimestamp
     @Column(name = "created_at",updatable = false)
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReviewComment> comments = new ArrayList<>();
 
     @Builder
     public ReadingClubReview(ReadingClub clubId,
