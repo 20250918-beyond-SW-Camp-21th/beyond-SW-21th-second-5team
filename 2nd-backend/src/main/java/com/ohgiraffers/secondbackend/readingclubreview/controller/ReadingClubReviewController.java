@@ -12,13 +12,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/reading-club-review")
+@RequestMapping("/review")
 @RequiredArgsConstructor
 public class ReadingClubReviewController {
 
     private final ReadingClubReviewService reviewService;
 
-    @PostMapping("/{clubId}/review-create")
+    @PostMapping("/clubId/{clubId}")
     public ResponseEntity<ReadingClubReviewResponseDTO> createReview(@PathVariable long clubId, @RequestBody ReadingClubReviewRequestDTO request,
                                                                      Authentication authentication){
 
@@ -30,7 +30,7 @@ public class ReadingClubReviewController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PutMapping("/review-modify/{reviewId}")
+    @PutMapping("/reviewId/{reviewId}")
     public ResponseEntity<ReadingClubReviewResponseDTO> modifyReview(@PathVariable Long reviewId,
                                                                      @RequestBody ReadingClubReviewRequestDTO request,
                                                                      Authentication authentication){
@@ -42,7 +42,7 @@ public class ReadingClubReviewController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/review-delete/{reviewId}")
+    @DeleteMapping("/reviewId/{reviewId}")
     public ResponseEntity<Void> deleteReview(@PathVariable Long reviewId,
                                              Authentication authentication)
     {
