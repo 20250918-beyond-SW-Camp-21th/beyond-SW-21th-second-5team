@@ -11,11 +11,11 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 public class ReadingClubResponseDTO {
-    private int id;
+    private long id;
     private String name;
     private String description;
     private ReadingClubStatus status;
     private LocalDateTime createdAt;
-    private int hostUserId;
-    private int categoryId;
+    private long hostUserId;
+    private long categoryId;
 }
