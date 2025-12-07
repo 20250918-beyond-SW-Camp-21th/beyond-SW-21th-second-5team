@@ -57,4 +57,11 @@ public class ReviewComment {
     public void updateContent(String commentDetail) {
         this.commentDetail = commentDetail;
     }
+
+    // 소프트 삭제 메서드
+    public void softDelete() {
+        this.deleteComment = true;
+        this.commentDetail = "삭제된 메시지입니다.";
+    }
+
 }

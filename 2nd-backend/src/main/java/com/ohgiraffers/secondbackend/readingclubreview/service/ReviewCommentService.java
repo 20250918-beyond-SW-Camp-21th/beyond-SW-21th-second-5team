@@ -88,6 +88,7 @@ public class ReviewCommentService {
 
     }
 
+    @Transactional
     public void deleteComment(Long commentId, String username) {
 
         // 유저 조회
@@ -99,6 +100,6 @@ public class ReviewCommentService {
                 .findByReviewCommentIdAndUser(commentId, user)
                 .orElseThrow(() -> new AccessDeniedException("해당 댓글을 삭제할 수 있는 권한이 없습니다."));
 
-        commentRepository.delete(comment);
+        comment.softDelete();
     }
 }
