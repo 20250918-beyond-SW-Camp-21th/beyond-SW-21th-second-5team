@@ -30,9 +30,9 @@ public class ReadingClub {
     @Column(name = "category", nullable = false)      // category 테이블 fk
     private long categoryId;
     @Column(name = "max_member")
-    private int maxMember;
+    private int maxMember = 5;
     @Column(name = "current_member")
-    private int currentMember;
+    private int currentMember = 0;
 
     @Builder
     public ReadingClub(String name, String description, long userId, long categoryId, ReadingClubStatus status) {

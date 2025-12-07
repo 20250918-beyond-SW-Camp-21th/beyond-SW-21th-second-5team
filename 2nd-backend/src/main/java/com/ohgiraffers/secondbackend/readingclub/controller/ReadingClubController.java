@@ -63,6 +63,16 @@ public class ReadingClubController {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("/leave/{clubId}")
+    public ResponseEntity<Void> leaveReadingClub(@PathVariable long clubId, Authentication authentication) {
+        String username = authentication.getName();
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
+
+        readingClubService.leaveReadingClub(clubId, user.getId());
+        return ResponseEntity.noContent().build();
+    }
+
     @PostMapping("/join/{clubId}")
     public ResponseEntity<Void> requestJoin(@PathVariable long clubId, @RequestBody(required = false) JoinRequestDTO dto, Authentication authentication){
         String username = authentication.getName();
