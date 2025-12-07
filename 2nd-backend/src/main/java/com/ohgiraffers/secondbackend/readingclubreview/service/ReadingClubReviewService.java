@@ -98,7 +98,6 @@ public class ReadingClubReviewService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
 
-        Long userId = user.getId();
 
         // 2. 이 유저가 쓴 해당 리뷰 찾기
         ReadingClubReview review = reviewRepository

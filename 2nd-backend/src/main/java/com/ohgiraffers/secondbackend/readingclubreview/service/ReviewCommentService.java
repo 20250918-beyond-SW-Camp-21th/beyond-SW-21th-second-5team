@@ -78,7 +78,7 @@ public class ReviewCommentService {
         // 2. 이 유저가 작성한 해당 댓글 찾기 (아니면 권한 없음)
         ReviewComment comment = commentRepository
                 .findByReviewCommentIdAndUser(commentId, user)
-                .orElseThrow(() -> new AccessDeniedException("자신이 작성한 댓글이 아니므로 수정할 수 없습니다."));
+                .orElseThrow(() -> new AccessDeniedException("해당 댓글을 수정할 수 있는 권한이 없습니다."));
 
         // 내용 수정
         comment.updateContent(request.getCommentDetail());
@@ -86,5 +86,19 @@ public class ReviewCommentService {
         ReviewComment saved = commentRepository.save(comment);
         return ReviewCommentResponseDTO.from(saved);
 
+    }
+
+    public void deleteComment(Long commentId, String username) {
+
+        // 유저 조회
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(username));
+
+        // 이 유저가 쓴 해당 댓글 찾기
+        ReviewComment comment = commentRepository
+                .findByReviewCommentIdAndUser(commentId, user)
+                .orElseThrow(() -> new AccessDeniedException("해당 댓글을 삭제할 수 있는 권한이 없습니다."));
+
+        commentRepository.delete(comment);
     }
 }
