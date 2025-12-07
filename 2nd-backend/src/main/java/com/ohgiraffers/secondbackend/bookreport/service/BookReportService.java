@@ -65,6 +65,16 @@ public class BookReportService {
                 .collect(Collectors.toList());
     }
 
-    // 독후감 수정
-//    public BookReportResponseDTO
+    @Transactional
+    public BookReportResponseDTO changeBookReport(Long reportId, BookReportRequestDTO request) {
+        // 수정할 엔터티가 없을때
+        BookReport bookReport = bookReportRepository.findById(reportId)
+                .orElseThrow(() -> new IllegalArgumentException("독후감이 존재하지 않음"));
+
+        bookReport.update(request.getTitle(), request.getDescription());
+
+        return bookReport.toResponseDTO();
+    }
+
+
 }
