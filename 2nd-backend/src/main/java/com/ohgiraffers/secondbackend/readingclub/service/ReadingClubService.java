@@ -1,6 +1,9 @@
 package com.ohgiraffers.secondbackend.readingclub.service;
 
 import com.ohgiraffers.secondbackend.readingclub.dto.request.ReadingClubRequestDTO;
+import com.ohgiraffers.secondbackend.readingclub.dto.response.JoinResponseDTO;
+import com.ohgiraffers.secondbackend.readingclub.dto.response.MyClubResponseDTO;
+import com.ohgiraffers.secondbackend.readingclub.dto.response.ReadingClubMemberResponseDTO;
 import com.ohgiraffers.secondbackend.readingclub.dto.response.ReadingClubResponseDTO;
 import com.ohgiraffers.secondbackend.readingclub.entity.*;
 import com.ohgiraffers.secondbackend.readingclub.repository.ReadingClubJoinRepository;
@@ -31,6 +34,26 @@ public class ReadingClubService {
                 .createdAt(club.getCreatedAt())
                 .hostUserId(club.getUserId())
                 .categoryId(club.getCategoryId())
+                .build();
+    }
+
+    private JoinResponseDTO convertJoin(ReadingClubJoin join){
+        return JoinResponseDTO.builder()
+                .id(join.getId())
+                .clubId(join.getClubId())
+                .userId(join.getUserId())
+                .message(join.getMessage())
+                .status(join.getStatus())
+                .createdAt(join.getCreatedAt())
+                .build();
+    }
+    private ReadingClubMemberResponseDTO convertMember(ReadingClubMember member) {
+        return ReadingClubMemberResponseDTO.builder()
+                .id(member.getId())
+                .clubId(member.getClubId())
+                .userId(member.getUserId())
+                .role(member.getRole())
+                .joinedAt(member.getJoinedAt())
                 .build();
     }
 
@@ -192,4 +215,46 @@ public class ReadingClubService {
         member.changeRole(ReadingClubMemberRole.LEFT);
     }
 
+    @Transactional(readOnly = true)
+    public List<JoinResponseDTO> getJoinRequestsForClub(long clubId, long hostId){
+        ReadingClub club = readingClubRepository.findById(clubId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 모임입니다."));
+        if(club.getUserId() != hostId){
+            throw new SecurityException("모임장만 신청 목록을 조회할 수 있습니다.");
+        }
+        return readingClubJoinRepository.findByClubIdOrderByCreatedAtDesc(clubId).stream().map(this::convertJoin).toList();
+    }
+
+    @Transactional
+    public List<JoinResponseDTO> getMyJoinRequests(long userId){
+        return readingClubJoinRepository.findByUserIdOrderByCreatedAtDesc(userId).stream().map(this::convertJoin).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<ReadingClubMemberResponseDTO> getMembersOfClub(Long clubId, long userId){
+        ReadingClub club = readingClubRepository.findById(clubId).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 모임입니다.")
+        );
+        ReadingClubMember member = readingClubMemberRepository.findByClubIdAndUserId(clubId, userId).orElseThrow(
+                () -> new SecurityException("해당 모임의 멤버가 아닙니다.")
+        );
+        if(member.getRole() == ReadingClubMemberRole.LEFT){
+            throw new SecurityException("탈퇴 혹은 강퇴 당한 멤버는 조회할 수 없습니다.");
+        }
+        return readingClubMemberRepository.findByClubId(clubId).stream().filter(mem -> member.getRole() != ReadingClubMemberRole.LEFT)
+                .map(this::convertMember).toList();
+    }
+
+    @Transactional
+    public MyClubResponseDTO getMyClubs(long userId){
+        List<ReadingClubResponseDTO> hosted = readingClubRepository.findByUserId(userId).stream().map(this::convert).toList();
+
+        List<ReadingClubMember> members = readingClubMemberRepository.findByUserIdAndRoleNot(userId, ReadingClubMemberRole.LEFT);
+        List<ReadingClubResponseDTO> joined = members.stream()
+                .map(m -> readingClubRepository.findById(m.getClubId()).orElseThrow(
+                        () -> new IllegalArgumentException("존재하지 않는 모임입니다."))).map(this::convert).toList();
+        return MyClubResponseDTO.builder()
+                .hostedClubs(hosted)
+                .joinedClubs(joined)
+                .build();
+    }
 }
