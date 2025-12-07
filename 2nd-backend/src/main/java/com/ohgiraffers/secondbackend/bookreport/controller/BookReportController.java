@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/book-report")
 @RequiredArgsConstructor
@@ -25,6 +27,30 @@ public class BookReportController {
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+
+    //독후감 조회(단건) - 독후감 id로 조회
+    @GetMapping("/{reportId}")
+    public ResponseEntity<BookReportResponseDTO> getBookReport(@PathVariable Long reportId){
+
+        BookReportResponseDTO response = bookReportService.getBookReportById(reportId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    // 독후감 조회(목록) - 전체 조회
+    @GetMapping
+    public ResponseEntity<BookReportResponseDTO> getAllBookReport(){
+        List<BookReportResponseDTO> rList = bookReportService.getAllBookReports();
+        return ResponseEntity.status(HttpStatus.OK).body(rList);
+    }
+
+
+    // 독후감 수정
+//    @PutMapping("/{reportId}")
+//    public ResponseEntity<BookReportResponseDTO> modifyBookReport(@PathVariable Long reportId){
+//
+//        BookReportResponseDTO response = bookReportService.change
+//    }
 
 
 }

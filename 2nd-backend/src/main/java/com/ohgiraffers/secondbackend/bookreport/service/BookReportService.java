@@ -9,6 +9,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class BookReportService {
@@ -45,4 +48,23 @@ public class BookReportService {
         //responseDTO로 변환해서 반환
         return new BookReportResponseDTO(saved);
     }
+
+    //독후감 조회(책, 사용자로 단건조회)
+    public BookReportResponseDTO getBookReportById(Long reportId) {
+        BookReport bookReport = bookReportRepository.findById(reportId)
+                .orElseThrow(() -> new IllegalArgumentException("독후감이 존재하지 않음"));
+
+        return bookReport.toResponseDTO();
+    }
+
+    // 독후감 전체 조회
+    public List<BookReportResponseDTO> getAllBookReports(){
+        List<BookReport> bookReport = bookReportRepository.findAll();
+
+        return bookReport.stream().map(BookReport::toResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    // 독후감 수정
+//    public BookReportResponseDTO
 }

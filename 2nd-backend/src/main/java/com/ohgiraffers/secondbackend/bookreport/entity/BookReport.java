@@ -1,4 +1,5 @@
 package com.ohgiraffers.secondbackend.bookreport.entity;
+import com.ohgiraffers.secondbackend.bookreport.dto.response.BookReportResponseDTO;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -63,5 +64,15 @@ public class BookReport {
     //좋아요 개수 감소
     public void decreaseLike() {
         this.likeCount--;
+    }
+
+    public BookReportResponseDTO toResponseDTO() {
+        return BookReportResponseDTO.builder()
+                .bookReportId(this.bookReportId)
+                .title(this.title)
+                .description(this.description)
+                .likeCount(this.likeCount)
+                .createdAt(this.createdAt)
+                .build();
     }
 }
