@@ -9,6 +9,7 @@ import com.ohgiraffers.secondbackend.readingclub.repository.ReadingClubRepositor
 import com.ohgiraffers.secondbackend.user.entity.User;
 import com.ohgiraffers.secondbackend.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,6 +74,24 @@ public class ReadingClubService {
             throw new SecurityException("모임을 삭제할 권한이 없습니다.");
         }
         club.finish();
+    }
+
+    @Transactional
+    public void leaveReadingClub(Long clubId, long userId){
+        ReadingClub club = readingClubRepository.findById(clubId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 모임입니다."));
+
+        if (club.getUserId() == userId){
+            throw new IllegalStateException("모임장은 탈퇴할 수 없습니다. 삭제(해산)만 가능합니다.");
+        }
+        ReadingClubMember member = readingClubMemberRepository.findByClubIdAndUserId(clubId, userId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 모임에 가입되어 있지 않습니다."));
+        if (member.getRole() == ReadingClubMemberRole.LEFT){
+            throw new IllegalStateException("이미 탈퇴한 멤버입니다.");
+        }
+        club.removeMember();
+
+        member.changeRole(ReadingClubMemberRole.LEFT);
     }
 
     @Transactional

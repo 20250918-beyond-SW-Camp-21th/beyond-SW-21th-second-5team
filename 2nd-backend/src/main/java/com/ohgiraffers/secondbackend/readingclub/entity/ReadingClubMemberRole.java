@@ -1,5 +1,5 @@
 package com.ohgiraffers.secondbackend.readingclub.entity;
 
 public enum ReadingClubMemberRole {
-    HOST, MEMBER
+    HOST, MEMBER, LEFT
 }

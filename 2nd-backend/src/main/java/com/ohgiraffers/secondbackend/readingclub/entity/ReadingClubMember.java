@@ -30,4 +30,8 @@ public class ReadingClubMember {
     @Column(name = "joined_at")
     @CreationTimestamp
     private LocalDateTime joinedAt;
+
+    public void changeRole(ReadingClubMemberRole role) {
+        this.role = role;
+    }
 }
