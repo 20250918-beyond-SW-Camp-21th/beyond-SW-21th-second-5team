@@ -28,7 +28,7 @@ public class ReviewCommentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PatchMapping("/reviewId/{commentId}")
+    @PatchMapping("/commentId/{commentId}")
     public ResponseEntity<ReviewCommentResponseDTO> modifyComments(@PathVariable("commentId") Long commentId,
                                                                    @RequestBody ReviewCommentRequestDTO request,
                                                                    Authentication  authentication) {
@@ -37,5 +37,15 @@ public class ReviewCommentController {
         ReviewCommentResponseDTO response = reviewCommentService.modifyComment(commentId, request, username);
 
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/commentId/{commentId}")
+    public ResponseEntity<Void> deleteComment(@PathVariable("commentId") Long commentId,
+                                              Authentication authentication) {
+        String username = authentication.getName();
+
+        reviewCommentService.deleteComment(commentId, username);
+
+        return ResponseEntity.noContent().build();
     }
 }
