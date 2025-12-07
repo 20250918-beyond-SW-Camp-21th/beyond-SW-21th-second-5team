@@ -13,6 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class BookResponseDTO {
     private long bookid;
+    private String title;
     private String author;
     private String publisher;
     private Date publishedDate;
