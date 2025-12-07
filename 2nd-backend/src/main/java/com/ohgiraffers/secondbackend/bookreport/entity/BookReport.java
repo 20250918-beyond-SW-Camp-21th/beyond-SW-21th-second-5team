@@ -21,8 +21,8 @@ public class BookReport {
     @Column(name = "book_id")
     private Long bookId;        //도서 id(fk)
 
-    @Column(name = "writer_id")
-    private Long writerId;      //글 작성자 id(fk)
+    @Column(name = "user_id")
+    private Long userId;      //글 작성자 id(fk)
 
     @Column(name = "title")
     private String title;   //제목
@@ -32,16 +32,16 @@ public class BookReport {
 
     @CreationTimestamp
     @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt;    //생성일
 
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     @Builder
-    public BookReport(Long bookId, Long writerId, String title, String description){
+    public BookReport(Long bookId, Long userId, String title, String description){
         this.bookId = bookId;
-        this.writerId = writerId;
+        this.userId = userId;
         this.title = title;
         this.description = description;
     }
