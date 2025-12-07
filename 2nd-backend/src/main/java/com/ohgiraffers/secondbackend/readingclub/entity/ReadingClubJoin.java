@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.time.LocalDateTime;
 
@@ -14,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Table(name = "reading_club_join_request")
-public class ReadingClubJoinRequest {
+public class ReadingClubJoin {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,9 +21,11 @@ public class ReadingClubJoinRequest {
     private Long clubId;
     @Column(name = "user_id", nullable = false)
     private Long userId;
-    @Column(name = "request_message", nullable = false)
+    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private JoinRequestStatus status; // PENDING, APPROVED, REJECTED
+    @Column(name = "message")
+    private String message;
     @Column(name = "created_at")
     @CreationTimestamp
     private LocalDateTime createdAt;
