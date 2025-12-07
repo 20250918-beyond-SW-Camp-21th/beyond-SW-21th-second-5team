@@ -44,6 +44,7 @@ public class ReadingClubReviewService {
         Long userId = user.getId();
 
         // 2) 클럽 회원인지 확인
+        // 클럽 엔티티 구조 바뀐다면 수정 필요함!! userId -> user로
         boolean isMember = memberRepository.existsByClubIdAndUserId(clubId, userId);
         if (!isMember) {
             log.warn("유저 {} 는 클럽 {} 멤버가 아님", userId, clubId);
@@ -76,8 +77,6 @@ public class ReadingClubReviewService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
 
-
-        Long userId = user.getId();
 
         // 2. 이 유저가 쓴 해당 리뷰 찾기
         ReadingClubReview review = reviewRepository
