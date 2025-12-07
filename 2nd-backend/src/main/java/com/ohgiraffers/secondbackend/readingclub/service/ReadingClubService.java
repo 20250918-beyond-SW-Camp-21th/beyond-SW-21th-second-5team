@@ -153,5 +153,19 @@ public class ReadingClubService {
         }
     }
 
+    @Transactional
+    public void cancleJoin(long joinId, long userId){
+        ReadingClubJoin req = readingClubJoinRepository.findById(joinId).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 신청입니다.")
+        );
+        if(req.getUserId() != userId){
+            throw new SecurityException("본인 신청만 취소할 수 있습니다.");
+        }
+        if(req.getStatus() == JoinRequestStatus.PENDING){
+            throw new IllegalStateException("이미 처리된 신청입니다. 클럽 탈퇴를 신청해주세요");
+        }
+
+        readingClubJoinRepository.delete(req);
+    }
 
 }
