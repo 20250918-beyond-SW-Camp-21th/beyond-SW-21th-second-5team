@@ -80,4 +80,15 @@ public class ReadingClubReviewController {
         return ResponseEntity.ok(result);
     }
 
+    @GetMapping("/my")
+    public ResponseEntity<Page<ReadingClubReviewResponseDTO>> getMyReviews(@RequestParam(defaultValue = "0") int page, Authentication authentication)
+    {
+        String username = authentication.getName();
+        Page<ReadingClubReviewResponseDTO> result;
+
+        result = reviewService.getMyReviews(username, page);
+
+        return ResponseEntity.ok(result);
+    }
+
 }
