@@ -11,12 +11,15 @@ import com.ohgiraffers.secondbackend.readingclubreview.repository.ReviewCommentR
 import com.ohgiraffers.secondbackend.readingclubreview.repository.ReviewLikeRepository;
 import com.ohgiraffers.secondbackend.user.entity.User;
 import com.ohgiraffers.secondbackend.user.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -105,5 +108,27 @@ public class ReadingClubReviewService {
                 .orElseThrow(() -> new AccessDeniedException("해당 리뷰를 삭제할 수 있는 권한이 없습니다."));
 
         reviewRepository.delete(review);
+    }
+
+    // ✅ 특정 모임 리뷰 – 최신순, 15개씩
+    @Transactional(readOnly = true)
+    public Page<ReadingClubReviewResponseDTO> getReviewsOrderByLatest(Long clubId, int page) {
+        Pageable pageable = PageRequest.of(page, 15);   // page: 0부터 시작, size: 15
+
+        Page<ReadingClubReview> result =
+                reviewRepository.findByClubId_IdOrderByCreatedAtDesc(clubId, pageable);
+
+        return result.map(ReadingClubReviewResponseDTO::from);
+    }
+
+    // ✅ 특정 모임 리뷰 – 좋아요 많은 순, 15개씩
+    @Transactional(readOnly = true)
+    public Page<ReadingClubReviewResponseDTO> getReviewsOrderByLike(Long clubId, int page) {
+        Pageable pageable = PageRequest.of(page, 15);
+
+        Page<ReadingClubReview> result =
+                reviewRepository.findByClubId_IdOrderByLikeTotalDescCreatedAtDesc(clubId, pageable);
+
+        return result.map(ReadingClubReviewResponseDTO::from);
     }
 }
