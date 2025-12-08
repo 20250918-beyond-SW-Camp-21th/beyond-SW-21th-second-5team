@@ -13,9 +13,9 @@ import java.util.Optional;
 @Repository
 public interface ReadingClubReviewRepository extends JpaRepository<ReadingClubReview, Long> {
 
-    boolean existsByClubIdAndWriterId(ReadingClub clubId, User writerId);
+    boolean existsByClubIdAndWriterId(ReadingClub clubId, Long writerId);
 
-    Optional<ReadingClubReview> findByReviewIdAndWriterId(Long reviewId, User writerId);
+    Optional<ReadingClubReview> findByReviewIdAndWriterId(Long reviewId, Long writerId);
 
     // ✅ 어떤 모임(clubId) 안의 리뷰를 최신순으로 15개씩 (Pageable로 페이징)
     Page<ReadingClubReview> findByClubId_IdOrderByCreatedAtDesc(Long clubId, Pageable pageable);
@@ -23,6 +23,6 @@ public interface ReadingClubReviewRepository extends JpaRepository<ReadingClubRe
     // ✅ 어떤 모임(clubId) 안의 리뷰를 좋아요 많은 순 + 최신순 보조정렬로
     Page<ReadingClubReview> findByClubId_IdOrderByLikeTotalDescCreatedAtDesc(Long clubId, Pageable pageable);
 
-    Page<ReadingClubReview> findByWriterId_IdOrderByCreatedAtDesc(Long writerId, Pageable pageable);
+    Page<ReadingClubReview> findByWriterId_OrderByCreatedAtDesc(Long writerId, Pageable pageable);
 
 }

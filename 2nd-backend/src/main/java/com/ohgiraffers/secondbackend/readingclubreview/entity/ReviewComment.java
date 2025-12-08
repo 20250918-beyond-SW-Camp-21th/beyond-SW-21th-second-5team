@@ -24,9 +24,8 @@ public class ReviewComment {
     @JoinColumn(name = "club_review_id", nullable = false)
     private ReadingClubReview review;    // ✔ 어떤 리뷰에 달린 댓글인지
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;                  // ✔ 누가 썼는지
+    @Column(name = "user_id", nullable = false)
+    private Long user;                  // user Fk
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_comment_id")
@@ -44,7 +43,7 @@ public class ReviewComment {
 
     @Builder
     public ReviewComment(ReadingClubReview review,
-                         User user,
+                         Long user,
                          ReviewComment parent,
                          String commentDetail) {
         this.review = review;

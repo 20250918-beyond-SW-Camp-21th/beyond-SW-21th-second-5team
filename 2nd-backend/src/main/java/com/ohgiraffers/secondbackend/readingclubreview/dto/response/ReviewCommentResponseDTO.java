@@ -12,7 +12,7 @@ public class ReviewCommentResponseDTO {
 
     private Long reviewCommentId;
     private String reviewTitle;
-    private String writerName;        // 또는 userId
+    private Long writerId;        // 또는 userId
     private Long parentCommentId;
     private String commentDetail;
     private LocalDateTime createdAt;
@@ -22,7 +22,7 @@ public class ReviewCommentResponseDTO {
         return ReviewCommentResponseDTO.builder()
                 .reviewCommentId(comment.getReviewCommentId())
                 .reviewTitle(comment.getReview().getReviewTitle())
-                .writerName(comment.getUser().getUsername())
+                .writerId(comment.getUser())
                 .parentCommentId(
                         comment.getParent() != null
                                 ? comment.getParent().getReviewCommentId()

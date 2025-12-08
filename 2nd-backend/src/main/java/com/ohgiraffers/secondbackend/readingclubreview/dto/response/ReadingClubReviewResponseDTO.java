@@ -22,7 +22,7 @@ public class ReadingClubReviewResponseDTO {
         return ReadingClubReviewResponseDTO.builder()
                 .reviewId(review.getReviewId())
                 .clubId(review.getClubId().getId())
-                .writerId(review.getWriterId().getId())
+                .writerId(review.getWriterId())
                 .reviewTitle(review.getReviewTitle())
                 .reviewContent(review.getReviewContent())
                 .likeTotal(review.getLikeTotal())
