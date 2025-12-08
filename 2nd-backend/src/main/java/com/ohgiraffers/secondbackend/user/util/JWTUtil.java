@@ -36,7 +36,7 @@ public class JWTUtil {
     }
     // Access토큰 생성
     public String createAccessToken(String username,String role){
-        return createToken(username,role, TimeUnit.MINUTES.toMillis(30));
+        return createToken(username,role, TimeUnit.MINUTES.toMillis(180));
     }
 
     // Refresh토큰 생성
