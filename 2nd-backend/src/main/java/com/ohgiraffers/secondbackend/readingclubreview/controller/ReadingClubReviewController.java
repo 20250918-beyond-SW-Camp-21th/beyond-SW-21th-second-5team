@@ -5,6 +5,7 @@ import com.ohgiraffers.secondbackend.readingclubreview.dto.response.ReadingClubR
 import com.ohgiraffers.secondbackend.readingclubreview.service.ReadingClubReviewService;
 //import com.oracle.svm.core.annotate.Delete;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -51,6 +52,29 @@ public class ReadingClubReviewController {
 
         return ResponseEntity.noContent().build();
 
+    }
+
+    /**
+     * 특정 모임의 리뷰 목록 조회
+     *  - sort=latest (기본값): 최신순
+     *  - sort=like        : 좋아요 많은 순
+     *  - page=0부터 시작, 한 페이지당 15개
+     */
+    @GetMapping("/clubId/{clubId}")
+    public ResponseEntity<Page<ReadingClubReviewResponseDTO>> getReviews(
+            @PathVariable Long clubId,
+            @RequestParam(defaultValue = "latest") String sort,
+            @RequestParam(defaultValue = "0") int page
+    ) {
+        Page<ReadingClubReviewResponseDTO> result;
+
+        if ("like".equals(sort)) {
+            result = reviewService.getReviewsOrderByLike(clubId, page);
+        } else { // latest 또는 다른 값 들어오면 기본 최신순
+            result = reviewService.getReviewsOrderByLatest(clubId, page);
+        }
+
+        return ResponseEntity.ok(result);
     }
 
 }
