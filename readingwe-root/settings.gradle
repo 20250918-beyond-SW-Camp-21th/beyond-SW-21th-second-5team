@@ -1,3 +1,4 @@
 rootProject.name = 'readingweroot'
 include 'discovery-server'
 include 'config-server'
+include 'user-service'
