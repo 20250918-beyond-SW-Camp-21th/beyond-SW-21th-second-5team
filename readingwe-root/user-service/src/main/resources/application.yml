@@ -23,5 +23,8 @@ spring:
       host: dev.macacolabs.site
       port: 6789
 
+server:
+  port: 1754
+
 jwt:
   secret: aVeryLongAndSecureSecretKeyForHS256AlgorithmThatMustBeAtLeast32Bytes
