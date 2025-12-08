@@ -5,10 +5,9 @@ import com.ohgiraffers.secondbackend.readingclubreview.service.ReviewLikeService
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/review/like")
@@ -26,5 +25,19 @@ public class ReviewLikeController {
                 reviewLikeService.toggleLike(reviewId, username);
         return ResponseEntity.ok(response);
 
+    }
+
+    // ✅ 내 게시글에 좋아요 누른 사람 username 조회
+    @GetMapping("/{reviewId}/likes")
+    public ResponseEntity<List<String>> getLikedUsers(
+            @PathVariable Long reviewId,
+            Authentication authentication) {
+
+        String username = authentication.getName();
+
+        List<String> likedUsernames =
+                reviewLikeService.getLikedUsernames(reviewId, username);
+
+        return ResponseEntity.ok(likedUsernames);
     }
 }
