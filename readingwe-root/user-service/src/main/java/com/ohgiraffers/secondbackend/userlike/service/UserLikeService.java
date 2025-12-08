@@ -1,10 +1,10 @@
 package com.ohgiraffers.secondbackend.userlike.service;
 
 
-import com.ohgiraffers.secondbackend.book.entity.BookCategory;
 import com.ohgiraffers.secondbackend.user.entity.User;
 import com.ohgiraffers.secondbackend.user.repository.UserRepository;
 import com.ohgiraffers.secondbackend.user.util.JWTUtil;
+import com.ohgiraffers.secondbackend.userlike.client.BookFeignClient;
 import com.ohgiraffers.secondbackend.userlike.dto.response.UserLikeResponseDTO;
 import com.ohgiraffers.secondbackend.userlike.entity.UserLikeEntity;
 import com.ohgiraffers.secondbackend.userlike.repository.UserLikeRepository;
@@ -16,22 +16,30 @@ import java.util.List;
 @Service
 public class UserLikeService {
 
-
+    private final BookFeignClient bookFeignClient;
     private final UserLikeRepository userLikeRepository;
     private final JWTUtil jWTUtil;
     private final UserRepository userRepository;
 
     public UserLikeService(UserLikeRepository userLikeRepository
             , JWTUtil jWTUtil
-            , UserRepository userRepository){
+            , UserRepository userRepository
+            , BookFeignClient bookFeignClient){
         this.userLikeRepository = userLikeRepository;
         this.jWTUtil = jWTUtil;
         this.userRepository = userRepository;
+        this.bookFeignClient = bookFeignClient;
     }
 
     //등록
     @Transactional
-    public UserLikeResponseDTO likeBook(String accessToken, BookCategory bookCategory){
+    public UserLikeResponseDTO likeBook(String accessToken, String bookCategory){
+
+        List<String> validCategories= bookFeignClient.getBookCategories();
+        if(!validCategories.contains(bookCategory)){
+            throw new IllegalArgumentException("존재하지 않는 카테고리입니다.");
+        }
+
 
         String username=jWTUtil.getUsername(accessToken);
 
@@ -58,7 +66,7 @@ public class UserLikeService {
     }
 
     @Transactional
-    public void unlikeBook(String accessToken, BookCategory bookCategory) {
+    public void unlikeBook(String accessToken, String bookCategory) {
 
         String username = jWTUtil.getUsername(accessToken);
 
@@ -73,7 +81,7 @@ public class UserLikeService {
     }
 
 
-    public List<BookCategory> selectCategoryAll(String accessToken) {
+    public List<String> selectCategoryAll(String accessToken) {
 
         // 1. 토큰에서 username 추출
         String username = jWTUtil.getUsername(accessToken);

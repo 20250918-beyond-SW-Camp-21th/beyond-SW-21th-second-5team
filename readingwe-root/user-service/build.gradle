@@ -23,6 +23,7 @@ ext {
 }
 
 dependencies {
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     //JWT
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'

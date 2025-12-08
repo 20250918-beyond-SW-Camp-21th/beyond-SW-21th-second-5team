@@ -1,6 +1,5 @@
 package com.ohgiraffers.secondbackend.userlike.controller;
 
-import com.ohgiraffers.secondbackend.book.entity.BookCategory;
 import com.ohgiraffers.secondbackend.userlike.dto.response.UserLikeResponseDTO;
 import com.ohgiraffers.secondbackend.userlike.service.UserLikeService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,7 @@ public class UserLikeController {
     @PostMapping("/like/{bookcategory}")
     public ResponseEntity<UserLikeResponseDTO> likeBook(
             @RequestHeader("Authorization")String authorizationHeader,
-            @PathVariable BookCategory bookcategory
+            @PathVariable String bookcategory
     ){
         if (!authorizationHeader.startsWith("Bearer ")) {
             return ResponseEntity.badRequest().build();
@@ -35,7 +34,7 @@ public class UserLikeController {
     @DeleteMapping("/unlike/{bookcategory}")
     public ResponseEntity<Void> unlikeBook(
             @RequestHeader("Authorization")String authorizationHeader,
-            @PathVariable BookCategory bookcategory
+            @PathVariable String bookcategory
     ){
         if (!authorizationHeader.startsWith("Bearer ")) {
             return ResponseEntity.badRequest().build();
@@ -59,7 +58,7 @@ public class UserLikeController {
 
         String accessToken = authorizationHeader.substring(7);
 
-        List<BookCategory> categories =
+        List<String> categories =
                 userLikeService.selectCategoryAll(accessToken);
 
         return ResponseEntity.ok(categories);

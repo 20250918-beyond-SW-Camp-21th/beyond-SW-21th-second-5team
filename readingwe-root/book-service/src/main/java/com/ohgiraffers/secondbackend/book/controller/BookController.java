@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -49,6 +50,12 @@ public class BookController {
         return bookService.findByAuthor(new AuthorRequestDTO(author));
     }
 
+    @GetMapping("/categories")
+    public List<String>getAllCategories(){
+        return Arrays.stream(BookCategory.values())
+                .map(Enum::name)
+                .toList();
+    }
 
 
 }

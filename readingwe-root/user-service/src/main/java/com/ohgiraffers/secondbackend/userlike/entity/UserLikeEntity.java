@@ -1,6 +1,5 @@
 package com.ohgiraffers.secondbackend.userlike.entity;
 
-import com.ohgiraffers.secondbackend.book.entity.BookCategory;
 import com.ohgiraffers.secondbackend.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,8 +23,7 @@ public class UserLikeEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Enumerated(EnumType.STRING)
     @Column
-    private BookCategory bookCategory;
+    private String bookCategory;
 
 }
