@@ -34,6 +34,7 @@ public class ReviewCommentService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저"));
 
+        Long userId = user.getId();
         // 2. 리뷰 찾기
         ReadingClubReview review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 리뷰입니다."));
@@ -60,7 +61,7 @@ public class ReviewCommentService {
         // 4. 댓글 생성
         ReviewComment comment = ReviewComment.builder()
                 .review(review)
-                .user(user)
+                .user(userId)
                 .parent(parent)
                 .commentDetail(request.getCommentDetail())
                 .build();
@@ -78,9 +79,10 @@ public class ReviewCommentService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(()-> new UsernameNotFoundException("존재하지 않는 유저입니다."));
 
+        Long userId = user.getId();
         // 2. 이 유저가 작성한 해당 댓글 찾기 (아니면 권한 없음)
         ReviewComment comment = commentRepository
-                .findByReviewCommentIdAndUser(commentId, user)
+                .findByReviewCommentIdAndUser(commentId, userId)
                 .orElseThrow(() -> new AccessDeniedException("해당 댓글을 수정할 수 있는 권한이 없습니다."));
 
         // 내용 수정
@@ -98,9 +100,10 @@ public class ReviewCommentService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
 
+        Long userId = user.getId();
         // 이 유저가 쓴 해당 댓글 찾기
         ReviewComment comment = commentRepository
-                .findByReviewCommentIdAndUser(commentId, user)
+                .findByReviewCommentIdAndUser(commentId, userId)
                 .orElseThrow(() -> new AccessDeniedException("해당 댓글을 삭제할 수 있는 권한이 없습니다."));
 
         comment.softDelete();

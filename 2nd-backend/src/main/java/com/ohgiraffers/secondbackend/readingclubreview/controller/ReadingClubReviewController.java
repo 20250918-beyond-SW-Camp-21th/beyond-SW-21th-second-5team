@@ -3,7 +3,6 @@ package com.ohgiraffers.secondbackend.readingclubreview.controller;
 import com.ohgiraffers.secondbackend.readingclubreview.dto.request.ReadingClubReviewRequestDTO;
 import com.ohgiraffers.secondbackend.readingclubreview.dto.response.ReadingClubReviewResponseDTO;
 import com.ohgiraffers.secondbackend.readingclubreview.service.ReadingClubReviewService;
-//import com.oracle.svm.core.annotate.Delete;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -76,6 +75,17 @@ public class ReadingClubReviewController {
         } else { // latest 또는 다른 값 들어오면 기본 최신순
             result = reviewService.getReviewsOrderByLatest(clubId, page,username);
         }
+
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/my")
+    public ResponseEntity<Page<ReadingClubReviewResponseDTO>> getMyReviews(@RequestParam(defaultValue = "0") int page, Authentication authentication)
+    {
+        String username = authentication.getName();
+        Page<ReadingClubReviewResponseDTO> result;
+
+        result = reviewService.getMyReviews(username, page);
 
         return ResponseEntity.ok(result);
     }

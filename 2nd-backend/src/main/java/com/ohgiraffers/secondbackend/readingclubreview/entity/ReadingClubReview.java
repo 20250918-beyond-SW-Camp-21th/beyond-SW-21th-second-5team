@@ -28,9 +28,8 @@ public class ReadingClubReview {
     private ReadingClub clubId;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "writer_id", nullable = false)  // FK 컬럼 이름 그대로
-    private User writerId;
+    @Column(name = "writer_id", nullable = false)  // FK 컬럼 이름 그대로
+    private Long writerId;
 
 
     @Column(name = "review_title", nullable = false)
@@ -51,7 +50,7 @@ public class ReadingClubReview {
 
     @Builder
     public ReadingClubReview(ReadingClub clubId,
-                             User writerId,
+                             Long writerId,
                              String reviewTitle,
                              String reviewContent) {
         this.clubId = clubId;

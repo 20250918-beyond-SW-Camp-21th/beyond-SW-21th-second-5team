@@ -29,10 +29,8 @@ public class ReviewLike {
     @Column(name = "review_like_id")
     private Long reviewLikeId;
 
-    // 여러 좋아요(N) : 한 유저(1)
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)   // 컬럼 이름은 그대로
-    private User user;
+    @Column(name = "user_id")   // 컬럼 이름은 그대로
+    private Long userId;
 
     // 여러 좋아요(N) : 한 리뷰(1)
     @ManyToOne(fetch = FetchType.LAZY)
@@ -44,8 +42,8 @@ public class ReviewLike {
     private LocalDateTime likeDateTime;
 
     @Builder
-    public ReviewLike(User user, ReadingClubReview review) {
-        this.user = user;
+    public ReviewLike(Long user, ReadingClubReview review) {
+        this.userId = user;
         this.review = review;
     }
 }

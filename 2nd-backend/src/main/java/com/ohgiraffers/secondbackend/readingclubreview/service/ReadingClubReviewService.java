@@ -55,14 +55,14 @@ public class ReadingClubReviewService {
         }
 
         // 3) 이미 작성한 후기 있는지 체크
-        boolean alreadyWritten = reviewRepository.existsByClubIdAndWriterId(existClub, user);
+        boolean alreadyWritten = reviewRepository.existsByClubIdAndWriterId(existClub, userId);
         if (alreadyWritten) {
             throw new IllegalStateException("이 모임에 이미 후기를 작성하셨습니다.");
         }
 
         ReadingClubReview review = ReadingClubReview.builder()
                 .clubId(existClub)
-                .writerId(user)
+                .writerId(userId)
                 .reviewTitle(request.getReviewTitle())
                 .reviewContent(request.getReviewContent())
                 .build();
@@ -81,9 +81,10 @@ public class ReadingClubReviewService {
                 .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
 
 
+        Long userId = user.getId();
         // 2. 이 유저가 쓴 해당 리뷰 찾기
         ReadingClubReview review = reviewRepository
-                .findByReviewIdAndWriterId(reviewId, user)
+                .findByReviewIdAndWriterId(reviewId, userId)
                 .orElseThrow(() -> new AccessDeniedException("해당 리뷰를 수정할 수 있는 권한이 없습니다."));
 
         // 3. 제목/내용 수정
@@ -102,9 +103,10 @@ public class ReadingClubReviewService {
                 .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
 
 
+        Long userId = user.getId();
         // 2. 이 유저가 쓴 해당 리뷰 찾기
         ReadingClubReview review = reviewRepository
-                .findByReviewIdAndWriterId(reviewId, user)
+                .findByReviewIdAndWriterId(reviewId, userId)
                 .orElseThrow(() -> new AccessDeniedException("해당 리뷰를 삭제할 수 있는 권한이 없습니다."));
 
         reviewRepository.delete(review);
@@ -140,5 +142,20 @@ public class ReadingClubReviewService {
                 reviewRepository.findByClubId_IdOrderByLikeTotalDescCreatedAtDesc(clubId, pageable);
 
         return result.map(ReadingClubReviewResponseDTO::from);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ReadingClubReviewResponseDTO> getMyReviews(String username, int page) {
+        // 1. username으로 유저 조회
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
+
+        Pageable pageable = PageRequest.of(page, 15);
+
+        Page<ReadingClubReview> reviews =
+                reviewRepository.findByWriterId_OrderByCreatedAtDesc(user.getId(), pageable);
+
+        return reviews.map(ReadingClubReviewResponseDTO::from);
+
     }
 }
