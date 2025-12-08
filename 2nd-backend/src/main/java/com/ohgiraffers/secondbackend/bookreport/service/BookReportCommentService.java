@@ -47,4 +47,14 @@ public class BookReportCommentService {
         return saved.toResponseDTO();
     }
 
+    @Transactional
+    public BookReportCommentResponseDTO changeBookComment(Long commentId, BookReportCommentRequestDTO request) {
+        // 댓글 없을 경우
+        BookReportComment comment = bookReportCommentRepository.findById(commentId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 독후감 댓글이 없습니다."));
+
+        comment.updateContent(request.getContent());
+
+        return  comment.toResponseDTO();
+    }
 }
