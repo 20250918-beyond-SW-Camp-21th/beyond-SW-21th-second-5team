@@ -27,7 +27,7 @@ public class BookReportCommentController {
     }
 
     // 댓글 수정
-    @PutMapping
+    @PutMapping("/{commentId}")
     public ResponseEntity<BookReportCommentResponseDTO> updateComment(
             @RequestBody BookReportCommentRequestDTO request,
             @PathVariable Long commentId){
@@ -35,6 +35,13 @@ public class BookReportCommentController {
         BookReportCommentResponseDTO response = bookReportCommentService.changeBookComment(commentId, request);
         return ResponseEntity.status(HttpStatus.OK).body(response);
 
+    }
+
+    // 댓글 삭제
+    @DeleteMapping("/{commentId}")
+    public ResponseEntity<String> deleteComment(@PathVariable Long commentId){
+        bookReportCommentService.deleteBookComment(commentId);
+        return ResponseEntity.status(HttpStatus.OK).body("정상적으로 댓글이 삭제됩니다.");
     }
 
 

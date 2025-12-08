@@ -57,4 +57,13 @@ public class BookReportCommentService {
 
         return  comment.toResponseDTO();
     }
+
+    @Transactional
+    public void deleteBookComment(Long commentId) {
+        //삭제할 코멘트가 실제로 존재하는지 확인
+        BookReportComment comment = bookReportCommentRepository.findById(commentId)
+                .orElseThrow(() -> new IllegalArgumentException("삭제할 댓글이 존재하지 않습니다"));
+
+        bookReportCommentRepository.delete(comment);
+    }
 }
