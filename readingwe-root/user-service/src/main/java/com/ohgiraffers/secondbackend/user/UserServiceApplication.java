@@ -1,11 +1,12 @@
 package com.ohgiraffers.secondbackend.user;
 
+import com.ohgiraffers.secondbackend.userlike.client.BookFeignClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 
-@EnableFeignClients(basePackages = "com.ohgiraffers.secondbackend.user")
+@EnableFeignClients(basePackageClasses = BookFeignClient.class)
 @SpringBootApplication
 public class UserServiceApplication {
 	public static void main(String[] args) {

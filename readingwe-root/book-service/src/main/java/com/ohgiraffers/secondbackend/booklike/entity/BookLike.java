@@ -1,7 +1,6 @@
 package com.ohgiraffers.secondbackend.booklike.entity;
 
 import com.ohgiraffers.secondbackend.book.entity.Book;
-import com.ohgiraffers.secondbackend.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,9 +18,8 @@ public class BookLike {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long booklike_id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @Column(nullable = false)
+    private Long user_id;
 
     @ManyToOne
     @JoinColumn(name = "book_id", nullable = false)

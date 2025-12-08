@@ -24,7 +24,7 @@ spring:
       port: 6789
 
 server:
-  port: 1754
+  port: 0
 
 jwt:
   secret: aVeryLongAndSecureSecretKeyForHS256AlgorithmThatMustBeAtLeast32Bytes
