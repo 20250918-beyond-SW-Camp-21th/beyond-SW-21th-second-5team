@@ -64,14 +64,17 @@ public class ReadingClubReviewController {
     public ResponseEntity<Page<ReadingClubReviewResponseDTO>> getReviews(
             @PathVariable Long clubId,
             @RequestParam(defaultValue = "latest") String sort,
-            @RequestParam(defaultValue = "0") int page
+            @RequestParam(defaultValue = "0") int page,
+            Authentication authentication
     ) {
+        String username = authentication.getName();
+
         Page<ReadingClubReviewResponseDTO> result;
 
         if ("like".equals(sort)) {
-            result = reviewService.getReviewsOrderByLike(clubId, page);
+            result = reviewService.getReviewsOrderByLike(clubId, page,username);
         } else { // latest 또는 다른 값 들어오면 기본 최신순
-            result = reviewService.getReviewsOrderByLatest(clubId, page);
+            result = reviewService.getReviewsOrderByLatest(clubId, page,username);
         }
 
         return ResponseEntity.ok(result);

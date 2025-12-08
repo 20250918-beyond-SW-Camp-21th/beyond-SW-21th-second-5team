@@ -14,6 +14,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class ReviewCommentService {
@@ -101,5 +104,35 @@ public class ReviewCommentService {
                 .orElseThrow(() -> new AccessDeniedException("해당 댓글을 삭제할 수 있는 권한이 없습니다."));
 
         comment.softDelete();
+    }
+
+    @Transactional
+    public List<ReviewCommentResponseDTO> viewComment(Long reviewId, String username) {
+
+        List<ReviewComment> comments =
+                commentRepository.findByReview_ReviewIdOrderByCreatedAtDesc(reviewId);
+
+        // 일반 댓글만 필터링
+        List<ReviewComment> parents = comments.stream()
+                .filter(c -> c.getParent() == null)
+                .toList();
+
+        List<ReviewCommentResponseDTO> result = new ArrayList<>();
+
+        for (ReviewComment parent : parents) {
+            // 부모 댓글 추가
+            result.add(ReviewCommentResponseDTO.from(parent));
+
+            // 대댓글 필터링
+            List<ReviewComment> children = comments.stream()
+                    .filter(c -> parent.getReviewCommentId().equals(
+                            c.getParent() != null ? c.getParent().getReviewCommentId() : null))
+                    .toList();
+
+            // 대댓글 추가
+            children.forEach(child -> result.add(ReviewCommentResponseDTO.from(child)));
+        }
+
+        return result;
     }
 }

@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/review/comment")
@@ -47,5 +49,15 @@ public class ReviewCommentController {
         reviewCommentService.deleteComment(commentId, username);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/reviewId/{reviewId}")
+    public ResponseEntity<List<ReviewCommentResponseDTO>> viewComment(@PathVariable("reviewId") Long reviewId,
+                                                                Authentication authentication) {
+        String username = authentication.getName();
+
+        List<ReviewCommentResponseDTO> comments = reviewCommentService.viewComment(reviewId, username);
+
+        return ResponseEntity.ok(comments);
     }
 }

@@ -112,7 +112,12 @@ public class ReadingClubReviewService {
 
     // ✅ 특정 모임 리뷰 – 최신순, 15개씩
     @Transactional(readOnly = true)
-    public Page<ReadingClubReviewResponseDTO> getReviewsOrderByLatest(Long clubId, int page) {
+    public Page<ReadingClubReviewResponseDTO> getReviewsOrderByLatest(Long clubId, int page, String username) {
+
+        // 1. username으로 유저 조회
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
+
         Pageable pageable = PageRequest.of(page, 15);   // page: 0부터 시작, size: 15
 
         Page<ReadingClubReview> result =
@@ -123,7 +128,12 @@ public class ReadingClubReviewService {
 
     // ✅ 특정 모임 리뷰 – 좋아요 많은 순, 15개씩
     @Transactional(readOnly = true)
-    public Page<ReadingClubReviewResponseDTO> getReviewsOrderByLike(Long clubId, int page) {
+    public Page<ReadingClubReviewResponseDTO> getReviewsOrderByLike(Long clubId, int page, String username) {
+
+        // 1. username으로 유저 조회
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
+
         Pageable pageable = PageRequest.of(page, 15);
 
         Page<ReadingClubReview> result =

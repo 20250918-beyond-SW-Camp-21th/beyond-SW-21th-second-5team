@@ -38,11 +38,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
 
                         .requestMatchers("/auth/signup","/auth/login","/reading-club/**", "/book-report/**", "book-report-comment/**").permitAll()
-                        .requestMatchers("/booklike/**","/userlike/**").hasAuthority("USER")
-                        .requestMatchers("/user/**","/book/**").hasAnyAuthority("USER","ADMIN")
+                        .requestMatchers("/booklike/**","/userlike/**","/review/**").hasAuthority("USER")
+                        .requestMatchers("/user/**","/book/**").hasAnyAuthority("USER","ADMIN"))
 
 
-                        .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
