@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 public class ReviewCommentResponseDTO {
 
     private Long reviewCommentId;
-    private Long clubReviewId;
-    private Long writerId;        // 또는 userId
+    private String reviewTitle;
+    private String writerName;        // 또는 userId
     private Long parentCommentId;
     private String commentDetail;
     private LocalDateTime createdAt;
@@ -21,8 +21,8 @@ public class ReviewCommentResponseDTO {
     public static ReviewCommentResponseDTO from(ReviewComment comment) {
         return ReviewCommentResponseDTO.builder()
                 .reviewCommentId(comment.getReviewCommentId())
-                .clubReviewId(comment.getReview().getReviewId())
-                .writerId(comment.getUser().getId())
+                .reviewTitle(comment.getReview().getReviewTitle())
+                .writerName(comment.getUser().getUsername())
                 .parentCommentId(
                         comment.getParent() != null
                                 ? comment.getParent().getReviewCommentId()
