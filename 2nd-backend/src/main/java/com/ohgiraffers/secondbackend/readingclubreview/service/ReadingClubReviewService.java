@@ -141,4 +141,19 @@ public class ReadingClubReviewService {
 
         return result.map(ReadingClubReviewResponseDTO::from);
     }
+
+    @Transactional(readOnly = true)
+    public Page<ReadingClubReviewResponseDTO> getMyReviews(String username, int page) {
+        // 1. username으로 유저 조회
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
+
+        Pageable pageable = PageRequest.of(page, 15);
+
+        Page<ReadingClubReview> reviews =
+                reviewRepository.findByWriterId_IdOrderByCreatedAtDesc(user.getId(), pageable);
+
+        return reviews.map(ReadingClubReviewResponseDTO::from);
+
+    }
 }

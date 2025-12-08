@@ -23,5 +23,6 @@ public interface ReadingClubReviewRepository extends JpaRepository<ReadingClubRe
     // ✅ 어떤 모임(clubId) 안의 리뷰를 좋아요 많은 순 + 최신순 보조정렬로
     Page<ReadingClubReview> findByClubId_IdOrderByLikeTotalDescCreatedAtDesc(Long clubId, Pageable pageable);
 
+    Page<ReadingClubReview> findByWriterId_IdOrderByCreatedAtDesc(Long writerId, Pageable pageable);
 
 }
