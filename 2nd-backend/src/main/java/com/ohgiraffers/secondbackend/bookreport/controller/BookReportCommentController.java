@@ -7,10 +7,7 @@ import com.ohgiraffers.secondbackend.bookreport.service.BookReportCommentService
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/book-report-comment")
@@ -28,5 +25,17 @@ public class BookReportCommentController {
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+
+    // 댓글 수정
+    @PutMapping
+    public ResponseEntity<BookReportCommentResponseDTO> updateComment(
+            @RequestBody BookReportCommentRequestDTO request,
+            @PathVariable Long commentId){
+
+        BookReportCommentResponseDTO response = bookReportCommentService.changeBookComment(commentId, request);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+
+    }
+
 
 }
