@@ -5,7 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient("/internal/mail")
+@FeignClient("mail-service")
 public interface EmailFeignClient {
 
     @PostMapping("internal/mail/signup/verification")
