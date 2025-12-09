@@ -7,6 +7,8 @@ import java.util.List;
 @FeignClient(name = "user-service")
 public interface UserFeignClient {
 
-    @GetMapping("/")
+    @GetMapping("/user/userId/{userId}")
+
+
 
 }
