@@ -1,15 +1,14 @@
 package com.ohgiraffers.secondbackend.readingclubreview.service;
 
+import com.ohgiraffers.secondbackend.readingclubreview.client.UserFeignClient;
+import com.ohgiraffers.secondbackend.readingclubreview.client.UserProfileResponse;
 import com.ohgiraffers.secondbackend.readingclubreview.dto.response.ReviewLikeToggleResponseDTO;
 import com.ohgiraffers.secondbackend.readingclubreview.entity.ReadingClubReview;
 import com.ohgiraffers.secondbackend.readingclubreview.entity.ReviewLike;
 import com.ohgiraffers.secondbackend.readingclubreview.repository.ReadingClubReviewRepository;
 import com.ohgiraffers.secondbackend.readingclubreview.repository.ReviewLikeRepository;
-import com.ohgiraffers.secondbackend.user.entity.User;
-import com.ohgiraffers.secondbackend.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,17 +18,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReviewLikeService {
 
-    private final UserRepository userRepository;
     private final ReadingClubReviewRepository reviewRepository;
     private final ReviewLikeRepository reviewLikeRepository;
+    private final UserFeignClient userFeignClient;
 
     @Transactional
-    public ReviewLikeToggleResponseDTO toggleLike(Long reviewId, String username) {
+    public ReviewLikeToggleResponseDTO toggleLike(Long reviewId, Long userId) {
 
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
-
-        Long userId = user.getId();
         ReadingClubReview review = reviewRepository.findById(reviewId)
                 .orElseThrow(()->new IllegalArgumentException("존재하지 않는 리뷰입니다."));
 
@@ -56,18 +51,15 @@ public class ReviewLikeService {
     }
 
     @Transactional(readOnly = true)
-    public List<String> getLikedUsernames(Long reviewId, String loginUsername) {
+    public List<String> getLikedUsernames(Long reviewId, Long loginUserId) {
 
-        // 1) 로그인 유저 조회
-        User loginUser = userRepository.findByUsername(loginUsername)
-                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
 
         // 2) 리뷰 조회
         ReadingClubReview review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 리뷰입니다."));
 
         // 3) 이 리뷰가 내가 쓴 글인지 검증
-        if (!review.getWriterId().equals(loginUser.getId())) {
+        if (!review.getWriterId().equals(loginUserId)) {
             throw new AccessDeniedException("자신이 작성한 후기글의 좋아요만 조회할 수 있습니다.");
         }
 
@@ -85,8 +77,11 @@ public class ReviewLikeService {
         }
 
         // 6) userId로 User 조회 → username 리스트 뽑기
-        return userRepository.findAllById(userIds).stream()
-                .map(User::getUsername)
+
+        // 🔥 여기만 Feign으로 변경
+        return userIds.stream()
+                .map(userFeignClient::getUserProfileByUserId) // user-service 호출
+                .map(UserProfileResponse::getNickName)                     // nickname만 추출
                 .toList();
     }
 
