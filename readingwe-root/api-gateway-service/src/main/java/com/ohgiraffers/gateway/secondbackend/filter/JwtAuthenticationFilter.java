@@ -8,18 +8,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 
-@Component(value = "JwtAuthFilter")
-@RequiredArgsConstructor
+@Component
 public class JwtAuthenticationFilter extends AbstractGatewayFilterFactory<JwtAuthenticationFilter.Config> {
 
     private final JwtUtil jwtUtil;
+
+    // ✅ 생성자에서 Config.class 넘겨주기
+    public JwtAuthenticationFilter(JwtUtil jwtUtil) {
+        super(Config.class);
+        this.jwtUtil = jwtUtil;
+    }
 
     @Override
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
 
-            // 로그인/회원가입 같은 공개 API는 통과
             String path = request.getPath().value();
             if (path.startsWith("/auth/signup") || path.startsWith("/auth/login")) {
                 return chain.filter(exchange);
@@ -40,12 +44,11 @@ public class JwtAuthenticationFilter extends AbstractGatewayFilterFactory<JwtAut
 
             String username = jwtUtil.getUsername(token);
             String role = jwtUtil.getRole(token);
-            String Id=jwtUtil.getId(token);
+            String Id = jwtUtil.getId(token);
 
-            // 하위 서비스로 전달할 새로운 헤더 생성
             ServerHttpRequest mutatedRequest = request.mutate()
                     .header("X-User-Name", username)
-                    .header("X-User-ID",Id)
+                    .header("X-User-ID", Id)
                     .header("X-User-Role", role)
                     .build();
 
@@ -53,5 +56,6 @@ public class JwtAuthenticationFilter extends AbstractGatewayFilterFactory<JwtAut
         };
     }
 
-    public static class Config {}
+    // ✅ 설정용 클래스 (필요하면 필드 추가)
+    public static class Config { }
 }
