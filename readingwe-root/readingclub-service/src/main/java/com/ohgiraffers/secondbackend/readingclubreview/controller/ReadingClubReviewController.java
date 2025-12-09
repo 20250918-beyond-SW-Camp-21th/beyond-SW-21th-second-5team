@@ -3,6 +3,7 @@ package com.ohgiraffers.secondbackend.readingclubreview.controller;
 import com.ohgiraffers.secondbackend.readingclubreview.dto.request.ReadingClubReviewRequestDTO;
 import com.ohgiraffers.secondbackend.readingclubreview.dto.response.ReadingClubReviewResponseDTO;
 import com.ohgiraffers.secondbackend.readingclubreview.service.ReadingClubReviewService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -19,10 +20,10 @@ public class ReadingClubReviewController {
 
     @PostMapping("/clubId/{clubId}")
     public ResponseEntity<ReadingClubReviewResponseDTO> createReview(@PathVariable Long clubId, @RequestBody ReadingClubReviewRequestDTO request,
-                                                                     Authentication authentication){
+                                                                     HttpServletRequest req){
 
         // 로그인한 사용자의 username 가져오기
-        String username = authentication.getName();
+        String username = req.getHeader("X-User-Name");
 
         ReadingClubReviewResponseDTO response = reviewService.createReview(clubId, request, username);
 
@@ -32,9 +33,9 @@ public class ReadingClubReviewController {
     @PutMapping("/reviewId/{reviewId}")
     public ResponseEntity<ReadingClubReviewResponseDTO> modifyReview(@PathVariable Long reviewId,
                                                                      @RequestBody ReadingClubReviewRequestDTO request,
-                                                                     Authentication authentication){
+                                                                     HttpServletRequest req){
 
-        String username = authentication.getName();
+        String username = req.getHeader("X-User-Name");
 
         ReadingClubReviewResponseDTO response = reviewService.modifyReview(reviewId, request, username);
 
@@ -43,9 +44,9 @@ public class ReadingClubReviewController {
 
     @DeleteMapping("/reviewId/{reviewId}")
     public ResponseEntity<Void> deleteReview(@PathVariable Long reviewId,
-                                             Authentication authentication)
+                                             HttpServletRequest req)
     {
-        String username = authentication.getName();
+        String username = req.getHeader("X-User-Name");
 
         reviewService.deleteReview(reviewId, username);
 
@@ -64,9 +65,9 @@ public class ReadingClubReviewController {
             @PathVariable Long clubId,
             @RequestParam(defaultValue = "latest") String sort,
             @RequestParam(defaultValue = "0") int page,
-            Authentication authentication
+            HttpServletRequest req
     ) {
-        String username = authentication.getName();
+        String username = req.getHeader("X-User-Name");
 
         Page<ReadingClubReviewResponseDTO> result;
 
@@ -80,9 +81,9 @@ public class ReadingClubReviewController {
     }
 
     @GetMapping("/my")
-    public ResponseEntity<Page<ReadingClubReviewResponseDTO>> getMyReviews(@RequestParam(defaultValue = "0") int page, Authentication authentication)
+    public ResponseEntity<Page<ReadingClubReviewResponseDTO>> getMyReviews(@RequestParam(defaultValue = "0") int page,HttpServletRequest req)
     {
-        String username = authentication.getName();
+        String username = req.getHeader("X-User-Name");
         Page<ReadingClubReviewResponseDTO> result;
 
         result = reviewService.getMyReviews(username, page);
