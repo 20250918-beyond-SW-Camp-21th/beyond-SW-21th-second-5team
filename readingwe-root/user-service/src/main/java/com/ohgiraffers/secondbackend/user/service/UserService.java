@@ -70,8 +70,8 @@ public class UserService  implements UserDetailsService{
         emailFeignClient.sendSignupVerificationMail(
                 new SignupVerificationMailRequest(
                         user.getUsername(),
-                        user.getNickname(),
-                        
+                        user.getNickname()
+
                 )
         );
 
@@ -142,6 +142,7 @@ public class UserService  implements UserDetailsService{
 
         return userResponseDTO(user);
     }
+
 
 
 }
