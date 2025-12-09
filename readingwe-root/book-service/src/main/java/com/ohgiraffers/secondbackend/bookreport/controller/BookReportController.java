@@ -20,9 +20,10 @@ public class BookReportController {
     //독후감 등록
     @PostMapping()
     public ResponseEntity<BookReportResponseDTO> createBookReport(
-            @RequestBody BookReportRequestDTO request){
+            @RequestBody BookReportRequestDTO request,
+            @RequestHeader("X-User-Name") String userName) {
 
-        BookReportResponseDTO response = bookReportService.saveBookReport(request);
+        BookReportResponseDTO response = bookReportService.saveBookReport(request, userName);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
