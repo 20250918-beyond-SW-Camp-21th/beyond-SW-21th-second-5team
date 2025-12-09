@@ -18,7 +18,7 @@ public class MailController {
 
     @PostMapping("/signup-verification")
     public void sendSignupVerification(@RequestBody SignupVerificationMailRequest dto) {
-        mailService.sendSignupVerificationMail(dto.email(), dto.username(), dto.verificationCode());
+        mailService.sendSignupVerificationMail(dto.username(), dto.nickname(), null);
     }
 
     @PostMapping("/find-id")

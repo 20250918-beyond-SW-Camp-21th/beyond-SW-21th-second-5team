@@ -1,5 +1,7 @@
 package com.ohgiraffers.secondbackend.user.service;
 
+import com.ohgiraffers.secondbackend.user.client.EmailFeignClient;
+import com.ohgiraffers.secondbackend.user.client.dto.SignupVerificationMailRequest;
 import com.ohgiraffers.secondbackend.user.dto.request.PasswordUpdateDTO;
 import com.ohgiraffers.secondbackend.user.dto.request.ProfileUpdateDTO;
 import com.ohgiraffers.secondbackend.user.dto.response.UserResponseDTO;
@@ -24,6 +26,7 @@ public class UserService  implements UserDetailsService{
     private final JWTUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
     private final RedisTemplate<String, Object> redisTemplate;
+    private final EmailFeignClient emailFeignClient;
 
     private UserResponseDTO userResponseDTO(User user){
         return UserResponseDTO.builder()
@@ -35,11 +38,12 @@ public class UserService  implements UserDetailsService{
     public UserService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder,
                        JWTUtil jwtUtil,
-                       RedisTemplate<String, Object> redisTemplate) {
+                       RedisTemplate<String, Object> redisTemplate, EmailFeignClient emailFeignClient) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
         this.redisTemplate = redisTemplate;
+        this.emailFeignClient = emailFeignClient;
     }
 
     @Override
@@ -62,6 +66,14 @@ public class UserService  implements UserDetailsService{
                 .nickname(nickname)
                 .role(UserRole.USER)
                 .build();
+
+        emailFeignClient.sendSignupVerificationMail(
+                new SignupVerificationMailRequest(
+                        user.getUsername(),
+                        user.getNickname(),
+                        
+                )
+        );
 
         return userRepository.save(user);
     }
