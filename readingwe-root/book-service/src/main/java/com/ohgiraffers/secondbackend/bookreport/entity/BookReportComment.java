@@ -74,6 +74,7 @@ public class BookReportComment {
                 .parentId(this.parent != null ? this.parent.getReportCommentId() : null)
                 .createdAt(this.createdAt)
                 .updatedAt(this.updatedAt)
+//                .nickname(nickname)
                 .build();
     }
 }

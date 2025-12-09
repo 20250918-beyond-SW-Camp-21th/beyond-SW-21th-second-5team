@@ -65,5 +65,4 @@ public class BookReportController {
         return ResponseEntity.status(HttpStatus.OK).body("정상적으로 삭제되었습니다.");
     }
 
-
 }

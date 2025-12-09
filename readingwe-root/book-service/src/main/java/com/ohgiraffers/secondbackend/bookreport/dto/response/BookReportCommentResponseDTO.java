@@ -17,4 +17,7 @@ public class BookReportCommentResponseDTO {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Long parentId;  //부모 댓글 id, 없으면 null
+
+    private String username;
+    private String nickname;
 }
