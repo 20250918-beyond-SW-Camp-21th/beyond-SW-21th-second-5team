@@ -24,6 +24,12 @@ public class JwtUtil {
                 .get("username", String.class);
     }
 
+    public String getId(String token) {
+        return Jwts.parserBuilder().setSigningKey(key).build()
+                .parseClaimsJws(token).getBody()
+                .get("id", String.class);
+    }
+
     public String getRole(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build()
                 .parseClaimsJws(token).getBody()
