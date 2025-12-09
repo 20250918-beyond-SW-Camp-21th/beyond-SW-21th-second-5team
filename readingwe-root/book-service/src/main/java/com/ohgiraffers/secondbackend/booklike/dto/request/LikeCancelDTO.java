@@ -8,5 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LikeCancelDTO {
+    private long userId;
     private long bookId;
 }

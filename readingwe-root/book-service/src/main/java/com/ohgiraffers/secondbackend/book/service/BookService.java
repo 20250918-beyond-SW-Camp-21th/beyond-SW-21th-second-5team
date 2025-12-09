@@ -7,7 +7,6 @@ import com.ohgiraffers.secondbackend.book.dto.response.BookResponseDTO;
 import com.ohgiraffers.secondbackend.book.entity.Book;
 import com.ohgiraffers.secondbackend.book.entity.BookCategory;
 import com.ohgiraffers.secondbackend.book.repository.BookRepository;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -63,16 +62,16 @@ public class BookService {
 
 
 
-    public List<BookResponseDTO> getSortedBooks(String sortBy, String direction) {
-
-        Sort sort = direction.equalsIgnoreCase("desc")
-                ? Sort.by(sortBy).descending()
-                : Sort.by(sortBy).ascending();
-
-        return bookRepository.findAll(sort).stream()
-                .map(this::convert)
-                .toList();
-    }
+//    public List<BookResponseDTO> getSortedBooks(String sortBy, String direction) {
+//
+//        Sort sort = direction.equalsIgnoreCase("desc")
+//                ? Sort.by(sortBy).descending()
+//                : Sort.by(sortBy).ascending();
+//
+//        return bookRepository.findAll(sort).stream()
+//                .map(this::convert)
+//                .toList();
+//    }
 
 
 

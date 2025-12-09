@@ -50,6 +50,8 @@ public class BookController {
         return bookService.findByAuthor(new AuthorRequestDTO(author));
     }
 
+
+    //Feign을 위한 api
     @GetMapping("/categories")
     public List<String>getAllCategories(){
         return Arrays.stream(BookCategory.values())

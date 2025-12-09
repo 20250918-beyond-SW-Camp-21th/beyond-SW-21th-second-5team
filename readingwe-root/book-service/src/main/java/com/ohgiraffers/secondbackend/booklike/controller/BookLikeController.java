@@ -1,5 +1,7 @@
 package com.ohgiraffers.secondbackend.booklike.controller;
 
+import com.ohgiraffers.secondbackend.booklike.dto.request.LikeApplyDTO;
+import com.ohgiraffers.secondbackend.booklike.dto.request.LikeCancelDTO;
 import com.ohgiraffers.secondbackend.booklike.dto.response.BookLikeResponseDTO;
 import com.ohgiraffers.secondbackend.booklike.dto.response.BookRankingResponseDTO;
 import com.ohgiraffers.secondbackend.booklike.service.BooklikeService;
@@ -18,27 +20,28 @@ public class BookLikeController {
 
     @PostMapping("/like/{bookId}")
     public ResponseEntity<BookLikeResponseDTO> likeBook(
-            @RequestHeader("X-User-Name") String struserid,
+            @RequestHeader("X-User-ID") String struserid,
             @PathVariable Long bookId
     ) {
 
-        BookLikeResponseDTO response = bookLikeService.likeBook(, bookId);
+        long userid=Long.parseLong(struserid);
+
+        LikeApplyDTO likeApplyDTO = new LikeApplyDTO(userid,bookId);
+        BookLikeResponseDTO response = bookLikeService.likeBook(likeApplyDTO);
 
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/unlike/{bookId}")
     public ResponseEntity<Void> unlikeBook(
-            @RequestHeader("Authorization") String authorizationHeader,
+            @RequestHeader("X-User-ID") String struserid,
             @PathVariable Long bookId
     ) {
-        if (!authorizationHeader.startsWith("Bearer ")) {
-            return ResponseEntity.badRequest().build();
-        }
+        long userId= Long.parseLong(struserid);
 
-        String accessToken = authorizationHeader.substring(7);
+        LikeCancelDTO likeCancelDTO = new LikeCancelDTO(userId,bookId);
 
-        bookLikeService.deleteLike(accessToken, bookId);
+        bookLikeService.deleteLike(likeCancelDTO);
 
         return ResponseEntity.ok().build();
     }

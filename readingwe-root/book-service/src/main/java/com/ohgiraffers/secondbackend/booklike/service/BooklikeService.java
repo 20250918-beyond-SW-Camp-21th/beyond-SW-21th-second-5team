@@ -3,6 +3,8 @@ package com.ohgiraffers.secondbackend.booklike.service;
 
 import com.ohgiraffers.secondbackend.book.entity.Book;
 import com.ohgiraffers.secondbackend.book.repository.BookRepository;
+import com.ohgiraffers.secondbackend.booklike.dto.request.LikeApplyDTO;
+import com.ohgiraffers.secondbackend.booklike.dto.request.LikeCancelDTO;
 import com.ohgiraffers.secondbackend.booklike.dto.response.BookLikeResponseDTO;
 import com.ohgiraffers.secondbackend.booklike.dto.response.BookRankingResponseDTO;
 import com.ohgiraffers.secondbackend.booklike.entity.BookLike;
@@ -27,17 +29,17 @@ public class BooklikeService {
 
 
     @Transactional
-    public BookLikeResponseDTO likeBook(long userId, long bookId) {
+    public BookLikeResponseDTO likeBook(LikeApplyDTO likeApplyDTO) {
 
-        Book book = bookRepository.findById(bookId)
+        Book book = bookRepository.findById(likeApplyDTO.getBookId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 책입니다."));
 
-        if (bookLikeRepository.existsByUserAndBook(userId, book)) {
+        if (bookLikeRepository.existsByUserAndBook(likeApplyDTO.getUserId(), book)) {
             throw new IllegalArgumentException("이미 좋아요를 누른 책입니다.");
         }
 
         BookLike bookLike = BookLike.builder()
-                .user_id(userId)
+                .user_id(likeApplyDTO.getUserId())
                 .book(book)
                 .build();
 
@@ -45,19 +47,19 @@ public class BooklikeService {
 
         return BookLikeResponseDTO.builder()
                 .bookLikeId(savedBookLike.getBooklike_id())
-                .userId(userId)
-                .bookId(bookId)
+                .userId(likeApplyDTO.getUserId())
+                .bookId(likeApplyDTO.getBookId())
                 .build();
     }
 
     @Transactional
-    public void deleteLike(long userId, long bookId) {
+    public void deleteLike(LikeCancelDTO likeCancelDTO) {
 
-        Book book = bookRepository.findById(bookId)
+        Book book = bookRepository.findById(likeCancelDTO.getBookId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 책입니다."));
 
         BookLike bookLike = bookLikeRepository
-                .findByUser_IdAndBook_BookId(userId, bookId)
+                .findByUser_IdAndBook_BookId(likeCancelDTO.getUserId(),likeCancelDTO.getBookId())
                 .orElseThrow(() -> new IllegalArgumentException("좋아요한 기록이 없습니다."));
 
         bookLikeRepository.delete(bookLike);

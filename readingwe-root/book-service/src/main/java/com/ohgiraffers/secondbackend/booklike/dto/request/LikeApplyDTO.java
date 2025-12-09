@@ -8,5 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LikeApplyDTO {
+    private long userId;
     private long bookId;
 }
