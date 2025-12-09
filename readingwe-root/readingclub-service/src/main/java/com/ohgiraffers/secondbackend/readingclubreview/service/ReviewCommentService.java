@@ -6,11 +6,8 @@ import com.ohgiraffers.secondbackend.readingclubreview.entity.ReadingClubReview;
 import com.ohgiraffers.secondbackend.readingclubreview.entity.ReviewComment;
 import com.ohgiraffers.secondbackend.readingclubreview.repository.ReadingClubReviewRepository;
 import com.ohgiraffers.secondbackend.readingclubreview.repository.ReviewCommentRepository;
-import com.ohgiraffers.secondbackend.user.entity.User;
-import com.ohgiraffers.secondbackend.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,25 +18,18 @@ import java.util.List;
 @Service
 public class ReviewCommentService {
 
-    private final UserRepository userRepository;
     private final ReadingClubReviewRepository reviewRepository;
     private final ReviewCommentRepository commentRepository;
 
     @Transactional
     public ReviewCommentResponseDTO createReviewComment(Long reviewId,
                                                         ReviewCommentRequestDTO request,
-                                                        String username) {
-
-        // 1. 유저 찾기
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저"));
-
-        Long userId = user.getId();
-        // 2. 리뷰 찾기
+                                                        Long userId) {
+        // 1. 리뷰 찾기
         ReadingClubReview review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 리뷰입니다."));
 
-        // 3. 부모 댓글 검증 (있다면)
+        // 2. 부모 댓글 검증 (있다면)
         Long parentCommentId = request.getParentCommentId();
         ReviewComment parent = null;
 
@@ -74,13 +64,9 @@ public class ReviewCommentService {
     @Transactional
     public ReviewCommentResponseDTO modifyComment(Long commentId,
                                                   ReviewCommentRequestDTO request,
-                                                  String username) {
-        // 1. username으로 유저 조회
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(()-> new UsernameNotFoundException("존재하지 않는 유저입니다."));
+                                                  Long userId) {
 
-        Long userId = user.getId();
-        // 2. 이 유저가 작성한 해당 댓글 찾기 (아니면 권한 없음)
+        // 이 유저가 작성한 해당 댓글 찾기 (아니면 권한 없음)
         ReviewComment comment = commentRepository
                 .findByReviewCommentIdAndUser(commentId, userId)
                 .orElseThrow(() -> new AccessDeniedException("해당 댓글을 수정할 수 있는 권한이 없습니다."));
@@ -94,13 +80,8 @@ public class ReviewCommentService {
     }
 
     @Transactional
-    public void deleteComment(Long commentId, String username) {
+    public void deleteComment(Long commentId, Long userId) {
 
-        // 유저 조회
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(username));
-
-        Long userId = user.getId();
         // 이 유저가 쓴 해당 댓글 찾기
         ReviewComment comment = commentRepository
                 .findByReviewCommentIdAndUser(commentId, userId)
@@ -110,7 +91,7 @@ public class ReviewCommentService {
     }
 
     @Transactional
-    public List<ReviewCommentResponseDTO> viewComment(Long reviewId, String username) {
+    public List<ReviewCommentResponseDTO> viewComment(Long reviewId, Long userId) {
 
         List<ReviewComment> comments =
                 commentRepository.findByReview_ReviewIdOrderByCreatedAtDesc(reviewId);

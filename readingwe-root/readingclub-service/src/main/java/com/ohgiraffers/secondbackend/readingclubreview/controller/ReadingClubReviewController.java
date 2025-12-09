@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,9 +22,10 @@ public class ReadingClubReviewController {
                                                                      HttpServletRequest req){
 
         // 로그인한 사용자의 username 가져오기
-        String username = req.getHeader("X-User-Name");
+        String id = req.getHeader("X-User-ID");
+        Long userId = Long.valueOf(id);
 
-        ReadingClubReviewResponseDTO response = reviewService.createReview(clubId, request, username);
+        ReadingClubReviewResponseDTO response = reviewService.createReview(clubId, request, userId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -35,9 +35,10 @@ public class ReadingClubReviewController {
                                                                      @RequestBody ReadingClubReviewRequestDTO request,
                                                                      HttpServletRequest req){
 
-        String username = req.getHeader("X-User-Name");
+        String id = req.getHeader("X-User-ID");
+        Long userId = Long.valueOf(id);
 
-        ReadingClubReviewResponseDTO response = reviewService.modifyReview(reviewId, request, username);
+        ReadingClubReviewResponseDTO response = reviewService.modifyReview(reviewId, request, userId);
 
         return ResponseEntity.ok(response);
     }
@@ -46,9 +47,10 @@ public class ReadingClubReviewController {
     public ResponseEntity<Void> deleteReview(@PathVariable Long reviewId,
                                              HttpServletRequest req)
     {
-        String username = req.getHeader("X-User-Name");
+        String id = req.getHeader("X-User-ID");
+        Long userId = Long.valueOf(id);
 
-        reviewService.deleteReview(reviewId, username);
+        reviewService.deleteReview(reviewId, userId);
 
         return ResponseEntity.noContent().build();
 
@@ -67,14 +69,15 @@ public class ReadingClubReviewController {
             @RequestParam(defaultValue = "0") int page,
             HttpServletRequest req
     ) {
-        String username = req.getHeader("X-User-Name");
+        String id = req.getHeader("X-User-ID");
+        Long userId = Long.valueOf(id);
 
         Page<ReadingClubReviewResponseDTO> result;
 
         if ("like".equals(sort)) {
-            result = reviewService.getReviewsOrderByLike(clubId, page,username);
+            result = reviewService.getReviewsOrderByLike(clubId, page,userId);
         } else { // latest 또는 다른 값 들어오면 기본 최신순
-            result = reviewService.getReviewsOrderByLatest(clubId, page,username);
+            result = reviewService.getReviewsOrderByLatest(clubId, page,userId);
         }
 
         return ResponseEntity.ok(result);
@@ -83,10 +86,12 @@ public class ReadingClubReviewController {
     @GetMapping("/my")
     public ResponseEntity<Page<ReadingClubReviewResponseDTO>> getMyReviews(@RequestParam(defaultValue = "0") int page,HttpServletRequest req)
     {
-        String username = req.getHeader("X-User-Name");
+        String id = req.getHeader("X-User-ID");
+        Long userId = Long.valueOf(id);
+
         Page<ReadingClubReviewResponseDTO> result;
 
-        result = reviewService.getMyReviews(username, page);
+        result = reviewService.getMyReviews(userId, page);
 
         return ResponseEntity.ok(result);
     }

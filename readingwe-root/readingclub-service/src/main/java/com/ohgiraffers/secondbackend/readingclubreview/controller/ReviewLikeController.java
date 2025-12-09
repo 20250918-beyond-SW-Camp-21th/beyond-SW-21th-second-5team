@@ -2,6 +2,7 @@ package com.ohgiraffers.secondbackend.readingclubreview.controller;
 
 import com.ohgiraffers.secondbackend.readingclubreview.dto.response.ReviewLikeToggleResponseDTO;
 import com.ohgiraffers.secondbackend.readingclubreview.service.ReviewLikeService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -18,11 +19,12 @@ public class ReviewLikeController {
 
     @PostMapping("/reviewId/{reviewId}")
     public ResponseEntity<ReviewLikeToggleResponseDTO> toggleLike(@PathVariable Long reviewId,
-                                                                  Authentication authentication) {
-        String username = authentication.getName();
+                                                                  HttpServletRequest req) {
+        String id = req.getHeader("X-User-ID");
+        Long userId = Long.valueOf(id);
 
         ReviewLikeToggleResponseDTO response =
-                reviewLikeService.toggleLike(reviewId, username);
+                reviewLikeService.toggleLike(reviewId, userId);
         return ResponseEntity.ok(response);
 
     }
@@ -31,12 +33,13 @@ public class ReviewLikeController {
     @GetMapping("/{reviewId}/likes")
     public ResponseEntity<List<String>> getLikedUsers(
             @PathVariable Long reviewId,
-            Authentication authentication) {
+            HttpServletRequest req) {
 
-        String username = authentication.getName();
+        String id = req.getHeader("X-User-ID");
+        Long userId = Long.valueOf(id);
 
         List<String> likedUsernames =
-                reviewLikeService.getLikedUsernames(reviewId, username);
+                reviewLikeService.getLikedUsernames(reviewId, userId);
 
         return ResponseEntity.ok(likedUsernames);
     }
