@@ -1,5 +1,7 @@
 package com.ohgiraffers.secondbackend.bookreport.service;
 
+import com.ohgiraffers.secondbackend.book.entity.Book;
+import com.ohgiraffers.secondbackend.book.repository.BookRepository;
 import com.ohgiraffers.secondbackend.bookreport.dto.request.BookReportRequestDTO;
 import com.ohgiraffers.secondbackend.bookreport.dto.response.BookReportResponseDTO;
 import com.ohgiraffers.secondbackend.bookreport.entity.BookReport;
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 public class BookReportService {
 
     private final BookReportRepository bookReportRepository;
+    private final BookRepository bookRepository;
 //    private final UserApiClient userApiClient;    //프로젝트 분리하면
 //    private final BookApiClient bookApiClient;
 
@@ -34,8 +37,11 @@ public class BookReportService {
             throw new IllegalArgumentException("유효하지 않은 도서입니다.");
         }
         */
+        Book book = bookRepository.findById(request.getBookId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 책 존재 하지 않음"));
+
         BookReport bookReport = BookReport.builder()
-                .bookId(request.getBookId())
+                .book(book)
                 .userId(request.getUserId())
                 .title(request.getTitle())
                 .description(request.getDescription())
