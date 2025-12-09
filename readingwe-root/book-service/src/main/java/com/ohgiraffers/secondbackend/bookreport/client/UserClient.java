@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(name = "user-service")
 public interface UserClient {
 
-    @GetMapping("/받아올 url")
-    UserResponseDTO getUserById(@RequestParam("userId") Long userId);
+    @GetMapping("/userId/{userId}")
+    UserProfileResponseDto getUserById(@RequestParam("userId") Long userId);
 
 
 }

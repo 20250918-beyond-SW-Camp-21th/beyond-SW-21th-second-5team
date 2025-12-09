@@ -11,17 +11,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class BookReportResponseDTO {
-    private Long bookReportId;
-    private String title;
+    private String bookTittle;    //책 제목
+    private String title;   //독후감 제목
     private String description;
     private int likeCount;
     private LocalDateTime createdAt;
+    private String username;
+    private String nickname;
 
-    public BookReportResponseDTO(BookReport bookReport){
-        this.bookReportId = bookReport.getBookReportId();
-        this.title = bookReport.getTitle();
-        this.description = bookReport.getDescription();
-        this.likeCount = bookReport.getLikeCount();
-        this.createdAt = bookReport.getCreatedAt();
-    }
 }

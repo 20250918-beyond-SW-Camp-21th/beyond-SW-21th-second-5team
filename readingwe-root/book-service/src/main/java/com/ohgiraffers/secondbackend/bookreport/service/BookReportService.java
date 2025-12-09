@@ -2,6 +2,8 @@ package com.ohgiraffers.secondbackend.bookreport.service;
 
 import com.ohgiraffers.secondbackend.book.entity.Book;
 import com.ohgiraffers.secondbackend.book.repository.BookRepository;
+import com.ohgiraffers.secondbackend.bookreport.client.UserClient;
+import com.ohgiraffers.secondbackend.bookreport.client.UserProfileResponseDto;
 import com.ohgiraffers.secondbackend.bookreport.dto.request.BookReportRequestDTO;
 import com.ohgiraffers.secondbackend.bookreport.dto.response.BookReportResponseDTO;
 import com.ohgiraffers.secondbackend.bookreport.entity.BookReport;
@@ -19,9 +21,7 @@ public class BookReportService {
 
     private final BookReportRepository bookReportRepository;
     private final BookRepository bookRepository;
-//    private final UserApiClient userApiClient;    //프로젝트 분리하면
-//    private final BookApiClient bookApiClient;
-
+    private final UserClient userClient;
 
     // 독후감 등록 메서드
     @Transactional
@@ -44,8 +44,10 @@ public class BookReportService {
         //db 저장
         BookReport saved = bookReportRepository.save(bookReport);
 
+        UserProfileResponseDto userProfile = userClient.getUserById(saved.getUserId());
+
         //responseDTO로 변환해서 반환
-        return new BookReportResponseDTO(saved);
+        return saved.toResponseDTO(userProfile);
     }
 
     //독후감 조회(책, 사용자로 단건조회)
@@ -53,17 +55,25 @@ public class BookReportService {
         BookReport bookReport = bookReportRepository.findById(reportId)
                 .orElseThrow(() -> new IllegalArgumentException("독후감이 존재하지 않음"));
 
-        return bookReport.toResponseDTO();
+        UserProfileResponseDto userProfile = userClient.getUserById(bookReport.getUserId());
+
+        return bookReport.toResponseDTO(userProfile);
     }
 
     // 독후감 전체 조회
     public List<BookReportResponseDTO> getAllBookReports(){
         List<BookReport> bookReport = bookReportRepository.findAll();
 
-        return bookReport.stream().map(BookReport::toResponseDTO)
+        return bookReportRepository.findAll()
+                .stream()
+                .map(br -> {
+                    UserProfileResponseDto user = userClient.getUserById(br.getUserId());
+                    return br.toResponseDTO(user);
+                })
                 .collect(Collectors.toList());
     }
 
+    //독후감 수정
     @Transactional
     public BookReportResponseDTO changeBookReport(Long reportId, BookReportRequestDTO request) {
         // 수정할 엔터티가 없을때
@@ -72,7 +82,9 @@ public class BookReportService {
 
         bookReport.update(request.getTitle(), request.getDescription());
 
-        return bookReport.toResponseDTO();
+        UserProfileResponseDto userProfile = userClient.getUserById(bookReport.getUserId());
+
+        return bookReport.toResponseDTO(userProfile);
     }
 
     @Transactional

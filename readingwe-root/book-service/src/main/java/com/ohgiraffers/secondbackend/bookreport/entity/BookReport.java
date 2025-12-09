@@ -1,5 +1,6 @@
 package com.ohgiraffers.secondbackend.bookreport.entity;
 import com.ohgiraffers.secondbackend.book.entity.Book;
+import com.ohgiraffers.secondbackend.bookreport.client.UserProfileResponseDto;
 import com.ohgiraffers.secondbackend.bookreport.dto.response.BookReportResponseDTO;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -68,13 +69,15 @@ public class BookReport {
         this.likeCount--;
     }
 
-    public BookReportResponseDTO toResponseDTO() {
+    public BookReportResponseDTO toResponseDTO(UserProfileResponseDto userProfileResponseDto) {
         return BookReportResponseDTO.builder()
-                .bookReportId(this.bookReportId)
-                .title(this.title)
-                .description(this.description)
-                .likeCount(this.likeCount)
-                .createdAt(this.createdAt)
+                .bookTittle(this.getBook().getTitle())
+                .title(this.getTitle())
+                .description(this.getDescription())
+                .likeCount(this.getLikeCount())
+                .createdAt(this.getCreatedAt())
+                .username(userProfileResponseDto.getUsername())
+                .nickname(userProfileResponseDto.getNickName())
                 .build();
     }
 }
