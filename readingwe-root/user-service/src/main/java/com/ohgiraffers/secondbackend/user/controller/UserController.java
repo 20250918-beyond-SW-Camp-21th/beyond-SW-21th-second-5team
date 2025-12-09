@@ -2,6 +2,7 @@ package com.ohgiraffers.secondbackend.user.controller;
 
 import com.ohgiraffers.secondbackend.user.dto.request.PasswordUpdateDTO;
 import com.ohgiraffers.secondbackend.user.dto.request.ProfileUpdateDTO;
+import com.ohgiraffers.secondbackend.user.dto.response.UserProfileResponse;
 import com.ohgiraffers.secondbackend.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -64,6 +65,19 @@ public class UserController {
         }catch(Exception e){
             return ResponseEntity.badRequest().body("변경 실패"+e.getMessage());
         }
+    }
+
+    @GetMapping("/usrename/{username}")
+    public ResponseEntity<UserProfileResponse> getUserProfileByUsername(@PathVariable("username") String username) {
+        UserProfileResponse profile = userService.getProfileByUsername(username);
+        return ResponseEntity.ok(profile);
+
+    }
+
+    @GetMapping("/userId/{userId}")
+    public ResponseEntity<UserProfileResponse> getUserProfileById(@PathVariable("userId") Long userId) {
+        UserProfileResponse profile = userService.getProfileById(userId);
+        return ResponseEntity.ok(profile);
     }
 
 

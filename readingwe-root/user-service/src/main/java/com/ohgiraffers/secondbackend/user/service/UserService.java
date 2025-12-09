@@ -2,6 +2,7 @@ package com.ohgiraffers.secondbackend.user.service;
 
 import com.ohgiraffers.secondbackend.user.dto.request.PasswordUpdateDTO;
 import com.ohgiraffers.secondbackend.user.dto.request.ProfileUpdateDTO;
+import com.ohgiraffers.secondbackend.user.dto.response.UserProfileResponse;
 import com.ohgiraffers.secondbackend.user.dto.response.UserResponseDTO;
 import com.ohgiraffers.secondbackend.user.entity.User;
 import com.ohgiraffers.secondbackend.user.entity.UserRole;
@@ -131,5 +132,20 @@ public class UserService  implements UserDetailsService{
         return userResponseDTO(user);
     }
 
+    @Transactional
+    public UserProfileResponse getProfileById(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 유저를 찾을 수 없습니다. id=" + userId));
+
+        return UserProfileResponse.from(user);
+    }
+
+    @Transactional
+    public UserProfileResponse getProfileByUsername(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("해당 username의 유저를 찾을 수 없습니다. username=" + username));
+
+        return UserProfileResponse.from(user);
+    }
 
 }
