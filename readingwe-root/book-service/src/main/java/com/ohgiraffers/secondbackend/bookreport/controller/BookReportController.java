@@ -20,9 +20,11 @@ public class BookReportController {
     //독후감 등록
     @PostMapping()
     public ResponseEntity<BookReportResponseDTO> createBookReport(
-            @RequestBody BookReportRequestDTO request){
+            @RequestBody BookReportRequestDTO request,
+            @RequestHeader("X-User-ID") String userId) {
 
-        BookReportResponseDTO response = bookReportService.saveBookReport(request);
+        //userId String으로 들어와서 Long으로 바꿔야 함.
+        BookReportResponseDTO response = bookReportService.saveBookReport(request, userId);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

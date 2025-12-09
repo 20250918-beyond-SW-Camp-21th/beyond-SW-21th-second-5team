@@ -25,24 +25,18 @@ public class BookReportService {
 
     // 독후감 등록 메서드
     @Transactional
-    public BookReportResponseDTO saveBookReport(BookReportRequestDTO request) {
-        /*
-        // 1. User ID 검증
-        if (!userApiClient.existsById(request.getUserId())) {
-            throw new IllegalArgumentException("유효하지 않은 사용자입니다.");
-        }
+    public BookReportResponseDTO saveBookReport(BookReportRequestDTO request, String userId) {
 
-        // 2. Book ID 검증
-        if (!bookApiClient.existsById(request.getBookId())) {
-            throw new IllegalArgumentException("유효하지 않은 도서입니다.");
-        }
-        */
+        // userId String -> Long 타입변환
+        Long id = Long.valueOf(userId);
+
+        //book엔터티 조회
         Book book = bookRepository.findById(request.getBookId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 책 존재 하지 않음"));
+                .orElseThrow(() -> new IllegalArgumentException("해당 책 존재하지 않음"));
 
         BookReport bookReport = BookReport.builder()
                 .book(book)
-                .userId(request.getUserId())
+                .userId(id)
                 .title(request.getTitle())
                 .description(request.getDescription())
                 .build();
