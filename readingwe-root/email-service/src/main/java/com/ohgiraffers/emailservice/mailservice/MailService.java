@@ -5,7 +5,7 @@ import java.util.List;
 public interface MailService {
 
     // 1. 회원가입 인증
-    void sendSignupVerificationMail(String to, String username, String verificationCode);
+    void sendSignupVerificationMail(String to, String username);
 
     // 2. 아이디/비번 찾기
     void sendFindIdMail(String to, List<String> usernames);

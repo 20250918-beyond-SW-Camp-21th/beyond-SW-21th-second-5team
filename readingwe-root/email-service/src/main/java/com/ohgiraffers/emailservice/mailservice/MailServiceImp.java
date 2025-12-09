@@ -60,12 +60,11 @@ public class MailServiceImp implements MailService {
 
     // 1. 회원가입 인증 메일
     @Override
-    public void sendSignupVerificationMail(String to, String username, String verificationCode) {
-        String subject = "[서비스명] 회원가입 인증 메일";
+    public void sendSignupVerificationMail(String to, String username) {
+        String subject = "[readwe] 회원가입을 환영합니다!";
 
         Map<String, Object> vars = new HashMap<>();
         vars.put("username", username);
-        vars.put("verificationCode", verificationCode);
 
         // templates/mail/SignupVerification.html
         sendHtmlMail(to, subject, "mail/SignupVerification", vars);
