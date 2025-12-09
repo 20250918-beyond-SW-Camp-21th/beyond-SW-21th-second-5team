@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    @GetMapping("/hello")
+    public String hello(){
+        return "Hello World!";
+    }
 
     //로그아웃
     @PostMapping("/logout")

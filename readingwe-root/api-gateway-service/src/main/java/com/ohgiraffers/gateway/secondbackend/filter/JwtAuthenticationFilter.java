@@ -1,6 +1,6 @@
-package com.ohgiraffers.secondbackend.filter;
+package com.ohgiraffers.gateway.secondbackend.filter;
 
-import com.ohgiraffers.secondbackend.util.JwtUtil;
+import com.ohgiraffers.gateway.secondbackend.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component(value = "JwtAuthFilter")
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends AbstractGatewayFilterFactory<JwtAuthenticationFilter.Config> {
 

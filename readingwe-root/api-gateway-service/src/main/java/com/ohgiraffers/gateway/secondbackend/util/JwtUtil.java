@@ -1,4 +1,4 @@
-package com.ohgiraffers.secondbackend.util;
+package com.ohgiraffers.gateway.secondbackend.util;
 
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;

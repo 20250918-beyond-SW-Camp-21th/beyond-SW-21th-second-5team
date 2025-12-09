@@ -1,24 +1,30 @@
 spring:
   application:
     name: api-gateway
-
   cloud:
     gateway:
-      routes: #?? ??? ??? ??
-        - id: user-service
-          uri: lb://user-service
-          predicates:
-            - Path=/auth/**,/user/**
-        - id: book-service
-          uri: lb://book-service
-          predicates:
-            - Path=/book/**,/booklike/**
-      default-filters:
-        - name: JwtAuthFilter
+      server:
+        webflux:
+          routes:
+            - id: user-service
+              uri: lb://USER-SERVICE
+              predicates:
+                - Path=/auth/**,/user/**
+            - id: book-service
+              uri: lb://BOOK-SERVICE
+              predicates:
+                - Path=/book/**,/booklike/**
+              filters:
+                - JwtAuthFilter
 
 eureka:
   client:
     register-with-eureka: true
     fetch-registry: true
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://localhost:8761/eureka
+
+server:
+  port: 8000
+jwt:
+  secret: aVeryLongAndSecureSecretKeyForHS256AlgorithmThatMustBeAtLeast32Bytes
