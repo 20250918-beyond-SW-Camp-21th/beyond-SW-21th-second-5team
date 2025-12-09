@@ -1,5 +1,8 @@
 package com.ohgiraffers.secondbackend.readingclub.service;
 
+import com.ohgiraffers.secondbackend.readingclub.client.EmailFeignClient;
+import com.ohgiraffers.secondbackend.readingclub.client.UserFeignClient;
+import com.ohgiraffers.secondbackend.readingclub.client.dto.*;
 import com.ohgiraffers.secondbackend.readingclub.dto.request.ReadingClubRequestDTO;
 import com.ohgiraffers.secondbackend.readingclub.dto.response.JoinResponseDTO;
 import com.ohgiraffers.secondbackend.readingclub.dto.response.MyClubResponseDTO;
@@ -9,12 +12,13 @@ import com.ohgiraffers.secondbackend.readingclub.entity.*;
 import com.ohgiraffers.secondbackend.readingclub.repository.ReadingClubJoinRepository;
 import com.ohgiraffers.secondbackend.readingclub.repository.ReadingClubMemberRepository;
 import com.ohgiraffers.secondbackend.readingclub.repository.ReadingClubRepository;
-import com.ohgiraffers.secondbackend.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Service
@@ -23,7 +27,8 @@ public class ReadingClubService {
     private final ReadingClubRepository readingClubRepository;
     private final ReadingClubMemberRepository readingClubMemberRepository;
     private final ReadingClubJoinRepository readingClubJoinRepository;
-    private final UserRepository userRepository;
+    private final EmailFeignClient emailFeignClient;
+    private final UserFeignClient userFeignClient;
 
     private ReadingClubResponseDTO convert(ReadingClub club) {
         return ReadingClubResponseDTO.builder()
@@ -86,14 +91,39 @@ public class ReadingClubService {
     }
 
     @Transactional      // 모임 수정
-    public void deleteReadingClub(Long clubId, long hostId){
+    public void deleteReadingClub(Long clubId, long hostId) {
         ReadingClub club = readingClubRepository.findById(clubId)
-                .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 모임입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 모임입니다."));
 
-        if (club.getUserId() != hostId){
+        if (club.getUserId() != hostId) {
             throw new SecurityException("모임을 삭제할 권한이 없습니다.");
         }
         club.finish();
+
+        List<ReadingClubMember> members = readingClubMemberRepository.findByClubId(clubId);
+
+        Set<Long> userIds = new HashSet<>();
+        userIds.add(club.getUserId()); // 호스트
+
+        members.stream()
+                .filter(m -> m.getRole() != ReadingClubMemberRole.LEFT)
+                .forEach(m -> userIds.add(m.getUserId()));
+
+        if (!userIds.isEmpty()) {
+            List<String> emails = userIds.stream()
+                    .map(userFeignClient::getUserProfileById)
+                    .map(UserProfileResponse::getUsername)
+                    .toList();
+
+            if (!emails.isEmpty()) {
+                emailFeignClient.sendClubDisband(
+                        new ClubDisbandMailRequest(
+                                emails,
+                                club.getName()
+                        )
+                );
+            }
+        }
     }
 
     @Transactional
@@ -112,6 +142,17 @@ public class ReadingClubService {
         club.removeMember();
 
         member.changeRole(ReadingClubMemberRole.LEFT);
+
+        UserProfileResponse host = userFeignClient.getUserProfileById(club.getUserId());
+        UserProfileResponse memberUser = userFeignClient.getUserProfileById(userId);
+
+        emailFeignClient.sendClubMemberLeave(
+                new ClubMemberLeaveMailRequest(
+                        host.getUsername(),          // 호스트 이메일
+                        club.getName(),
+                        memberUser.getNickName()     // 나간 멤버 이름
+                )
+        );
     }
 
     @Transactional
@@ -140,6 +181,17 @@ public class ReadingClubService {
                 .build();
 
         readingClubJoinRepository.save(request);
+
+        UserProfileResponse host = userFeignClient.getUserProfileById(club.getUserId());
+        UserProfileResponse applicant = userFeignClient.getUserProfileById(userId);
+
+        emailFeignClient.sendClubJoinRequest(
+                new ClubJoinRequestMailRequest(
+                        host.getUsername(),        // host 이메일
+                        club.getName(),            // 모임 이름
+                        applicant.getNickName()    // 신청자 닉네임
+                )
+        );
     }
 
     @Transactional
@@ -164,6 +216,8 @@ public class ReadingClubService {
 
         request.setStatus(status);
 
+        UserProfileResponse memberUser = userFeignClient.getUserProfileById(request.getUserId());
+
         if(status == JoinRequestStatus.APPROVED){
             club.addMember();
             if(!readingClubMemberRepository.existsByClubIdAndUserId(clubId, request.getUserId())){
@@ -175,6 +229,20 @@ public class ReadingClubService {
 
                 readingClubMemberRepository.save(member);
             }
+            emailFeignClient.sendClubJoinApprove(
+                    new ClubJoinApproveMailRequest(
+                            memberUser.getUsername(), // 신청자 이메일
+                            club.getName()
+                    )
+            );
+        } else if (status == JoinRequestStatus.REJECTED){
+            emailFeignClient.sendClubJoinReject(
+                    new ClubJoinRejectMailRequest(
+                            memberUser.getUsername(),
+                            club.getName(),
+                            "모임에서 가입 신청을 거절했습니다."
+                    )
+            );
         }
     }
 
@@ -213,6 +281,17 @@ public class ReadingClubService {
         }
         club.removeMember();
         member.changeRole(ReadingClubMemberRole.LEFT);
+
+        UserProfileResponse host = userFeignClient.getUserProfileById(club.getUserId());
+        UserProfileResponse targetUser = userFeignClient.getUserProfileById(targetId);
+
+        emailFeignClient.sendClubMemberLeave(
+                new ClubMemberLeaveMailRequest(
+                        host.getUsername(),
+                        club.getName(),
+                        targetUser.getNickName()
+                )
+        );
     }
 
     @Transactional(readOnly = true)

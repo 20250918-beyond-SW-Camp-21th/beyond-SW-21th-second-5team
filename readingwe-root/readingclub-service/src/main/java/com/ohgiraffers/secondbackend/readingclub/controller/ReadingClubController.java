@@ -8,15 +8,10 @@ import com.ohgiraffers.secondbackend.readingclub.dto.response.MyClubResponseDTO;
 import com.ohgiraffers.secondbackend.readingclub.dto.response.ReadingClubMemberResponseDTO;
 import com.ohgiraffers.secondbackend.readingclub.dto.response.ReadingClubResponseDTO;
 import com.ohgiraffers.secondbackend.readingclub.service.ReadingClubService;
-import com.ohgiraffers.secondbackend.user.entity.User;
-import com.ohgiraffers.secondbackend.user.repository.UserRepository;
-import com.ohgiraffers.secondbackend.user.util.JWTUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,77 +23,98 @@ public class ReadingClubController {
 
     private final ReadingClubService readingClubService;
 
+    private long getCurrentUserId(HttpServletRequest request) {
+        String userIdHeader = request.getHeader("X-User-ID");
+        if (userIdHeader == null) {
+            throw new IllegalArgumentException("X-User-ID 헤더가 없습니다.");
+        }
+        return Long.parseLong(userIdHeader);
+    }
+
+    private String getCurrentUsername(HttpServletRequest request) {
+        return request.getHeader("X-User-Name");   // 없어도 null 허용
+    }
+
+    private String getCurrentUserRole(HttpServletRequest request) {
+        return request.getHeader("X-User-Role");   // 지금은 안 쓰지만 일단 남겨둠
+    }
+
     @PostMapping ("/club-create")       // JWT 구현시 @RequestParam 파트 빼고 수정 완료
-    public ResponseEntity<ReadingClubResponseDTO> createReadingClub(@RequestBody ReadingClubRequestDTO req
-            , HttpServletRequest request) {
-        String username = request.getHeader("X-User-Name");
+    public ResponseEntity<ReadingClubResponseDTO> createReadingClub(
+            @RequestBody ReadingClubRequestDTO req,
+            HttpServletRequest request
+    ) {
+        long hostId = getCurrentUserId(request);
 
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
-
-        long hostId = user.getId();
         ReadingClubResponseDTO res = readingClubService.createReadingClub(req, hostId);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(res);
     }
 
     @PatchMapping("/update/{clubId}")
-    public ResponseEntity<ReadingClubResponseDTO> updateReadingClub(@PathVariable long clubId, @RequestBody ReadingClubRequestDTO req
-                                                                     , Authentication authentication) {
-        String username = authentication.getName();
-
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
-
-        long hostId = user.getId();
+    public ResponseEntity<ReadingClubResponseDTO> updateReadingClub(
+            @PathVariable long clubId,
+            @RequestBody ReadingClubRequestDTO req,
+            HttpServletRequest request
+    ) {
+        long hostId = getCurrentUserId(request);
 
         ReadingClubResponseDTO res = readingClubService.updateReadingClub(clubId, req, hostId);
         return ResponseEntity.ok(res);
     }
 
     @DeleteMapping("/delete/{clubId}")
-    public ResponseEntity<Void> deleteReadingClub(@PathVariable long clubId, Authentication authentication) {
-        String username = authentication.getName();
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
-
-        long hostId = user.getId();
+    public ResponseEntity<Void> deleteReadingClub(
+            @PathVariable long clubId,
+            HttpServletRequest request
+    ) {
+        long hostId = getCurrentUserId(request);
 
         readingClubService.deleteReadingClub(clubId, hostId);
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/leave/{clubId}")
-    public ResponseEntity<Void> leaveReadingClub(@PathVariable long clubId, Authentication authentication) {
-        String username = authentication.getName();
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
 
-        readingClubService.leaveReadingClub(clubId, user.getId());
+    @DeleteMapping("/leave/{clubId}")
+    public ResponseEntity<Void> leaveReadingClub(
+            @PathVariable long clubId,
+            HttpServletRequest request
+    ) {
+        long userId = getCurrentUserId(request);
+
+        readingClubService.leaveReadingClub(clubId, userId);
         return ResponseEntity.noContent().build();
     }
 
+
     @PostMapping("/join/{clubId}")
-    public ResponseEntity<Void> requestJoin(@PathVariable long clubId, @RequestBody(required = false) JoinRequestDTO dto, Authentication authentication){
-        String username = authentication.getName();
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
+    public ResponseEntity<Void> requestJoin(
+            @PathVariable long clubId,
+            @RequestBody(required = false) JoinRequestDTO dto,
+            HttpServletRequest request
+    ) {
+        long userId = getCurrentUserId(request);
 
         String message = "";
-        if (dto != null && dto.getMessage() != null){
+        if (dto != null && dto.getMessage() != null) {
             message = dto.getMessage();
         }
 
-        readingClubService.requestJoin(clubId, user.getId(), message);
+        readingClubService.requestJoin(clubId, userId, message);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PatchMapping("/decide/{clubId}/{joinId}")
-    public ResponseEntity<Void> decideJoinRequest(@PathVariable Long clubId, @PathVariable Long joinId, @RequestBody JoinDecisionDTO dto, Authentication authentication){
-        String username = authentication.getName();
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
+    public ResponseEntity<Void> decideJoinRequest(
+            @PathVariable Long clubId,
+            @PathVariable Long joinId,
+            @RequestBody JoinDecisionDTO dto,
+            HttpServletRequest request
+    ) {
+        long hostId = getCurrentUserId(request);
 
         readingClubService.decideJoinRequest(
                 clubId,
-                user.getId(),
+                hostId,
                 joinId,
                 dto.getStatus()
         );
@@ -106,51 +122,67 @@ public class ReadingClubController {
     }
 
     @DeleteMapping("/join/{joinId}")
-    public ResponseEntity<Void> cancelJoin(@PathVariable long joinId, Authentication authentication){
-        String username = authentication.getName();
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
+    public ResponseEntity<Void> cancelJoin(
+            @PathVariable long joinId,
+            HttpServletRequest request
+    ) {
+        long userId = getCurrentUserId(request);
 
-        readingClubService.cancleJoin(joinId, user.getId());
+        readingClubService.cancleJoin(joinId, userId);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/kick/{clubId}/{userId}")
-    public ResponseEntity<Void> kickMember(@PathVariable long clubId, @PathVariable long userId, Authentication authentication){
-        String username = authentication.getName();
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
-        readingClubService.kickMember(clubId, user.getId(), userId);
+    public ResponseEntity<Void> kickMember(
+            @PathVariable long clubId,
+            @PathVariable long userId,           // 강퇴 대상
+            HttpServletRequest request
+    ) {
+        long hostId = getCurrentUserId(request);   // 모임장 ID
+
+        readingClubService.kickMember(clubId, hostId, userId);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/join/{clubId}")
-    public ResponseEntity<List<JoinResponseDTO>>getJoinRequests(@PathVariable long clubId, Authentication authentication){
-        String username = authentication.getName();
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
-        List<JoinResponseDTO> res = readingClubService.getJoinRequestsForClub(clubId, user.getId());
+    public ResponseEntity<List<JoinResponseDTO>> getJoinRequests(
+            @PathVariable long clubId,
+            HttpServletRequest request
+    ) {
+        long hostId = getCurrentUserId(request);
+
+        List<JoinResponseDTO> res = readingClubService.getJoinRequestsForClub(clubId, hostId);
         return ResponseEntity.ok(res);
     }
 
     @GetMapping("/join/me")
-    public ResponseEntity<List<JoinResponseDTO>> getMyJoinRequests(Authentication authentication){
-        String username = authentication.getName();
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
-        List<JoinResponseDTO> res = readingClubService.getMyJoinRequests(user.getId());
+    public ResponseEntity<List<JoinResponseDTO>> getMyJoinRequests(
+            HttpServletRequest request
+    ) {
+        long userId = getCurrentUserId(request);
+
+        List<JoinResponseDTO> res = readingClubService.getMyJoinRequests(userId);
         return ResponseEntity.ok(res);
     }
 
     @GetMapping("/member/{clubId}")
-    public ResponseEntity<List<ReadingClubMemberResponseDTO>> getMembersOfClub(@PathVariable long clubId, Authentication authentication){
-        String username = authentication.getName();
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
-        List<ReadingClubMemberResponseDTO> res = readingClubService.getMembersOfClub(clubId, user.getId());
+    public ResponseEntity<List<ReadingClubMemberResponseDTO>> getMembersOfClub(
+            @PathVariable long clubId,
+            HttpServletRequest request
+    ) {
+        long userId = getCurrentUserId(request);
+
+        List<ReadingClubMemberResponseDTO> res = readingClubService.getMembersOfClub(clubId, userId);
         return ResponseEntity.ok(res);
     }
 
     @GetMapping("/my-clubs")
-    public ResponseEntity<MyClubResponseDTO> getMyClubs(Authentication authentication){
-        String username = authentication.getName();
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
-        MyClubResponseDTO res = readingClubService.getMyClubs(user.getId());
+    public ResponseEntity<MyClubResponseDTO> getMyClubs(
+            HttpServletRequest request
+    ) {
+        long userId = getCurrentUserId(request);
+
+        MyClubResponseDTO res = readingClubService.getMyClubs(userId);
         return ResponseEntity.ok(res);
     }
 }
