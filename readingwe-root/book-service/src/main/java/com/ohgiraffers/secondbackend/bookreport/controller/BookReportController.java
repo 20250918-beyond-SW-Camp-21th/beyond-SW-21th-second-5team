@@ -21,9 +21,10 @@ public class BookReportController {
     @PostMapping()
     public ResponseEntity<BookReportResponseDTO> createBookReport(
             @RequestBody BookReportRequestDTO request,
-            @RequestHeader("X-User-Name") String userName) {
+            @RequestHeader("X-User-ID") String userId) {
 
-        BookReportResponseDTO response = bookReportService.saveBookReport(request, userName);
+        //userId String으로 들어와서 Long으로 바꿔야 함.
+        BookReportResponseDTO response = bookReportService.saveBookReport(request, userId);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

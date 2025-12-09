@@ -1,5 +1,7 @@
 package com.ohgiraffers.secondbackend.bookreport.service;
 
+import com.ohgiraffers.secondbackend.book.entity.Book;
+import com.ohgiraffers.secondbackend.book.repository.BookRepository;
 import com.ohgiraffers.secondbackend.bookreport.dto.request.BookReportRequestDTO;
 import com.ohgiraffers.secondbackend.bookreport.dto.response.BookReportResponseDTO;
 import com.ohgiraffers.secondbackend.bookreport.entity.BookReport;
@@ -16,27 +18,25 @@ import java.util.stream.Collectors;
 public class BookReportService {
 
     private final BookReportRepository bookReportRepository;
+    private final BookRepository bookRepository;
 //    private final UserApiClient userApiClient;    //프로젝트 분리하면
 //    private final BookApiClient bookApiClient;
 
 
     // 독후감 등록 메서드
     @Transactional
-    public BookReportResponseDTO saveBookReport(BookReportRequestDTO request) {
-        /*
-        // 1. User ID 검증
-        if (!userApiClient.existsById(request.getUserId())) {
-            throw new IllegalArgumentException("유효하지 않은 사용자입니다.");
-        }
+    public BookReportResponseDTO saveBookReport(BookReportRequestDTO request, String userId) {
 
-        // 2. Book ID 검증
-        if (!bookApiClient.existsById(request.getBookId())) {
-            throw new IllegalArgumentException("유효하지 않은 도서입니다.");
-        }
-        */
+        // userId String -> Long 타입변환
+        Long id = Long.valueOf(userId);
+
+        //book엔터티 조회
+        Book book = bookRepository.findById(request.getBookId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 책 존재하지 않음"));
+
         BookReport bookReport = BookReport.builder()
-                .bookId(request.getBookId())
-                .userId(request.getUserId())
+                .book(book)
+                .userId(id)
                 .title(request.getTitle())
                 .description(request.getDescription())
                 .build();
