@@ -18,17 +18,11 @@ public class BookLikeController {
 
     @PostMapping("/like/{bookId}")
     public ResponseEntity<BookLikeResponseDTO> likeBook(
-            @RequestHeader("Authorization") String authorizationHeader,
+            @RequestHeader("X-User-Name") String struserid,
             @PathVariable Long bookId
     ) {
 
-        if (!authorizationHeader.startsWith("Bearer ")) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        String accessToken = authorizationHeader.substring(7);
-
-        BookLikeResponseDTO response = bookLikeService.likeBook(accessToken, bookId);
+        BookLikeResponseDTO response = bookLikeService.likeBook(, bookId);
 
         return ResponseEntity.ok(response);
     }

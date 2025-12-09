@@ -40,10 +40,12 @@ public class JwtAuthenticationFilter extends AbstractGatewayFilterFactory<JwtAut
 
             String username = jwtUtil.getUsername(token);
             String role = jwtUtil.getRole(token);
+            String Id=jwtUtil.getId(token);
 
             // 하위 서비스로 전달할 새로운 헤더 생성
             ServerHttpRequest mutatedRequest = request.mutate()
                     .header("X-User-Name", username)
+                    .header("X-User-ID",Id)
                     .header("X-User-Role", role)
                     .build();
 

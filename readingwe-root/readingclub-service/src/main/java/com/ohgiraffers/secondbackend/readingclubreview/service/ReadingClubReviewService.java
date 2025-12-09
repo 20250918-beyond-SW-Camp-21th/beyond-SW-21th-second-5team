@@ -30,8 +30,6 @@ public class ReadingClubReviewService {
     private final ReadingClubReviewRepository reviewRepository;
     private final ReadingClubRepository readingClubRepository;
     private final ReadingClubMemberRepository memberRepository;
-    private final ReviewCommentRepository reviewCommentRepository;
-    private final ReviewLikeRepository reviewLikeRepository;
 
     @Transactional
     public ReadingClubReviewResponseDTO createReview(Long club, ReadingClubReviewRequestDTO request, String username) {
