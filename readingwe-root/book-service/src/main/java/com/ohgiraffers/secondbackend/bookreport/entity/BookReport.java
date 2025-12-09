@@ -1,4 +1,5 @@
 package com.ohgiraffers.secondbackend.bookreport.entity;
+import com.ohgiraffers.secondbackend.book.entity.Book;
 import com.ohgiraffers.secondbackend.bookreport.dto.response.BookReportResponseDTO;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -19,8 +20,9 @@ public class BookReport {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bookReportId;      //독후감 id(pk)
 
-    @Column(name = "book_id")
-    private Long bookId;        //도서 id(fk)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_id")
+    private Book book;        //도서 id(fk)
 
     @Column(name = "user_id")
     private Long userId;      //글 작성자 id(fk)
@@ -43,8 +45,8 @@ public class BookReport {
     private int likeCount;      //좋아요 개수
 
     @Builder
-    public BookReport(Long bookId, Long userId, String title, String description){
-        this.bookId = bookId;
+    public BookReport(Book book, Long userId, String title, String description){
+        this.book = book;
         this.userId = userId;
         this.title = title;
         this.description = description;
