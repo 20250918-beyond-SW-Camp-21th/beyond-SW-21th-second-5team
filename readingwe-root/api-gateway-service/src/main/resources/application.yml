@@ -16,6 +16,10 @@ spring:
                 - Path=/book/**,/booklike/**
               filters:
                 - name: JwtAuthenticationFilter
+            - id: readingclub-service
+              uri: lb://READINGCLUB-SERVICE
+              predicates:
+                - Path=/reading-club/**,/review/**
 
 eureka:
   client:
