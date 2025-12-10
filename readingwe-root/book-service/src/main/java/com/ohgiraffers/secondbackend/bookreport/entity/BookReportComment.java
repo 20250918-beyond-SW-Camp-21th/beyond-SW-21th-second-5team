@@ -65,7 +65,7 @@ public class BookReportComment {
         this.content = content;
     }
 
-    public BookReportCommentResponseDTO toResponseDTO(){
+    public BookReportCommentResponseDTO toResponseDTO(String nickname){
         return BookReportCommentResponseDTO.builder()
                 .commentId(this.reportCommentId)
                 .bookReportId(this.bookReport.getBookReportId())
@@ -74,7 +74,7 @@ public class BookReportComment {
                 .parentId(this.parent != null ? this.parent.getReportCommentId() : null)
                 .createdAt(this.createdAt)
                 .updatedAt(this.updatedAt)
-//                .nickname(nickname)
+                .nickname(nickname)
                 .build();
     }
 }

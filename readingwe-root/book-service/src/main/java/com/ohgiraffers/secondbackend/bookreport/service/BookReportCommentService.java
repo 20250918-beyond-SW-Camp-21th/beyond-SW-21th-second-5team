@@ -1,6 +1,7 @@
 package com.ohgiraffers.secondbackend.bookreport.service;
 
 import com.ohgiraffers.secondbackend.bookreport.client.UserClient;
+import com.ohgiraffers.secondbackend.bookreport.client.UserProfileResponseDto;
 import com.ohgiraffers.secondbackend.bookreport.dto.request.BookReportCommentRequestDTO;
 import com.ohgiraffers.secondbackend.bookreport.dto.response.BookReportCommentResponseDTO;
 import com.ohgiraffers.secondbackend.bookreport.entity.BookReport;
@@ -45,7 +46,9 @@ public class BookReportCommentService {
 
         BookReportComment saved = bookReportCommentRepository.save(comment);
 
-        return saved.toResponseDTO();
+        UserProfileResponseDto userProfile = userClient.getUserById(userId);
+
+        return saved.toResponseDTO(userProfile.getNickName());
     }
 
     @Transactional
@@ -56,7 +59,9 @@ public class BookReportCommentService {
 
         comment.updateContent(request.getContent());
 
-        return  comment.toResponseDTO();
+        UserProfileResponseDto userProfile = userClient.getUserById(comment.getUserId());
+
+        return  comment.toResponseDTO(userProfile.getNickName());
     }
 
     @Transactional
