@@ -51,6 +51,7 @@ public class BookReportCommentService {
 
         BookReportComment saved = bookReportCommentRepository.save(comment);
 
+
         UserProfileResponseDto userProfile = userClient.getUserById(userId);
 
         return saved.toResponseDTO(userProfile.getUsername(), userProfile.getNickName());

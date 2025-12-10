@@ -1,4 +1,4 @@
-package com.ohgiraffers.bookservice.secondbackend.book.config;
+package com.ohgiraffers.bookservice.secondbackend.config;
 
 import com.ohgiraffers.bookservice.secondbackend.book.util.HeaderAuthenticationFilter;
 import com.ohgiraffers.bookservice.secondbackend.book.util.RestAccessDeniedHandler;
@@ -40,6 +40,23 @@ public class SecurityConfig {
                                         , "/internal/mail/**","/book/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/users/me","/user/**","/booklike/**").hasAuthority("USER")
                                 .requestMatchers("/actuator/**").permitAll()
+
+                                //book-report관련
+                                .requestMatchers(HttpMethod.POST, "/book-report").hasAuthority("USER")       // 등록
+                                .requestMatchers(HttpMethod.PUT, "/book-report/**").hasAuthority("USER")     // 수정
+                                .requestMatchers(HttpMethod.DELETE, "/book-report/**").hasAuthority("USER")  // 삭제
+                                .requestMatchers(HttpMethod.GET, "/book-report/**").permitAll()              // 조회(단건/목록 모두 허용)
+
+                                // BookReportComment 권한 설정
+                                .requestMatchers(HttpMethod.POST, "/book-report-comment").hasAuthority("USER")          // 댓글 등록
+                                .requestMatchers(HttpMethod.PUT, "/book-report-comment/**").hasAuthority("USER")       // 댓글 수정
+                                .requestMatchers(HttpMethod.DELETE, "/book-report-comment/**").hasAuthority("USER")    // 댓글 삭제
+                                .requestMatchers(HttpMethod.GET, "/book-report-comment/**").permitAll()                 // 댓글 조회
+
+                                // BookReportLike 권한 설정
+                                .requestMatchers(HttpMethod.POST, "/book-report-like/**").hasAuthority("USER")
+
+                                .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**").permitAll()
                                 .requestMatchers( "/swagger-ui.html","/swagger-ui/**","/v3/api-docs/**","/swagger-resources/**").permitAll()
                                 .anyRequest().authenticated()
                 )
