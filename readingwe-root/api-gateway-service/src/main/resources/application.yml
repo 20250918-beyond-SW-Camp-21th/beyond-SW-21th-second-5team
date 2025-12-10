@@ -21,11 +21,11 @@ spring:
               predicates:
                 - Path=/auth/**,/user/**
               filters:
-              - JwtAuthenticationFilter
+                - JwtAuthenticationFilter
             - id: book-service
               uri: lb://BOOK-SERVICE
               predicates:
-                - Path=/book/**,/booklike/**
+                - Path=/book/**,/booklike/**,/book-report/**,/book-report-comment/**,/book-report-like/**
               filters:
                 - name: JwtAuthenticationFilter
 
