@@ -40,6 +40,7 @@ public class SecurityConfig {
                                         , "/internal/mail/**","/book/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/users/me","/user/**","/booklike/**").hasAuthority("USER")
                                 .requestMatchers("/actuator/**").permitAll()
+                                .requestMatchers( "/swagger-ui.html","/swagger-ui/**","/v3/api-docs/**","/swagger-resources/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 // 기존 JWT 검증 필터 대신, Gateway가 전달한 헤더를 이용하는 필터 추가

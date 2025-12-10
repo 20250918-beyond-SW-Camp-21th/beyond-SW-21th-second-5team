@@ -92,7 +92,7 @@ public class ReadingClubService {
         return convert(club);
     }
 
-    @Transactional      // 모임 수정
+    @Transactional      // 모임 삭제
     public void deleteReadingClub(Long clubId, long hostId) {
         ReadingClub club = readingClubRepository.findById(clubId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 모임입니다."));
