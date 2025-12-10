@@ -177,12 +177,12 @@ public class ReadingClubController {
     }
 
     @GetMapping("/my-clubs")
-    public ResponseEntity<MyClubResponseDTO> getMyClubs(
-            HttpServletRequest request
-    ) {
-        long userId = getCurrentUserId(request);
+        public ResponseEntity<MyClubResponseDTO> getMyClubs(
+                HttpServletRequest request
+        ) {
+            long userId = getCurrentUserId(request);
 
-        MyClubResponseDTO res = readingClubService.getMyClubs(userId);
-        return ResponseEntity.ok(res);
-    }
+            MyClubResponseDTO res = readingClubService.getMyClubs(userId);
+            return ResponseEntity.ok(res);
+        }
 }

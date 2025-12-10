@@ -19,7 +19,7 @@ public class BookReportLikeService {
     private final BookReportLikeRepository bookReportLikeRepository;
 
     @Transactional
-    public ResponseEntity<BookReportLikeResponseDTO> toggleLike(Long bookReportId, Long userId) {
+    public BookReportLikeResponseDTO  toggleLike(Long bookReportId, Long userId) {
 
         //존재하는 독후감인지 확인
         BookReport bookReport = bookReportRepository.findById(bookReportId)
@@ -52,10 +52,6 @@ public class BookReportLikeService {
                 .liked(nowLiked)
                 .build();
 
-        return ResponseEntity.ok(responseDto);
-
+        return responseDto;
     }
-
-
-
 }

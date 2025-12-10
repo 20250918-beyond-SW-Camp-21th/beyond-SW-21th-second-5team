@@ -2,12 +2,13 @@ package com.ohgiraffers.readingclubservice.secondbackend.client;
 
 import com.ohgiraffers.readingclubservice.secondbackend.client.dto.*;
 import com.ohgiraffers.readingclubservice.secondbackend.client.dto.*;
+import com.ohgiraffers.readingclubservice.secondbackend.config.FeignClientConfig;
 import com.ohgiraffers.readingclubservice.secondbackend.readingclub.dto.request.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient("email-service")
+@FeignClient(value = "email-service", configuration = FeignClientConfig.class)
 public interface EmailFeignClient {
 
     @PostMapping("/internal/mail/club/join-request")
