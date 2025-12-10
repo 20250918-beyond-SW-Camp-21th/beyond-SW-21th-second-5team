@@ -10,7 +10,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: qkem1217@gmail.com
-    password: ${GMAIL_APP_PASSWORD}
+    password: gycmtdrfobfbrieo
     properties:
       mail:
         smtp:
@@ -23,4 +23,4 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://localhost:8761/eureka
