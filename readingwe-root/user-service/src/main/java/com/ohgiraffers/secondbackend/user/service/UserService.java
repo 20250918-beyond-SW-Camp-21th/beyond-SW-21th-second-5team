@@ -101,24 +101,13 @@ public class UserService  implements UserDetailsService{
     }
 
     /*로그아웃*/
-    public void logout(String accessToken){
-        String username=jwtUtil.getUsername(accessToken);
-        String refreshKey="refresh:"+username;
+    public void logout(String username) {
+        String refreshKey = "refresh:" + username;
         redisTemplate.delete(refreshKey);
-
-        if(!jwtUtil.isTokenExpired(accessToken)){
-            String blacklistKey= "blacklist:"+accessToken;
-            long expriation = jwtUtil.getExpriation(accessToken)-System.currentTimeMillis();
-
-            if(expriation>0){
-                redisTemplate.opsForValue().set(blacklistKey,"logout",expriation, TimeUnit.MILLISECONDS);
-            }else{
-                redisTemplate.delete(blacklistKey);
-            }
-        }
     }
 
-   /*닉네임 변경*/
+
+    /*닉네임 변경*/
     @Transactional
     public UserResponseDTO updateNickname(String accessToken, ProfileUpdateDTO profileUpdateDTO){
         String username= jwtUtil.getUsername(accessToken);
