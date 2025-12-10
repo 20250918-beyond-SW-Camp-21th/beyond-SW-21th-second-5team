@@ -1,5 +1,7 @@
 package com.ohgiraffers.secondbackend.bookreport.service;
 
+import com.ohgiraffers.secondbackend.bookreport.client.UserClient;
+import com.ohgiraffers.secondbackend.bookreport.client.UserProfileResponseDto;
 import com.ohgiraffers.secondbackend.bookreport.dto.request.BookReportCommentRequestDTO;
 import com.ohgiraffers.secondbackend.bookreport.dto.response.BookReportCommentResponseDTO;
 import com.ohgiraffers.secondbackend.bookreport.entity.BookReport;
@@ -16,9 +18,10 @@ public class BookReportCommentService {
 
     private final BookReportRepository bookReportRepository;
     private final BookReportCommentRepository bookReportCommentRepository;
+    private final UserClient userClient;
 
     @Transactional
-    public BookReportCommentResponseDTO saveBookReportComment(BookReportCommentRequestDTO request) {
+    public BookReportCommentResponseDTO saveBookReportComment(BookReportCommentRequestDTO request, Long userId) {
 
         //해당 독후감이 존재하는지 확인
         BookReport bookReport = bookReportRepository.findById(request.getBookReportId())
@@ -43,7 +46,9 @@ public class BookReportCommentService {
 
         BookReportComment saved = bookReportCommentRepository.save(comment);
 
-        return saved.toResponseDTO();
+        UserProfileResponseDto userProfile = userClient.getUserById(userId);
+
+        return saved.toResponseDTO(userProfile.getNickName());
     }
 
     @Transactional
@@ -54,7 +59,9 @@ public class BookReportCommentService {
 
         comment.updateContent(request.getContent());
 
-        return  comment.toResponseDTO();
+        UserProfileResponseDto userProfile = userClient.getUserById(comment.getUserId());
+
+        return  comment.toResponseDTO(userProfile.getNickName());
     }
 
     @Transactional

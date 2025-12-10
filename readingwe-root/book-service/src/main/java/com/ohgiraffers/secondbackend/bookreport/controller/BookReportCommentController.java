@@ -18,9 +18,12 @@ public class BookReportCommentController {
     // 댓글 등록
     @PostMapping
     public ResponseEntity<BookReportCommentResponseDTO> createComment(
-            @RequestBody BookReportCommentRequestDTO request){
+            @RequestBody BookReportCommentRequestDTO request,
+            @RequestHeader("X-User-ID") String userId){
 
-        BookReportCommentResponseDTO response = bookReportCommentService.saveBookReportComment(request);
+        Long userIdLong = Long.parseLong(userId);
+
+        BookReportCommentResponseDTO response = bookReportCommentService.saveBookReportComment(request, userIdLong);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
