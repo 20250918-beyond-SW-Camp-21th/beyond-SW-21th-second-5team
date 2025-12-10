@@ -25,10 +25,8 @@ public class BookReportService {
 
     // 독후감 등록 메서드
     @Transactional
-    public BookReportResponseDTO saveBookReport(BookReportRequestDTO request, String userId) {
+    public BookReportResponseDTO saveBookReport(BookReportRequestDTO request, Long userId) {
 
-        // userId String -> Long 타입변환
-        Long id = Long.valueOf(userId);
 
         //book엔터티 조회
         Book book = bookRepository.findById(request.getBookId())
@@ -36,7 +34,7 @@ public class BookReportService {
 
         BookReport bookReport = BookReport.builder()
                 .book(book)
-                .userId(id)
+                .userId(userId)
                 .title(request.getTitle())
                 .description(request.getDescription())
                 .build();

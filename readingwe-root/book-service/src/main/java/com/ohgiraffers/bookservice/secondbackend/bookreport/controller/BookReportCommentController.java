@@ -3,6 +3,7 @@ package com.ohgiraffers.bookservice.secondbackend.bookreport.controller;
 import com.ohgiraffers.bookservice.secondbackend.bookreport.dto.request.BookReportCommentRequestDTO;
 import com.ohgiraffers.bookservice.secondbackend.bookreport.dto.response.BookReportCommentResponseDTO;
 import com.ohgiraffers.bookservice.secondbackend.bookreport.service.BookReportCommentService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,14 +22,27 @@ public class BookReportCommentController {
     @PostMapping
     public ResponseEntity<BookReportCommentResponseDTO> createComment(
             @RequestBody BookReportCommentRequestDTO request,
-            @RequestHeader("X-User-ID") String userId){
+            HttpServletRequest req) {
 
-        Long userIdLong = Long.parseLong(userId);
+        String rawUserId = req.getHeader("X-User-ID");
+        if (rawUserId == null || rawUserId.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
 
-        BookReportCommentResponseDTO response = bookReportCommentService.saveBookReportComment(request, userIdLong);
+        Long userId;
+
+        try {
+            userId = Long.parseLong(rawUserId);
+        } catch (NumberFormatException e) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        BookReportCommentResponseDTO response =
+                bookReportCommentService.saveBookReportComment(request,userId);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+
 
     // 댓글 수정
     @PutMapping("/{commentId}")

@@ -3,6 +3,7 @@ package com.ohgiraffers.bookservice.secondbackend.bookreport.controller;
 import com.ohgiraffers.bookservice.secondbackend.bookreport.dto.request.BookReportRequestDTO;
 import com.ohgiraffers.bookservice.secondbackend.bookreport.dto.response.BookReportResponseDTO;
 import com.ohgiraffers.bookservice.secondbackend.bookreport.service.BookReportService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,15 +19,28 @@ public class BookReportController {
     private final BookReportService bookReportService;
 
     //독후감 등록
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<BookReportResponseDTO> createBookReport(
             @RequestBody BookReportRequestDTO request,
-            @RequestHeader("X-User-ID") String userId) {
+            HttpServletRequest req) {
 
-        //userId String으로 들어와서 Long으로 바꿔야 함.
+        String rawUserId = req.getHeader("X-User-ID");
+        if (rawUserId == null || rawUserId.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        Long userId;
+
+        try {
+            userId = Long.parseLong(rawUserId);
+        } catch (NumberFormatException e) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        // 서비스로 DTO와 userId 전달
         BookReportResponseDTO response = bookReportService.saveBookReport(request, userId);
 
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        return ResponseEntity.ok(response);
     }
 
     //독후감 조회(단건) - 독후감 id로 조회

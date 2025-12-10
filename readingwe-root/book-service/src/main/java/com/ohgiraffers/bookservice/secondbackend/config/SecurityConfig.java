@@ -1,4 +1,4 @@
-package com.ohgiraffers.bookservice.secondbackend.book.config;
+package com.ohgiraffers.bookservice.secondbackend.config;
 
 import com.ohgiraffers.bookservice.secondbackend.book.util.HeaderAuthenticationFilter;
 import com.ohgiraffers.bookservice.secondbackend.book.util.RestAccessDeniedHandler;
@@ -35,11 +35,19 @@ public class SecurityConfig {
                                 .authenticationEntryPoint(restAuthenticationEntryPoint)
                                 .accessDeniedHandler(restAccessDeniedHandler)
                 )
+
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers(HttpMethod.POST, "/users", "/auth/login", "/auth/refresh", "/auth/signup"
                                         , "/internal/mail/**","/book/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/users/me","/user/**","/booklike/**").hasAuthority("USER")
                                 .requestMatchers("/actuator/**").permitAll()
+
+                                //BookReport관련
+                                .requestMatchers(HttpMethod.POST, "/book-report/**", "/book-report-comment/**", "/book-report-like/**").hasAuthority("USER")
+                                .requestMatchers(HttpMethod.PUT, "/book-report/**", "/book-report-comment/**").hasAuthority("USER")
+                                .requestMatchers(HttpMethod.DELETE, "/book-report/**", "/book-report-comment/**").hasAuthority("USER")
+                                .requestMatchers(HttpMethod.GET, "/book-report/**", "/book-report-comment/**").permitAll()
+
                                 .anyRequest().authenticated()
                 )
                 // 기존 JWT 검증 필터 대신, Gateway가 전달한 헤더를 이용하는 필터 추가
