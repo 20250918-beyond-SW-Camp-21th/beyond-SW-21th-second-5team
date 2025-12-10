@@ -1,5 +1,6 @@
 package com.ohgiraffers.secondbackend.userlike.controller;
 
+import com.ohgiraffers.secondbackend.userlike.dto.request.LikeCategoryDTO;
 import com.ohgiraffers.secondbackend.userlike.dto.response.UserLikeResponseDTO;
 import com.ohgiraffers.secondbackend.userlike.service.UserLikeService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,29 +17,31 @@ public class UserLikeController {
 
     private final UserLikeService userLikeService;
 
-    @PostMapping("/like/{bookcategory}")
+    @PostMapping
     public ResponseEntity<UserLikeResponseDTO> likeBook(
-            HttpServletRequest req,
-            @PathVariable String bookcategory
-    ){
-
+           HttpServletRequest req,
+            @RequestBody LikeCategoryDTO likeCategoryDTO
+    ) {
         String username = req.getHeader("X-User-Name");
-        UserLikeResponseDTO response = userLikeService.likeBook(username,bookcategory);
+        UserLikeResponseDTO response =
+                userLikeService.likeBook(username, likeCategoryDTO.getCategory());
+
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/unlike/{bookcategory}")
+
+
+    @DeleteMapping("/{category}")
     public ResponseEntity<Void> unlikeBook(
             HttpServletRequest req,
-            @PathVariable String bookcategory
-    ){
-
-        String username=req.getHeader("X-User-Name");
-        userLikeService.unlikeBook(username,bookcategory);
-
-        return ResponseEntity.ok().build();
-
+            @PathVariable String category
+    ) {
+        String username = req.getHeader("X-User-Name");
+        userLikeService.unlikeBook(username, category);
+        return ResponseEntity.noContent().build();
     }
+
+
 
     @GetMapping("/list")
     public ResponseEntity<?> getUserCategories(

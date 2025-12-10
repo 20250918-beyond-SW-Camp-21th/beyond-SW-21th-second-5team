@@ -9,6 +9,7 @@ import com.ohgiraffers.secondbackend.userlike.dto.response.UserLikeResponseDTO;
 import com.ohgiraffers.secondbackend.userlike.entity.UserLikeEntity;
 import com.ohgiraffers.secondbackend.userlike.repository.UserLikeRepository;
 import jakarta.transaction.Transactional;
+import jdk.jfr.Category;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,25 +36,26 @@ public class UserLikeService {
     @Transactional
     public UserLikeResponseDTO likeBook(String username, String bookCategory){
         User user=userRepository.findByUsername(username).orElseThrow();
-        UserLikeEntity userLikeEntity;
-        userLikeEntity=userLikeRepository.findByUserAndBookCategory(user,bookCategory).orElse(null);
-        UserLikeEntity savedUserLikeEntity = userLikeRepository.save(userLikeEntity);
+        UserLikeResponseDTO userLikeResponseDTO
+                =userLikeRepository.findByUserAndBookCategory(user, bookCategory).orElseThrow();
 
-        return UserLikeResponseDTO.builder()
-                .userLikeId(savedUserLikeEntity.getUserLikeId())
-                .userId(user.getId())
-                .category(bookCategory)
-                .build();
-
+        return userLikeResponseDTO;
     }
 
     @Transactional
     public void unlikeBook(String username, String bookCategory) {
-        User user=userRepository.findByUsername(username).orElseThrow();
-        UserLikeEntity userLikeEntity;
-        userLikeEntity=userLikeRepository.findByUserAndBookCategory(user,bookCategory).orElse(null);
-        userLikeRepository.delete(userLikeEntity);
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저"));
+
+        UserLikeResponseDTO userLike = userLikeRepository
+                .findByUserAndBookCategory(user, bookCategory)
+                .orElseThrow(() -> new IllegalArgumentException("좋아요 내역이 없습니다."));
+
+
+        userLikeRepository.deleteByUserAndCategory(user, bookCategory);
     }
+
 
 
     public List<String> selectCategoryAll(String username) {

@@ -1,9 +1,10 @@
 package com.ohgiraffers.users;
 
+import com.ohgiraffers.secondbackend.user.UserServiceApplication;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+@SpringBootTest(classes = UserServiceApplication.class)
 class UserServiceApplicationTests {
 
 	@Test
