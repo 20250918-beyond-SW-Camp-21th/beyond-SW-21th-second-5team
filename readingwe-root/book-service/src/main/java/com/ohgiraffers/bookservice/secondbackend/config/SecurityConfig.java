@@ -37,8 +37,8 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers(HttpMethod.POST, "/users", "/auth/login", "/auth/refresh", "/auth/signup"
-                                        , "/internal/mail/**", "/book/**").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/users/me", "/user/**", "/booklike/**").hasAuthority("USER")
+                                        , "/internal/mail/**","/book/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/users/me","/user/**","/booklike/**").hasAuthority("USER")
                                 .requestMatchers("/actuator/**").permitAll()
 
                                 //book-report관련
@@ -57,6 +57,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/book-report-like/**").hasAuthority("USER")
 
                                 .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**").permitAll()
+                                .requestMatchers( "/swagger-ui.html","/swagger-ui/**","/v3/api-docs/**","/swagger-resources/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 // 기존 JWT 검증 필터 대신, Gateway가 전달한 헤더를 이용하는 필터 추가
@@ -69,4 +70,5 @@ public class SecurityConfig {
     public HeaderAuthenticationFilter headerAuthenticationFilter() {
         return new HeaderAuthenticationFilter();
     }
+
 }
