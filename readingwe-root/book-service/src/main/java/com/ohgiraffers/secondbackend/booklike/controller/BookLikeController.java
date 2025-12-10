@@ -5,6 +5,7 @@ import com.ohgiraffers.secondbackend.booklike.dto.request.LikeCancelDTO;
 import com.ohgiraffers.secondbackend.booklike.dto.response.BookLikeResponseDTO;
 import com.ohgiraffers.secondbackend.booklike.dto.response.BookRankingResponseDTO;
 import com.ohgiraffers.secondbackend.booklike.service.BooklikeService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,11 +21,11 @@ public class BookLikeController {
 
     @PostMapping("/like/{bookId}")
     public ResponseEntity<BookLikeResponseDTO> likeBook(
-            @RequestHeader("X-User-ID") String struserid,
+            HttpServletRequest req,
             @PathVariable Long bookId
     ) {
-
-        long userid=Long.parseLong(struserid);
+        String rawuserid = req.getHeader("X-User-ID");
+        long userid=Long.parseLong(rawuserid);
 
         LikeApplyDTO likeApplyDTO = new LikeApplyDTO(userid,bookId);
         BookLikeResponseDTO response = bookLikeService.likeBook(likeApplyDTO);
@@ -34,9 +35,10 @@ public class BookLikeController {
 
     @DeleteMapping("/unlike/{bookId}")
     public ResponseEntity<Void> unlikeBook(
-            @RequestHeader("X-User-ID") String struserid,
+            HttpServletRequest req,
             @PathVariable Long bookId
     ) {
+        String struserid = req.getHeader("X-User-ID");
         long userId= Long.parseLong(struserid);
 
         LikeCancelDTO likeCancelDTO = new LikeCancelDTO(userId,bookId);
