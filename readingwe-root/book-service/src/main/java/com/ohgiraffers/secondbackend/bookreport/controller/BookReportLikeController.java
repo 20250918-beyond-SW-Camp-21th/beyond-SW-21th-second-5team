@@ -5,10 +5,7 @@ import com.ohgiraffers.secondbackend.bookreport.dto.response.BookReportLikeRespo
 import com.ohgiraffers.secondbackend.bookreport.service.BookReportLikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/book-report-like")
@@ -19,7 +16,9 @@ public class BookReportLikeController {
 
     @PostMapping("/{bookReportId}")
     public ResponseEntity<BookReportLikeResponseDTO> toggleLike(
-            @RequestBody BookReportLikeRequestDTO request) {
-        return bookReportLikeService.toggleLike(request);
+            @PathVariable Long bookReportId,
+            @RequestHeader("X-User-Id") String userIdHeader) {
+        Long userId = Long.parseLong(userIdHeader);
+        return bookReportLikeService.toggleLike(bookReportId, userId);
     }
 }
