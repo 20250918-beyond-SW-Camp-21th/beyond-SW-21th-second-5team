@@ -18,6 +18,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.net.http.HttpRequest;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -109,34 +111,25 @@ public class UserService  implements UserDetailsService{
 
     /*닉네임 변경*/
     @Transactional
-    public UserResponseDTO updateNickname(String accessToken, ProfileUpdateDTO profileUpdateDTO){
-        String username= jwtUtil.getUsername(accessToken);
-        User user=userRepository
-                .findByUsername(username).orElseThrow(()-> new IllegalArgumentException("잘못된 접근"));
-
-        user.setNickname(profileUpdateDTO.getNickname());
-        userRepository.save(user);
-
-        return userResponseDTO(user);
+    public UserResponseDTO updateNickname(String username,ProfileUpdateDTO profileUpdateDTO){
+      String nickname=profileUpdateDTO.getNickname();
+      Optional<User> user=userRepository.findByUsername(username);
+      user.get().setNickname(nickname);
+      return userResponseDTO(user.orElse(null));
     }
 
     /*비밀번호 변경*/
     //기존 비밀번호 검증이 필요하지 않을 거 같아서 빼긴했는데...
-    public UserResponseDTO updatePassword(String accessToken, PasswordUpdateDTO passwordUpdateDTO){
-        String username= jwtUtil.getUsername(accessToken);
-        User user=userRepository
-                .findByUsername(username).orElseThrow(()-> new IllegalArgumentException("잘못된 접근"));
-
+    public UserResponseDTO updatePassword(String username, PasswordUpdateDTO passwordUpdateDTO){
+        User user=userRepository.findByUsername(username).orElseThrow();
         user.setPassword(passwordEncoder.encode(passwordUpdateDTO.getNewPassword()));
-        userRepository.save(user);
-
         return userResponseDTO(user);
     }
 
     @Transactional
-    public UserProfileResponse getProfileById(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 유저를 찾을 수 없습니다. id=" + userId));
+    public UserProfileResponse UpdateUsername(String username,String newUsername) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 유저를 찾을 수 없습니다"));
 
         return UserProfileResponse.from(user);
     }

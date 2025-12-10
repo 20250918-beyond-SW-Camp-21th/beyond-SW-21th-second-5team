@@ -29,53 +29,41 @@ public class UserController {
         return ResponseEntity.ok("logout 성공");
     }
     @PatchMapping("/update-nickname")
-    public ResponseEntity<String> updateNickname(@RequestHeader("Authorization") String authorizationHeader
+    public ResponseEntity<String> updateNickname(
+            HttpServletRequest req
             , @RequestBody ProfileUpdateDTO profileUpdateDTO) {
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            return ResponseEntity.badRequest().body("받은게 없거나 잘못된 헤더입니다.");
-        }
-
-        String accessToken = authorizationHeader.substring(7);
-
-
-        try{
-            userService.updateNickname(accessToken,profileUpdateDTO);
-            return ResponseEntity.ok("변경 성공");
-        }catch(Exception e){
-            return ResponseEntity.badRequest().body("변경 실패"+e.getMessage());
-        }
+        String username = req.getHeader("X-User-Name");
+        userService.updateNickname(username,profileUpdateDTO);
+        return ResponseEntity.ok("닉네임 업데이트 성공");
     }
 
     @PatchMapping("/update-password")
-    public ResponseEntity<String> updatePassword(@RequestHeader("Authorization") String authorizationHeader
+    public ResponseEntity<String> updatePassword(
+            HttpServletRequest req
             , @RequestBody PasswordUpdateDTO passwordUpdateDTO) {
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            return ResponseEntity.badRequest().body("받은게 없거나 잘못된 헤더입니다.");
-        }
-
-        String accessToken = authorizationHeader.substring(7);
-
-
-        try{
-            userService.updatePassword(accessToken,passwordUpdateDTO);
-            return ResponseEntity.ok("변경 성공");
-        }catch(Exception e){
-            return ResponseEntity.badRequest().body("변경 실패"+e.getMessage());
-        }
+        String username=req.getHeader("X-User-Name");
+        userService.updatePassword(username,passwordUpdateDTO);
+        return ResponseEntity.ok("비밀번호 업데이트 성공");
     }
 
     @GetMapping("/username/{username}")
-    public ResponseEntity<UserProfileResponse> getUserProfileByUsername(@PathVariable("username") String username) {
-        UserProfileResponse profile = userService.getProfileByUsername(username);
-        return ResponseEntity.ok(profile);
+    public ResponseEntity<UserProfileResponse> getUserProfileByUsername(
+            @PathVariable("username") String newusername
+            , HttpServletRequest req) {
+        String username = req.getHeader("X-User-Name");
+        UserProfileResponse userProfileResponse=
+                userService.UpdateUsername(username,newusername);
+        return ResponseEntity.ok(userProfileResponse);
 
     }
 
-    @GetMapping("/userId/{userId}")
-    public ResponseEntity<UserProfileResponse> getUserProfileById(@PathVariable("userId") Long userId) {
-        UserProfileResponse profile = userService.getProfileById(userId);
-        return ResponseEntity.ok(profile);
-    }
+//    @GetMapping("/userId/{userId}")
+//    public ResponseEntity<UserProfileResponse> getUserProfileById(
+//            @PathVariable("userId") Long userId
+//            , HttpServletRequest req) {
+//        UserProfileResponse profile = userService.getProfileById(userId);
+//        return ResponseEntity.ok(profile);
+//    }
 
 
 }
