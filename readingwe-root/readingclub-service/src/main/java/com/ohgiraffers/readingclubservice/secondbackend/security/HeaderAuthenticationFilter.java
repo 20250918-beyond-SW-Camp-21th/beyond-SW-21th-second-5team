@@ -22,7 +22,7 @@ public class HeaderAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         // API Gateway가 전달한 헤더 읽기
-        String userId = request.getHeader("X-User-Id");
+        String userId = request.getHeader("X-User-ID");
         String role = request.getHeader("X-User-Role");
         String userName = request.getHeader("X-User-Name");
 
