@@ -39,6 +39,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, "/review/**").hasAuthority("USER")
                         .requestMatchers(HttpMethod.PUT, "/review/**").hasAuthority("USER")
                         .requestMatchers(HttpMethod.DELETE, "/review/**").hasAuthority("USER")
+                        .requestMatchers( "/swagger-ui.html","/swagger-ui/**","/v3/api-docs/**","/swagger-resources/**").permitAll()
                         // 나머지는 일단 막기
                         .anyRequest().authenticated()
         )
