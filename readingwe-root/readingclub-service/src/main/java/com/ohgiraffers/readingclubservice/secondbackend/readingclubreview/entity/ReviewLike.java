@@ -36,4 +36,9 @@ public class ReviewLike {
         this.userId = user;
         this.review = review;
     }
+
+    // 연관관계 편의용
+    void setReview(ReadingClubReview review) {
+        this.review = review;
+    }
 }

@@ -48,6 +48,10 @@ public class ReadingClubReview {
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReviewComment> comments = new ArrayList<>();
 
+    // ✅ 새로 추가할 좋아요 컬렉션
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReviewLike> likes = new ArrayList<>();
+
     @Builder
     public ReadingClubReview(ReadingClub clubId,
                              Long writerId,
