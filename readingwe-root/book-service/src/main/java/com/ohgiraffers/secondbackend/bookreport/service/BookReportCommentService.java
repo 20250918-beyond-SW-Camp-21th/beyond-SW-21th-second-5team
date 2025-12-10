@@ -12,6 +12,11 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class BookReportCommentService {
@@ -48,7 +53,7 @@ public class BookReportCommentService {
 
         UserProfileResponseDto userProfile = userClient.getUserById(userId);
 
-        return saved.toResponseDTO(userProfile.getNickName());
+        return saved.toResponseDTO(userProfile.getUsername(), userProfile.getNickName());
     }
 
     @Transactional
@@ -61,9 +66,10 @@ public class BookReportCommentService {
 
         UserProfileResponseDto userProfile = userClient.getUserById(comment.getUserId());
 
-        return  comment.toResponseDTO(userProfile.getNickName());
+        return  comment.toResponseDTO(userProfile.getUsername(), userProfile.getNickName());
     }
 
+    //댓글 삭제
     @Transactional
     public void deleteBookComment(Long commentId) {
         //삭제할 코멘트가 실제로 존재하는지 확인
@@ -71,5 +77,40 @@ public class BookReportCommentService {
                 .orElseThrow(() -> new IllegalArgumentException("삭제할 댓글이 존재하지 않습니다"));
 
         bookReportCommentRepository.delete(comment);
+    }
+
+    //특정 독후감 댓글 전체 조회
+    @Transactional
+    public List<BookReportCommentResponseDTO> getCommentsByReportId(Long reportId) {
+
+        List<BookReportComment> comments =
+                bookReportCommentRepository.findByBookReport_BookReportId(reportId);
+
+        //1) 모든 댓글 -> DTO로 변환
+        Map<Long, BookReportCommentResponseDTO> dtoMap = new HashMap<>();
+
+        for (BookReportComment c : comments) {
+            UserProfileResponseDto profile = userClient.getUserById(c.getUserId());
+
+            BookReportCommentResponseDTO dto =
+                    c.toResponseDTO(profile.getUsername(), profile.getNickName());
+
+            dtoMap.put(c.getReportCommentId(), dto);
+        }
+
+        //계층구조 만들기
+        List<BookReportCommentResponseDTO> rootList = new ArrayList<>();
+
+        for (BookReportComment c : comments) {
+            BookReportCommentResponseDTO dto = dtoMap.get(c.getReportCommentId());
+
+            if(c.getParent() == null) {
+                rootList.add(dto);
+            } else {
+                dtoMap.get(c.getParent().getReportCommentId())
+                        .getChildren().add(dto);
+            }
+        }
+        return rootList;
     }
 }
