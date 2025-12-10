@@ -38,7 +38,7 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers(HttpMethod.POST, "/users", "/auth/login", "/auth/refresh", "/auth/signup", "internal/mail/**").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/users/me").hasAuthority("USER")
+                                .requestMatchers(HttpMethod.GET, "/users/me","/user/**").hasAuthority("USER")
                                 .requestMatchers("/actuator/**").permitAll()
                                 .anyRequest().authenticated()
                 )

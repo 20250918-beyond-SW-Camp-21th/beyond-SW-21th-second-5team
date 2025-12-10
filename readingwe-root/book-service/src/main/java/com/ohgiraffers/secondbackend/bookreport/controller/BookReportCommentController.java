@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/book-report-comment")
 @RequiredArgsConstructor
@@ -46,5 +48,12 @@ public class BookReportCommentController {
         return ResponseEntity.status(HttpStatus.OK).body("정상적으로 댓글이 삭제됩니다.");
     }
 
+    // 댓글 전체 조회
+    public ResponseEntity<List<BookReportCommentResponseDTO>> getComments(
+            @PathVariable Long reportId){
+        List<BookReportCommentResponseDTO> comments =
+                bookReportCommentService.getCommentsByReportId(reportId);
+        return ResponseEntity.status(HttpStatus.OK).body(comments);
+    }
 
 }

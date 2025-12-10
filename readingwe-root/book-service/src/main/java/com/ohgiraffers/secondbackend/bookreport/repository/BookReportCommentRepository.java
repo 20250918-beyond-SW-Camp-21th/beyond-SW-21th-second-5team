@@ -14,4 +14,5 @@ public interface BookReportCommentRepository extends JpaRepository<BookReportCom
 
     // 대댓글이 아닌 일반댓글만 조회(부모 댓글이 null)
     List<BookReportComment> findByBookReport_BookReportIdAndParentIsNull(Long bookReportId);
+
 }

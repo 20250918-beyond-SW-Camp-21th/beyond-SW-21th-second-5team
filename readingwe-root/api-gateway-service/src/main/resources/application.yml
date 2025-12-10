@@ -20,8 +20,8 @@ spring:
               uri: lb://USER-SERVICE
               predicates:
                 - Path=/auth/**,/user/**
-
-            # 3) book-service 라우트 (JWT 필터 있음)
+              filters:
+              - JwtAuthenticationFilter
             - id: book-service
               uri: lb://BOOK-SERVICE
               predicates:
@@ -36,6 +36,7 @@ spring:
                 - Path=/reading-club/**,/review/**
               filters:
                 - name: JwtAuthenticationFilter
+                
 
 eureka:
   client:
