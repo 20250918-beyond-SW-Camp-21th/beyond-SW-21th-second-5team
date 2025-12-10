@@ -19,7 +19,7 @@ spring:
             - id: user-service
               uri: lb://USER-SERVICE
               predicates:
-                - Path=/auth/**,/user/**
+                - Path=/auth/**,/user/**,/userlike/**
               filters:
                 - JwtAuthenticationFilter
             - id: book-service

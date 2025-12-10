@@ -17,7 +17,7 @@ public class UserLikeController {
 
     private final UserLikeService userLikeService;
 
-    @PostMapping
+    @PostMapping("/like")
     public ResponseEntity<UserLikeResponseDTO> likeBook(
            HttpServletRequest req,
             @RequestBody LikeCategoryDTO likeCategoryDTO

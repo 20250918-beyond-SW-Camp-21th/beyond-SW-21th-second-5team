@@ -26,15 +26,15 @@ public class HeaderAuthenticationFilter extends OncePerRequestFilter {
         String role = request.getHeader("X-User-Role");
         String userName = request.getHeader("X-User-Name");
 
-        log.info("userId : {}", userId);
-        log.info("role : {}", role);
-        log.info("userName : {}", userName);
 
         if (userId != null && role != null && userName != null) {
             // 이미 Gateway에서 검증된 정보로 인증 객체 구성
             PreAuthenticatedAuthenticationToken authentication =
-                    new PreAuthenticatedAuthenticationToken(userId, null,
-                            List.of(new SimpleGrantedAuthority(role)));
+                    new PreAuthenticatedAuthenticationToken(
+                            userId
+                            , null,
+                            List.of(new SimpleGrantedAuthority(role))
+                    );
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response);

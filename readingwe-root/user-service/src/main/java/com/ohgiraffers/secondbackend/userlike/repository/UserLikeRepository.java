@@ -8,8 +8,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface UserLikeRepository extends JpaRepository<UserLikeEntity,Long> {
+public interface UserLikeRepository extends JpaRepository<UserLikeEntity, Long> {
+
     List<UserLikeEntity> findByUser(User user);
-    Optional<UserLikeResponseDTO> findByUserAndBookCategory(User user, String category);
-    void deleteByUserAndCategory(User user, String category);
+
+    Optional<UserLikeEntity> findByUserAndBookCategory(User user, String bookCategory);
+
+    boolean existsByUserAndBookCategory(User user, String bookCategory);
+
+    void deleteByUserAndBookCategory(User user, String bookCategory);
 }

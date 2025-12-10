@@ -32,15 +32,31 @@ public class UserLikeService {
         this.bookFeignClient = bookFeignClient;
     }
 
-    //등록
     @Transactional
-    public UserLikeResponseDTO likeBook(String username, String bookCategory){
-        User user=userRepository.findByUsername(username).orElseThrow();
-        UserLikeResponseDTO userLikeResponseDTO
-                =userLikeRepository.findByUserAndBookCategory(user, bookCategory).orElseThrow();
+    public UserLikeResponseDTO likeBook(String username, String bookCategory) {
 
-        return userLikeResponseDTO;
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저"));
+
+        // ✅ 중복 체크
+        if (userLikeRepository.existsByUserAndBookCategory(user, bookCategory)) {
+            throw new IllegalStateException("이미 좋아요한 카테고리입니다.");
+        }
+
+        UserLikeEntity entity = UserLikeEntity.builder()
+                .user(user)
+                .bookCategory(bookCategory)
+                .build();
+
+        UserLikeEntity saved = userLikeRepository.save(entity);
+
+        return UserLikeResponseDTO.builder()
+                .userLikeId(saved.getUserLikeId())
+                .userId(user.getId())
+                .category(saved.getBookCategory())
+                .build();
     }
+
 
     @Transactional
     public void unlikeBook(String username, String bookCategory) {
@@ -48,13 +64,13 @@ public class UserLikeService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저"));
 
-        UserLikeResponseDTO userLike = userLikeRepository
+        UserLikeEntity entity = userLikeRepository
                 .findByUserAndBookCategory(user, bookCategory)
                 .orElseThrow(() -> new IllegalArgumentException("좋아요 내역이 없습니다."));
 
-
-        userLikeRepository.deleteByUserAndCategory(user, bookCategory);
+        userLikeRepository.delete(entity);
     }
+
 
 
 

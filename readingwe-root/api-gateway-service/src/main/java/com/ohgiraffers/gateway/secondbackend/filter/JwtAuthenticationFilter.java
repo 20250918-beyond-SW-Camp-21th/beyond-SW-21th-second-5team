@@ -48,7 +48,7 @@ public class JwtAuthenticationFilter extends AbstractGatewayFilterFactory<JwtAut
 
             ServerHttpRequest mutatedRequest = request.mutate()
                     .header("X-User-Name", username)
-                    .header("X-User-ID", Id)
+                    .header("X-User-Id", Id)
                     .header("X-User-Role", role)
                     .build();
 

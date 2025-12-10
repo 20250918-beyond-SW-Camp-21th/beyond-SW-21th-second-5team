@@ -1,4 +1,4 @@
-package com.ohgiraffers.secondbackend.user;
+package com.ohgiraffers.secondbackend;
 
 import com.ohgiraffers.secondbackend.user.client.EmailFeignClient;
 import com.ohgiraffers.secondbackend.userlike.client.BookFeignClient;
