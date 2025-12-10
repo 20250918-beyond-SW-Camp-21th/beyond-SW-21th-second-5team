@@ -34,10 +34,11 @@ public class SecurityConfig {
         .authorizeHttpRequests(auth ->
                 auth.requestMatchers(HttpMethod.GET, "/reading-club/**").permitAll()
                         .requestMatchers("/reading-club/**").hasAuthority("USER")
-                        .requestMatchers(HttpMethod.GET, "/review/**").authenticated()
-                        .requestMatchers(HttpMethod.PATCH, "/review/**").authenticated()
-                        .requestMatchers(HttpMethod.PUT, "/review/**").authenticated()
-                        .requestMatchers(HttpMethod.DELETE, "/review/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/review/**").hasAuthority("USER")
+                        .requestMatchers(HttpMethod.POST, "/review/**").hasAuthority("USER")
+                        .requestMatchers(HttpMethod.PATCH, "/review/**").hasAuthority("USER")
+                        .requestMatchers(HttpMethod.PUT, "/review/**").hasAuthority("USER")
+                        .requestMatchers(HttpMethod.DELETE, "/review/**").hasAuthority("USER")
                         // 나머지는 일단 막기
                         .anyRequest().authenticated()
         )
