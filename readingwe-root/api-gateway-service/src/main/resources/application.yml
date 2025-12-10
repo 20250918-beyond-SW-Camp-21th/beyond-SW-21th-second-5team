@@ -1,42 +1,41 @@
 spring:
   application:
     name: api-gateway
+
   cloud:
     gateway:
-      server:
-        webflux:
-          routes:
-            # 1) user-service Swagger 문서 라우트
-            - id: user-service-api-docs
-              uri: lb://USER-SERVICE
-              predicates:
-                - Path=/user-service/v3/api-docs/**
-              filters:
-                # /user-service/v3/api-docs -> /v3/api-docs 로 리라이트
-                - RewritePath=/user-service/v3/api-docs(?<segment>.*), /v3/api-docs$\{segment}
+      routes:
+        # 1) user-service Swagger 문서 라우트
+        - id: user-service-api-docs
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/v3/api-docs/**
+          filters:
+            - RewritePath=/user-service/v3/api-docs(?<segment>.*), /v3/api-docs$\{segment}
 
-            # 2) user-service 실제 API 라우트
-            - id: user-service
-              uri: lb://USER-SERVICE
-              predicates:
-                - Path=/auth/**,/user/**
-              filters:
-                - JwtAuthenticationFilter
-            - id: book-service
-              uri: lb://BOOK-SERVICE
-              predicates:
-                - Path=/book/**,/booklike/**,/book-report/**,/book-report-comment/**,/book-report-like/**
-              filters:
-                - name: JwtAuthenticationFilter
+        # 2) user-service 실제 API 라우트
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/auth/**,/user/**
+          filters:
+            - JwtAuthenticationFilter
 
-            # 4) readingclub-service 라우트 (JWT 필터 있음)
-            - id: readingclub-service
-              uri: lb://READINGCLUB-SERVICE
-              predicates:
-                - Path=/reading-club/**,/review/**
-              filters:
-                - name: JwtAuthenticationFilter
-                
+        # 3) book-service
+        - id: book-service
+          uri: lb://BOOK-SERVICE
+          predicates:
+            - Path=/book/**,/booklike/**,/book-report/**,/book-report-comment/**,/book-report-like/**
+          filters:
+            - JwtAuthenticationFilter
+
+        # 4) readingclub-service
+        - id: readingclub-service
+          uri: lb://READINGCLUB-SERVICE
+          predicates:
+            - Path=/reading-club/**,/review/**
+          filters:
+            - JwtAuthenticationFilter
 
 eureka:
   client:
