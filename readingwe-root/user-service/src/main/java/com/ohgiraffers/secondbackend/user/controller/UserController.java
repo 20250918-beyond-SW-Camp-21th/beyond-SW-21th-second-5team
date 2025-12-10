@@ -48,13 +48,9 @@ public class UserController {
 
     @GetMapping("/username/{username}")
     public ResponseEntity<UserProfileResponse> getUserProfileByUsername(
-            @PathVariable("username") String newusername
-            , HttpServletRequest req) {
-        String username = req.getHeader("X-User-Name");
-        UserProfileResponse userProfileResponse=
-                userService.UpdateUsername(username,newusername);
-        return ResponseEntity.ok(userProfileResponse);
-
+            @PathVariable("username") String username) {
+        UserProfileResponse profile = userService.getProfileByUsername(username);
+        return ResponseEntity.ok(profile);
     }
 
     @GetMapping("/userId/{userId}")
