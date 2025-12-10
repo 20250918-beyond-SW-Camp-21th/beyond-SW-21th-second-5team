@@ -10,6 +10,8 @@ spring:
               uri: lb://USER-SERVICE
               predicates:
                 - Path=/auth/**,/user/**
+              filters:
+              - JwtAuthenticationFilter
             - id: book-service
               uri: lb://BOOK-SERVICE
               predicates:
@@ -20,6 +22,8 @@ spring:
               uri: lb://READINGCLUB-SERVICE
               predicates:
                 - Path=/reading-club/**,/review/**
+              filters:
+                - JwtAuthenticationFilter
 
 eureka:
   client:
