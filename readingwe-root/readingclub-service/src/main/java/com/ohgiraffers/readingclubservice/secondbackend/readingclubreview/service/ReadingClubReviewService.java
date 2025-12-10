@@ -1,6 +1,5 @@
 package com.ohgiraffers.readingclubservice.secondbackend.readingclubreview.service;
 
-import com.ohgiraffers.readingclubservice.secondbackend.client.UserFeignClient;
 import com.ohgiraffers.readingclubservice.secondbackend.readingclub.entity.ReadingClub;
 import com.ohgiraffers.readingclubservice.secondbackend.readingclub.repository.ReadingClubMemberRepository;
 import com.ohgiraffers.readingclubservice.secondbackend.readingclub.repository.ReadingClubRepository;
@@ -22,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ReadingClubReviewService {
 
-    private final UserFeignClient userFeignClient;
     private final ReadingClubReviewRepository reviewRepository;
     private final ReadingClubRepository readingClubRepository;
     private final ReadingClubMemberRepository memberRepository;

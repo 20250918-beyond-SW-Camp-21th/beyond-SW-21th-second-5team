@@ -37,7 +37,7 @@ public class SecurityConfig {
                                 .accessDeniedHandler(restAccessDeniedHandler)
                 )
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers(HttpMethod.POST, "/users", "/auth/login", "/auth/refresh", "/auth/signup", "internal/mail/**").permitAll()
+                        auth.requestMatchers(HttpMethod.POST, "/users", "/auth/login", "/auth/refresh", "/auth/signup", "/internal/mail/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/users/me","/user/**").hasAuthority("USER")
                                 .requestMatchers("/actuator/**").permitAll()
                                 .anyRequest().authenticated()

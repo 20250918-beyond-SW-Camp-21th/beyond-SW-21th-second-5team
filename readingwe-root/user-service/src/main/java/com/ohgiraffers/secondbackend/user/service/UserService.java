@@ -143,4 +143,10 @@ public class UserService  implements UserDetailsService{
     }
 
 
+    public UserProfileResponse getProfileById(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 userId의 유저를 찾을 수 없습니다. userId=" + userId));
+
+        return UserProfileResponse.from(user);
+    }
 }
