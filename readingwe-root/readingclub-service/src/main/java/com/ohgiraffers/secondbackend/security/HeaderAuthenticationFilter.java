@@ -1,4 +1,4 @@
-package com.ohgiraffers.secondbackend.readingclub.security;
+package com.ohgiraffers.secondbackend.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

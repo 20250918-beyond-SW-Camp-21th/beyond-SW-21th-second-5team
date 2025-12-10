@@ -1,8 +1,8 @@
 package com.ohgiraffers.secondbackend.readingclub.service;
 
-import com.ohgiraffers.secondbackend.readingclub.client.EmailFeignClient;
-import com.ohgiraffers.secondbackend.readingclub.client.UserFeignClient;
-import com.ohgiraffers.secondbackend.readingclub.client.dto.*;
+import com.ohgiraffers.secondbackend.client.EmailFeignClient;
+import com.ohgiraffers.secondbackend.client.UserFeignClient;
+import com.ohgiraffers.secondbackend.client.dto.*;
 import com.ohgiraffers.secondbackend.readingclub.dto.request.ReadingClubRequestDTO;
 import com.ohgiraffers.secondbackend.readingclub.dto.response.JoinResponseDTO;
 import com.ohgiraffers.secondbackend.readingclub.dto.response.MyClubResponseDTO;

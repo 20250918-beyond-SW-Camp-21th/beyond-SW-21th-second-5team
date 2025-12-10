@@ -1,4 +1,4 @@
-package com.ohgiraffers.secondbackend.readingclub.security;
+package com.ohgiraffers.secondbackend.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -34,6 +34,10 @@ public class SecurityConfig {
         .authorizeHttpRequests(auth ->
                 auth.requestMatchers(HttpMethod.GET, "/reading-club/**").permitAll()
                         .requestMatchers("/reading-club/**").hasAuthority("USER")
+                        .requestMatchers(HttpMethod.GET, "/review/**").authenticated()
+                        .requestMatchers(HttpMethod.PATCH, "/review/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/review/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/review/**").authenticated()
                         // 나머지는 일단 막기
                         .anyRequest().authenticated()
         )

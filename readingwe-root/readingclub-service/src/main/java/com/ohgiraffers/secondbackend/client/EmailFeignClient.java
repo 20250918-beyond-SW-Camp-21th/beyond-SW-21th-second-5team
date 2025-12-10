@@ -1,6 +1,7 @@
-package com.ohgiraffers.secondbackend.readingclub.client;
+package com.ohgiraffers.secondbackend.client;
 
-import com.ohgiraffers.secondbackend.readingclub.client.dto.*;
+import com.ohgiraffers.secondbackend.client.dto.*;
+import com.ohgiraffers.secondbackend.readingclub.dto.request.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

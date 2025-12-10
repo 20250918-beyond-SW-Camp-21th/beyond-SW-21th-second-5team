@@ -1,9 +1,10 @@
 package com.ohgiraffers.secondbackend.readingclubreview.service;
 
+import com.ohgiraffers.secondbackend.client.UserFeignClient;
 import com.ohgiraffers.secondbackend.readingclub.entity.ReadingClub;
 import com.ohgiraffers.secondbackend.readingclub.repository.ReadingClubMemberRepository;
 import com.ohgiraffers.secondbackend.readingclub.repository.ReadingClubRepository;
-import com.ohgiraffers.secondbackend.readingclubreview.client.UserFeignClient;
+import com.ohgiraffers.secondbackend.client.UserFeignClient;
 import com.ohgiraffers.secondbackend.readingclubreview.dto.request.ReadingClubReviewRequestDTO;
 import com.ohgiraffers.secondbackend.readingclubreview.dto.response.ReadingClubReviewResponseDTO;
 import com.ohgiraffers.secondbackend.readingclubreview.entity.ReadingClubReview;

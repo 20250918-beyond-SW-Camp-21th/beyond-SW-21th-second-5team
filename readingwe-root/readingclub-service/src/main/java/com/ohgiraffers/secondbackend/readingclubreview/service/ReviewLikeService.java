@@ -1,7 +1,8 @@
 package com.ohgiraffers.secondbackend.readingclubreview.service;
 
-import com.ohgiraffers.secondbackend.readingclubreview.client.UserFeignClient;
-import com.ohgiraffers.secondbackend.readingclubreview.client.UserProfileResponse;
+import com.ohgiraffers.secondbackend.client.UserFeignClient;
+import com.ohgiraffers.secondbackend.client.dto.UserProfileResponse;
+import com.ohgiraffers.secondbackend.client.dto.UserProfileResponse;
 import com.ohgiraffers.secondbackend.readingclubreview.dto.response.ReviewLikeToggleResponseDTO;
 import com.ohgiraffers.secondbackend.readingclubreview.entity.ReadingClubReview;
 import com.ohgiraffers.secondbackend.readingclubreview.entity.ReviewLike;
@@ -80,7 +81,7 @@ public class ReviewLikeService {
 
         // 🔥 여기만 Feign으로 변경
         return userIds.stream()
-                .map(userFeignClient::getUserProfileByUserId) // user-service 호출
+                .map(userFeignClient::getUserProfileById) // user-service 호출
                 .map(UserProfileResponse::getNickName)                     // nickname만 추출
                 .toList();
     }

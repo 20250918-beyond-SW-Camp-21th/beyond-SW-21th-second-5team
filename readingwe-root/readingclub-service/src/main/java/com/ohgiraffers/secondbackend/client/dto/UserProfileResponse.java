@@ -1,10 +1,9 @@
-package com.ohgiraffers.secondbackend.readingclubreview.client;
+package com.ohgiraffers.secondbackend.client.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserProfileResponse {
@@ -12,4 +11,5 @@ public class UserProfileResponse {
     private String nickName;
     private String username;
     private String role;
+
 }

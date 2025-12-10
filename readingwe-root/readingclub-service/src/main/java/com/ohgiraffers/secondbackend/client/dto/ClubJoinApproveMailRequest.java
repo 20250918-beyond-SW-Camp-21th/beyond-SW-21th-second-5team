@@ -1,4 +1,4 @@
-package com.ohgiraffers.secondbackend.readingclub.client.dto;
+package com.ohgiraffers.secondbackend.client.dto;
 
 public record ClubJoinApproveMailRequest(
         String email,
