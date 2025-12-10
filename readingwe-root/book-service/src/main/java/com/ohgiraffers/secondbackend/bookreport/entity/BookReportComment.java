@@ -65,16 +65,21 @@ public class BookReportComment {
         this.content = content;
     }
 
-    public BookReportCommentResponseDTO toResponseDTO(String nickname){
+    public BookReportCommentResponseDTO toResponseDTO(String username, String nickname){
         return BookReportCommentResponseDTO.builder()
                 .commentId(this.reportCommentId)
                 .bookReportId(this.bookReport.getBookReportId())
                 .userId(this.userId)
+
+                .username(username)
+                .nickname(nickname)
+
                 .content(this.content)
-                .parentId(this.parent != null ? this.parent.getReportCommentId() : null)
                 .createdAt(this.createdAt)
                 .updatedAt(this.updatedAt)
-                .nickname(nickname)
+                .parentId(this.parent != null ? this.parent.getReportCommentId() : null)
+                .children(new ArrayList<>())    //계층구조 서비스에서 처리
+
                 .build();
     }
 }
