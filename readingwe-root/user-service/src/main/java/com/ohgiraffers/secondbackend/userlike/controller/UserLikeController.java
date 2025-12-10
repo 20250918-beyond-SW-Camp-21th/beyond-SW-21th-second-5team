@@ -2,6 +2,7 @@ package com.ohgiraffers.secondbackend.userlike.controller;
 
 import com.ohgiraffers.secondbackend.userlike.dto.response.UserLikeResponseDTO;
 import com.ohgiraffers.secondbackend.userlike.service.UserLikeService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,32 +18,23 @@ public class UserLikeController {
 
     @PostMapping("/like/{bookcategory}")
     public ResponseEntity<UserLikeResponseDTO> likeBook(
-            @RequestHeader("Authorization")String authorizationHeader,
+            HttpServletRequest req,
             @PathVariable String bookcategory
     ){
-        if (!authorizationHeader.startsWith("Bearer ")) {
-            return ResponseEntity.badRequest().build();
-        }
 
-        String accessToken = authorizationHeader.substring(7);
-
-        UserLikeResponseDTO response=userLikeService.likeBook(accessToken,bookcategory);
-
+        String username = req.getHeader("X-User-Name");
+        UserLikeResponseDTO response = userLikeService.likeBook(username,bookcategory);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/unlike/{bookcategory}")
     public ResponseEntity<Void> unlikeBook(
-            @RequestHeader("Authorization")String authorizationHeader,
+            HttpServletRequest req,
             @PathVariable String bookcategory
     ){
-        if (!authorizationHeader.startsWith("Bearer ")) {
-            return ResponseEntity.badRequest().build();
-        }
 
-        String accessToken = authorizationHeader.substring(7);
-
-        userLikeService.unlikeBook(accessToken,bookcategory);
+        String username=req.getHeader("X-User-Name");
+        userLikeService.unlikeBook(username,bookcategory);
 
         return ResponseEntity.ok().build();
 
@@ -50,16 +42,11 @@ public class UserLikeController {
 
     @GetMapping("/list")
     public ResponseEntity<?> getUserCategories(
-            @RequestHeader("Authorization") String authorizationHeader
+            HttpServletRequest req
     ) {
-        if (!authorizationHeader.startsWith("Bearer ")) {
-            return ResponseEntity.badRequest().body("잘못된 Authorization 헤더");
-        }
 
-        String accessToken = authorizationHeader.substring(7);
-
-        List<String> categories =
-                userLikeService.selectCategoryAll(accessToken);
+        String username = req.getHeader("X-User-Name");
+        List<String> categories = userLikeService.selectCategoryAll(username);
 
         return ResponseEntity.ok(categories);
     }

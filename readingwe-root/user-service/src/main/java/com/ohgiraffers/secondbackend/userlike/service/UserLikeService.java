@@ -33,28 +33,10 @@ public class UserLikeService {
 
     //등록
     @Transactional
-    public UserLikeResponseDTO likeBook(String accessToken, String bookCategory){
-
-        List<String> validCategories= bookFeignClient.getBookCategories();
-        if(!validCategories.contains(bookCategory)){
-            throw new IllegalArgumentException("존재하지 않는 카테고리입니다.");
-        }
-
-
-        String username=jWTUtil.getUsername(accessToken);
-
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
-
-        if (userLikeRepository.existsByUserAndBookCategory(user, bookCategory)) {
-            throw new IllegalArgumentException("이미 선호한 카테고리입니다.");
-        }
-
-        UserLikeEntity userLikeEntity = UserLikeEntity.builder()
-                .user(user)
-                .bookCategory(bookCategory)
-                .build();
-
+    public UserLikeResponseDTO likeBook(String username, String bookCategory){
+        User user=userRepository.findByUsername(username).orElseThrow();
+        UserLikeEntity userLikeEntity;
+        userLikeEntity=userLikeRepository.findByUserAndBookCategory(user,bookCategory).orElse(null);
         UserLikeEntity savedUserLikeEntity = userLikeRepository.save(userLikeEntity);
 
         return UserLikeResponseDTO.builder()
@@ -66,27 +48,16 @@ public class UserLikeService {
     }
 
     @Transactional
-    public void unlikeBook(String accessToken, String bookCategory) {
-
-        String username = jWTUtil.getUsername(accessToken);
-
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
-
-        UserLikeEntity entity = userLikeRepository
-                .findByUserAndBookCategory(user, bookCategory)
-                .orElseThrow(() -> new IllegalArgumentException("해당 카테고리를 좋아요한 기록이 없습니다."));
-
-        userLikeRepository.delete(entity);
+    public void unlikeBook(String username, String bookCategory) {
+        User user=userRepository.findByUsername(username).orElseThrow();
+        UserLikeEntity userLikeEntity;
+        userLikeEntity=userLikeRepository.findByUserAndBookCategory(user,bookCategory).orElse(null);
+        userLikeRepository.delete(userLikeEntity);
     }
 
 
-    public List<String> selectCategoryAll(String accessToken) {
+    public List<String> selectCategoryAll(String username) {
 
-        // 1. 토큰에서 username 추출
-        String username = jWTUtil.getUsername(accessToken);
-
-        // 2. User 조회
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
 
