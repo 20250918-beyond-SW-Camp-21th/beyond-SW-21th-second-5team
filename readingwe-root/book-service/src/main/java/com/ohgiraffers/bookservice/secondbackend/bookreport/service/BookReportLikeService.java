@@ -19,26 +19,26 @@ public class BookReportLikeService {
     private final BookReportLikeRepository bookReportLikeRepository;
 
     @Transactional
-    public ResponseEntity<BookReportLikeResponseDTO> toggleLike(BookReportLikeRequestDTO request) {
+    public ResponseEntity<BookReportLikeResponseDTO> toggleLike(Long bookReportId, Long userId) {
 
         //존재하는 독후감인지 확인
-        BookReport bookReport = bookReportRepository.findById(request.getBookReportId())
+        BookReport bookReport = bookReportRepository.findById(bookReportId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 독후감 입니다."));
 
         //좋아요 눌러져 있는지 확인
-        boolean alreadyLiked = bookReportLikeRepository.existsByBookReportAndUserId(bookReport, request.getUserId());
+        boolean alreadyLiked = bookReportLikeRepository.existsByBookReportAndUserId(bookReport, userId);
 
         boolean nowLiked;
         if (alreadyLiked) {
             //좋아요 취소
-            bookReportLikeRepository.deleteByBookReportAndUserId(bookReport, request.getUserId());
+            bookReportLikeRepository.deleteByBookReportAndUserId(bookReport, userId);
             bookReport.decreaseLike();
             nowLiked = false;
         }else{
             // 좋아요 추가
             BookReportLike like = BookReportLike.builder()
                     .bookReport(bookReport)
-                    .userId(request.getUserId())
+                    .userId(userId)
                     .build();
             bookReportLikeRepository.save(like);
             bookReport.increaseLike();
