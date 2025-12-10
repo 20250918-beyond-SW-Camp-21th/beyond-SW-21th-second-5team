@@ -58,6 +58,4 @@ public class BookController {
                 .map(Enum::name)
                 .toList();
     }
-
-
 }

@@ -55,9 +55,6 @@ public class BooklikeService {
     @Transactional
     public void deleteLike(LikeCancelDTO likeCancelDTO) {
 
-        Book book = bookRepository.findById(likeCancelDTO.getBookId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 책입니다."));
-
         BookLike bookLike = bookLikeRepository
                 .findByUserIdAndBook_BookId(likeCancelDTO.getUserId(),likeCancelDTO.getBookId())
                 .orElseThrow(() -> new IllegalArgumentException("좋아요한 기록이 없습니다."));

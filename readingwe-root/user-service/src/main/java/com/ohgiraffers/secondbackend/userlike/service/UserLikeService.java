@@ -9,6 +9,7 @@ import com.ohgiraffers.secondbackend.userlike.dto.response.UserLikeResponseDTO;
 import com.ohgiraffers.secondbackend.userlike.entity.UserLikeEntity;
 import com.ohgiraffers.secondbackend.userlike.repository.UserLikeRepository;
 import jakarta.transaction.Transactional;
+import jdk.jfr.Category;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,60 +34,32 @@ public class UserLikeService {
 
     //등록
     @Transactional
-    public UserLikeResponseDTO likeBook(String accessToken, String bookCategory){
+    public UserLikeResponseDTO likeBook(String username, String bookCategory){
+        User user=userRepository.findByUsername(username).orElseThrow();
+        UserLikeResponseDTO userLikeResponseDTO
+                =userLikeRepository.findByUserAndBookCategory(user, bookCategory).orElseThrow();
 
-        List<String> validCategories= bookFeignClient.getBookCategories();
-        if(!validCategories.contains(bookCategory)){
-            throw new IllegalArgumentException("존재하지 않는 카테고리입니다.");
-        }
-
-
-        String username=jWTUtil.getUsername(accessToken);
-
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
-
-        if (userLikeRepository.existsByUserAndBookCategory(user, bookCategory)) {
-            throw new IllegalArgumentException("이미 선호한 카테고리입니다.");
-        }
-
-        UserLikeEntity userLikeEntity = UserLikeEntity.builder()
-                .user(user)
-                .bookCategory(bookCategory)
-                .build();
-
-        UserLikeEntity savedUserLikeEntity = userLikeRepository.save(userLikeEntity);
-
-        return UserLikeResponseDTO.builder()
-                .userLikeId(savedUserLikeEntity.getUserLikeId())
-                .userId(user.getId())
-                .category(bookCategory)
-                .build();
-
+        return userLikeResponseDTO;
     }
 
     @Transactional
-    public void unlikeBook(String accessToken, String bookCategory) {
-
-        String username = jWTUtil.getUsername(accessToken);
+    public void unlikeBook(String username, String bookCategory) {
 
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저"));
 
-        UserLikeEntity entity = userLikeRepository
+        UserLikeResponseDTO userLike = userLikeRepository
                 .findByUserAndBookCategory(user, bookCategory)
-                .orElseThrow(() -> new IllegalArgumentException("해당 카테고리를 좋아요한 기록이 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("좋아요 내역이 없습니다."));
 
-        userLikeRepository.delete(entity);
+
+        userLikeRepository.deleteByUserAndCategory(user, bookCategory);
     }
 
 
-    public List<String> selectCategoryAll(String accessToken) {
 
-        // 1. 토큰에서 username 추출
-        String username = jWTUtil.getUsername(accessToken);
+    public List<String> selectCategoryAll(String username) {
 
-        // 2. User 조회
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
 

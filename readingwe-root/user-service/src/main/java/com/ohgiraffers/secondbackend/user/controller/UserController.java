@@ -57,13 +57,13 @@ public class UserController {
 
     }
 
-//    @GetMapping("/userId/{userId}")
-//    public ResponseEntity<UserProfileResponse> getUserProfileById(
-//            @PathVariable("userId") Long userId
-//            , HttpServletRequest req) {
-//        UserProfileResponse profile = userService.getProfileById(userId);
-//        return ResponseEntity.ok(profile);
-//    }
+    @GetMapping("/userId/{userId}")
+    public ResponseEntity<UserProfileResponse> getUserProfileById(
+            @PathVariable("userId") Long userId
+            , HttpServletRequest req) {
+        UserProfileResponse profile = userService.getProfileById(userId);
+        return ResponseEntity.ok(profile);
+    }
 
 
 }

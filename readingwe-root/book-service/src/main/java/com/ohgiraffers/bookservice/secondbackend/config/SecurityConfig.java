@@ -35,19 +35,28 @@ public class SecurityConfig {
                                 .authenticationEntryPoint(restAuthenticationEntryPoint)
                                 .accessDeniedHandler(restAccessDeniedHandler)
                 )
-
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers(HttpMethod.POST, "/users", "/auth/login", "/auth/refresh", "/auth/signup"
-                                        , "/internal/mail/**","/book/**").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/users/me","/user/**","/booklike/**").hasAuthority("USER")
+                                        , "/internal/mail/**", "/book/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/users/me", "/user/**", "/booklike/**").hasAuthority("USER")
                                 .requestMatchers("/actuator/**").permitAll()
 
-                                //BookReport관련
-                                .requestMatchers(HttpMethod.POST, "/book-report/**", "/book-report-comment/**", "/book-report-like/**").hasAuthority("USER")
-                                .requestMatchers(HttpMethod.PUT, "/book-report/**", "/book-report-comment/**").hasAuthority("USER")
-                                .requestMatchers(HttpMethod.DELETE, "/book-report/**", "/book-report-comment/**").hasAuthority("USER")
-                                .requestMatchers(HttpMethod.GET, "/book-report/**", "/book-report-comment/**").permitAll()
+                                //book-report관련
+                                .requestMatchers(HttpMethod.POST, "/book-report").hasAuthority("USER")       // 등록
+                                .requestMatchers(HttpMethod.PUT, "/book-report/**").hasAuthority("USER")     // 수정
+                                .requestMatchers(HttpMethod.DELETE, "/book-report/**").hasAuthority("USER")  // 삭제
+                                .requestMatchers(HttpMethod.GET, "/book-report/**").permitAll()              // 조회(단건/목록 모두 허용)
 
+                                // BookReportComment 권한 설정
+                                .requestMatchers(HttpMethod.POST, "/book-report-comment").hasAuthority("USER")          // 댓글 등록
+                                .requestMatchers(HttpMethod.PUT, "/book-report-comment/**").hasAuthority("USER")       // 댓글 수정
+                                .requestMatchers(HttpMethod.DELETE, "/book-report-comment/**").hasAuthority("USER")    // 댓글 삭제
+                                .requestMatchers(HttpMethod.GET, "/book-report-comment/**").permitAll()                 // 댓글 조회
+
+                                // BookReportLike 권한 설정
+                                .requestMatchers(HttpMethod.POST, "/book-report-like/**").hasAuthority("USER")
+
+                                .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 // 기존 JWT 검증 필터 대신, Gateway가 전달한 헤더를 이용하는 필터 추가
@@ -60,5 +69,4 @@ public class SecurityConfig {
     public HeaderAuthenticationFilter headerAuthenticationFilter() {
         return new HeaderAuthenticationFilter();
     }
-
 }
