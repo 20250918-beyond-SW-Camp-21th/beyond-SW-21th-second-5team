@@ -24,7 +24,7 @@ public class BookLikeController {
             HttpServletRequest req,
             @PathVariable Long bookId
     ) {
-        String rawuserid = req.getHeader("X-User-ID");
+        String rawuserid = req.getHeader("X-User-Id");
         long userid=Long.parseLong(rawuserid);
 
         LikeApplyDTO likeApplyDTO = new LikeApplyDTO(userid,bookId);
@@ -38,7 +38,7 @@ public class BookLikeController {
             HttpServletRequest req,
             @PathVariable Long bookId
     ) {
-        String struserid = req.getHeader("X-User-ID");
+        String struserid = req.getHeader("X-User-Id");
         long userId= Long.parseLong(struserid);
 
         LikeCancelDTO likeCancelDTO = new LikeCancelDTO(userId,bookId);

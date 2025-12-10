@@ -39,6 +39,7 @@ public class SecurityConfig {
                         auth.requestMatchers(HttpMethod.POST, "/users", "/auth/login", "/auth/refresh", "/auth/signup"
                                         , "/internal/mail/**","/book/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/users/me","/user/**","/booklike/**").hasAuthority("USER")
+                                .requestMatchers(HttpMethod.POST, "/users/me","/user/**","/booklike/**").hasAuthority("USER")
                                 .requestMatchers("/actuator/**").permitAll()
 
                                 //book-report관련
