@@ -49,6 +49,7 @@ public class BookReportCommentController {
     }
 
     // 댓글 전체 조회
+    @GetMapping("/{bookReportId}/comments")
     public ResponseEntity<List<BookReportCommentResponseDTO>> getComments(
             @PathVariable Long reportId){
         List<BookReportCommentResponseDTO> comments =
