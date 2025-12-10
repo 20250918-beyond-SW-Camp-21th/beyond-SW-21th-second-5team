@@ -17,11 +17,12 @@ public class JWTUtil {
     public JWTUtil(@Value("${jwt.secret}")String secretKey) {
         this.key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
     }
-    //토큰생성
-    private String createToken(String username,String role, long expireTime) {
+    //토큰생성(유저네임, 역할, 아이디, 만료시간)
+    private String createToken(String username,String role, String userid, long expireTime) {
         Claims claims=Jwts.claims();
         claims.put("username",username);
         claims.put("role",role);
+        claims.put("id",userid);
 
 
         Date now = new Date();
@@ -34,14 +35,15 @@ public class JWTUtil {
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
+
     // Access토큰 생성
-    public String createAccessToken(String username,String role){
-        return createToken(username,role, TimeUnit.MINUTES.toMillis(30));
+    public String createAccessToken(String username,String role,String userid){
+        return createToken(username,role,userid,TimeUnit.MINUTES.toMillis(30));
     }
 
     // Refresh토큰 생성
-    public String createRefreshToken(String username,String role){
-        return createToken(username,role, TimeUnit.DAYS.toMillis(1));
+    public String createRefreshToken(String username,String role,String userid){
+        return createToken(username,role,userid, TimeUnit.DAYS.toMillis(1));
     }
 
     // 토큰 만료 여부
@@ -91,6 +93,12 @@ public class JWTUtil {
                 .get("role",String.class);
 
         return "ROLE_"+role;
+    }
+
+    public String getId(String token){
+        return Jwts.parserBuilder().setSigningKey(key).build()
+                .parseClaimsJws(token).getBody()
+                .get("id",String.class);
     }
 
 

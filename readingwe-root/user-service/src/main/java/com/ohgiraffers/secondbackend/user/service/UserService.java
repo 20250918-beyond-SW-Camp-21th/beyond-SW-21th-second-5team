@@ -88,10 +88,10 @@ public class UserService  implements UserDetailsService{
         if(!passwordEncoder.matches(rawPassword,user.getPassword())){
             throw new IllegalArgumentException("잘못된 비번");
         }
-
+        String userid= String.valueOf(user.getId());
         String role=user.getRole().name();
-        String accessToken=jwtUtil.createAccessToken(username,role);
-        String refreshToken=jwtUtil.createRefreshToken(username,role);
+        String accessToken=jwtUtil.createAccessToken(username,role,userid);
+        String refreshToken=jwtUtil.createRefreshToken(username,role,userid);
 
         String refreshKey="refresh:"+username;
         //28일간 저장
