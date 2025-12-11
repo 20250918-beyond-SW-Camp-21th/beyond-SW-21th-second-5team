@@ -42,6 +42,13 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/users/me","/user/**","/booklike/**").hasAuthority("USER")
                                 .requestMatchers("/actuator/**").permitAll()
 
+                                //book 관련
+                                .requestMatchers("/book/booklist","/book/booklist/**","/book/booklist/category/**"
+                                ,"/book/booklist/author/**","/book/booklist/title/**").permitAll()
+                                .requestMatchers("/book/save-book/**","/book/delete-book/**").hasAuthority("ADMIN")
+
+                                .requestMatchers("/booklike/**").permitAll()
+
                                 //book-report관련
                                 .requestMatchers(HttpMethod.POST, "/book-report").permitAll()         // 등록
                                 .requestMatchers(HttpMethod.PUT, "/book-report/**").hasAuthority("USER")     // 수정
