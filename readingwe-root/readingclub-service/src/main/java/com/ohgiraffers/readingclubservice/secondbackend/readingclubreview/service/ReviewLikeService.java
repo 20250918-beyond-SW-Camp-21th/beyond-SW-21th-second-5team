@@ -78,7 +78,6 @@ public class ReviewLikeService {
 
         // 6) userId로 User 조회 → username 리스트 뽑기
 
-        // 🔥 여기만 Feign으로 변경
         return userIds.stream()
                 .map(userFeignClient::getUserProfileById) // user-service 호출
                 .map(UserProfileResponse::getNickName)                     // nickname만 추출

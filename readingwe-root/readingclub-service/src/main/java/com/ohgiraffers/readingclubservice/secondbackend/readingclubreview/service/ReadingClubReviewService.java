@@ -95,7 +95,7 @@ public class ReadingClubReviewService {
         reviewRepository.delete(review);
     }
 
-    // ✅ 특정 모임 리뷰 – 최신순, 15개씩
+    // 특정 모임 리뷰 – 최신순, 15개씩
     @Transactional(readOnly = true)
     public Page<ReadingClubReviewResponseDTO> getReviewsOrderByLatest(Long clubId, int page, Long userId) {
 
@@ -108,7 +108,7 @@ public class ReadingClubReviewService {
         return result.map(ReadingClubReviewResponseDTO::from);
     }
 
-    // ✅ 특정 모임 리뷰 – 좋아요 많은 순, 15개씩
+    // 특정 모임 리뷰 – 좋아요 많은 순, 15개씩
     @Transactional(readOnly = true)
     public Page<ReadingClubReviewResponseDTO> getReviewsOrderByLike(Long clubId, int page, Long userId) {
 
@@ -121,6 +121,7 @@ public class ReadingClubReviewService {
         return result.map(ReadingClubReviewResponseDTO::from);
     }
 
+    // 내가 쓴 리뷰 목록 조회
     @Transactional(readOnly = true)
     public Page<ReadingClubReviewResponseDTO> getMyReviews(Long userId, int page) {
 
