@@ -37,12 +37,13 @@ public class SecurityConfig {
                                 .accessDeniedHandler(restAccessDeniedHandler)
                 )
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/auth/**","/userlike/**","/user/logout","/user/update-nickname"
+                        auth.requestMatchers("/**").permitAll()
+                                .requestMatchers("/user-service/**","/auth/**","/userlike/**","/user/logout","/user/update-nickname"
                                 ,"/user/update-nickname").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/users").permitAll()
                                 .requestMatchers("/user/userId/**","/user/username/**").hasAuthority("ADMIN")
-                                .anyRequest().authenticated()
                                 .requestMatchers( "/swagger-ui.html","/swagger-ui/","/v3/api-docs/","/swagger-resources/**").permitAll()
+                                .anyRequest().authenticated()
                 )
                 // 기존 JWT 검증 필터 대신, Gateway가 전달한 헤더를 이용하는 필터 추가
                 .addFilterBefore(headerAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
