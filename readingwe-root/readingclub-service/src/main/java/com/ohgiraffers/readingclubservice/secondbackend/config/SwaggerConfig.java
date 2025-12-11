@@ -1,4 +1,4 @@
-package com.ohgiraffers.readingclubservice.secondbackend;
+package com.ohgiraffers.readingclubservice.secondbackend.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -17,8 +17,8 @@ public class SwaggerConfig {
     public OpenAPI openAPI() {
 
         Info info = new Info()
-                .title("User Service API")
-                .description("User Service API")
+                .title("ReadingClub Service API")
+                .description("ReadingClub Service API")
                 .version("1.0.0");
 
         String jwtSchemeName = "jwtAuth";
@@ -36,7 +36,7 @@ public class SwaggerConfig {
                 );
 
         Server gatewayServer = new Server()
-                .url("http://localhost:8000/api/v1/valetparker-user-service")
+                .url("http://localhost:8000/reading-club/v3/api-docs")
                 .description("Gateway Server");
 
         Server localServer = new Server()
