@@ -219,6 +219,85 @@ ERD 링크
 
 ## Swagger
 
+<details>
+<summary> swagger</summary>
+<div markdown="1">
+<details>
+<summary> User-Service</summary>
+<div markdown="1">
+<img width="757" height="768" alt="스크린샷 2025-12-11 오후 6 21 05" src="https://github.com/user-attachments/assets/d0c77961-b5dd-42c1-a5f5-25158f7e2476" />
+
+</div>
+</details>
+<details>
+<summary> ReadingClub-Service</summary>
+<div markdown="1">
+<img width="748" height="906" alt="스크린샷 2025-12-11 오후 6 21 32" src="https://github.com/user-attachments/assets/77eb7b17-cf26-49bc-b2ba-e7d3baf3086a" />
+<img width="734" height="509" alt="스크린샷 2025-12-11 오후 6 21 43" src="https://github.com/user-attachments/assets/4573dc61-00d9-4014-91c1-8e62b197c937" />
+    
+</div>
+</details>
+<details>
+<summary> Book-Service</summary>
+<div markdown="1">
+<img width="749" height="917" alt="스크린샷 2025-12-11 오후 6 22 11" src="https://github.com/user-attachments/assets/b01a9a42-7250-4266-933b-0d9173bc70b0" />
+<img width="737" height="509" alt="스크린샷 2025-12-11 오후 6 22 23" src="https://github.com/user-attachments/assets/42b86c96-8ad4-4941-8362-fe404c67ec74" />
+
+
+</div>
+</details>
+
+</div>
+</details>
+
+## 테스트 케이스 상세
+<details>
+<summary> 세부정보</summary>
+<div markdown="1">
+
+### 회원 관리 기능
+<details>
+<summary> 토글 이름 </summary>
+<div markdown="1">
+토글 내용, 이미지
+</div>
+</details>
+
+### 관리자 기능
+<details>
+<summary> 토글 이름 </summary>
+<div markdown="1">
+토글 내용, 이미지
+</div>
+</details>
+
+### 책 기능
+<details>
+<summary> 토글 이름 </summary>
+<div markdown="1">
+토글 내용, 이미지
+</div>
+</details>
+
+### 독후감 기능
+<details>
+<summary> 토글 이름 </summary>
+<div markdown="1">
+토글 내용, 이미지
+</div>
+</details>
+
+### 독서 모임 기능
+<details>
+<summary> 토글 이름 </summary>
+<div markdown="1">
+토글 내용, 이미지
+</div>
+</details>
+
+</div>
+</details>
+
 ## MSA 아키텍처 구조도
 
 <details>
@@ -271,5 +350,6 @@ ERD 링크
 회고내용
 </div>
 </details>
+
 
 
