@@ -25,31 +25,37 @@ public class SecurityConfig {
     private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
     private final RestAccessDeniedHandler restAccessDeniedHandler;
 
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         http.csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session
-                        -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(exception ->
-                        exception
-                                .authenticationEntryPoint(restAuthenticationEntryPoint)
+                        exception.authenticationEntryPoint(restAuthenticationEntryPoint)
                                 .accessDeniedHandler(restAccessDeniedHandler)
                 )
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/**").permitAll()
-                                .requestMatchers("/user-service/**","/auth/**","/userlike/**","/user/logout","/user/update-nickname"
-                                ,"/user/update-nickname").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/users").permitAll()
-                                .requestMatchers("/user/userId/**","/user/username/**").hasAuthority("ADMIN")
-                                .requestMatchers( "/swagger-ui.html","/swagger-ui/","/v3/api-docs/","/swagger-resources/**").permitAll()
+                        auth
+                                // 인증 없이 가능한 요청
+                                .requestMatchers(
+                                        "/auth/**",
+                                        "/swagger-ui/**",
+                                        "/v3/api-docs/**"
+                                ).permitAll()
+
+                                // ADMIN 전용 API
+                                .requestMatchers("/user/userId/**").hasAuthority("ADMIN")
+
+                                // 그 외 일반 요청은 인증 필요
                                 .anyRequest().authenticated()
                 )
-                // 기존 JWT 검증 필터 대신, Gateway가 전달한 헤더를 이용하는 필터 추가
+                // Gateway가 넣어준 X-User-Name, X-User-Role 기반 인증
                 .addFilterBefore(headerAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
+
 
     @Bean
     public HeaderAuthenticationFilter headerAuthenticationFilter() {
