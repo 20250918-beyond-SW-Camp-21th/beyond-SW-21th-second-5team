@@ -2,8 +2,8 @@ package com.ohgiraffers.bookservice.secondbackend.bookreport.service;
 
 import com.ohgiraffers.bookservice.secondbackend.book.entity.Book;
 import com.ohgiraffers.bookservice.secondbackend.book.repository.BookRepository;
-import com.ohgiraffers.bookservice.secondbackend.bookreport.client.UserClient;
-import com.ohgiraffers.bookservice.secondbackend.bookreport.client.UserProfileResponseDto;
+import com.ohgiraffers.bookservice.secondbackend.client.UserClient;
+import com.ohgiraffers.bookservice.secondbackend.client.UserProfileResponseDto;
 import com.ohgiraffers.bookservice.secondbackend.bookreport.dto.request.BookReportRequestDTO;
 import com.ohgiraffers.bookservice.secondbackend.bookreport.dto.response.BookReportResponseDTO;
 import com.ohgiraffers.bookservice.secondbackend.bookreport.entity.BookReport;
