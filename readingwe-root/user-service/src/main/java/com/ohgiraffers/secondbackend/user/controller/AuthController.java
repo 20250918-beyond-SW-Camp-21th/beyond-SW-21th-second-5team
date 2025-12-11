@@ -14,14 +14,7 @@ public class AuthController {
 
     private final UserService userService;
 
-    @GetMapping("/hello")
-    public String hello(){
-        return "Hello World!";
-    }
-
-
     //회원가입
-
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@RequestBody Map<String, String> request){
         String username=request.get("username");
@@ -31,7 +24,7 @@ public class AuthController {
             userService.signup(username,password,nickname);
             return ResponseEntity.ok("등록 성공");
         }catch(IllegalArgumentException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body("등록실패! : "+e.getMessage());
         }
     }
 
@@ -48,7 +41,7 @@ public class AuthController {
                     "refreshToken",tokens[1]
             ));
         }catch(Exception e){
-            return ResponseEntity.status(401).body(Map.of("error",e.getMessage()));
+            return ResponseEntity.status(401).body(Map.of("로그인이 불가능합니다 : ",e.getMessage()));
         }
     }
 

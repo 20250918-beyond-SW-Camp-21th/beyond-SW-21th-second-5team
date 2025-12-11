@@ -84,11 +84,11 @@ public class UserService  implements UserDetailsService{
     //로그인
     public String[] login(String username,String rawPassword){
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("잘못된 아이디"));
+                .orElseThrow(() -> new UsernameNotFoundException("잘못된 아이디 혹은 비밀번호"));
 
 
         if(!passwordEncoder.matches(rawPassword,user.getPassword())){
-            throw new IllegalArgumentException("잘못된 비번");
+            throw new IllegalArgumentException("잘못된 비밀번호");
         }
         String userid= String.valueOf(user.getId());
         String role=user.getRole().name();
@@ -126,13 +126,13 @@ public class UserService  implements UserDetailsService{
         return userResponseDTO(user);
     }
 
-    @Transactional
-    public UserProfileResponse UpdateUsername(String username,String newUsername) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 유저를 찾을 수 없습니다"));
-
-        return UserProfileResponse.from(user);
-    }
+//    @Transactional
+//    public UserProfileResponse UpdateUsername(String username,String newUsername) {
+//        User user = userRepository.findByUsername(username)
+//                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 유저를 찾을 수 없습니다"));
+//
+//        return UserProfileResponse.from(user);
+//    }
 
     @Transactional
     public UserProfileResponse getProfileByUsername(String username) {

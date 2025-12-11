@@ -36,7 +36,7 @@ public class SwaggerConfig {
                 );
 
         Server gatewayServer = new Server()
-                .url("http://localhost:8000/api/v1/valetparker-user-service")
+                .url("http://localhost:8000/user-service/v3/api-docs")
                 .description("Gateway Server");
 
         Server localServer = new Server()

@@ -7,9 +7,11 @@ import com.ohgiraffers.bookservice.secondbackend.book.dto.response.BookResponseD
 import com.ohgiraffers.bookservice.secondbackend.book.entity.Book;
 import com.ohgiraffers.bookservice.secondbackend.book.entity.BookCategory;
 import com.ohgiraffers.bookservice.secondbackend.book.repository.BookRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 @Service
 public class BookService {
@@ -32,33 +34,78 @@ public class BookService {
     }
 
 
-    public List<Book> findAll(){
-        return bookRepository.findAll();
+    @Transactional(readOnly = true)
+    public Page<Book> findAll(Pageable pageable) {
+
+        try {
+            return bookRepository.findAll(pageable);
+        } catch (Exception e) {
+            throw new BookQueryException("책 목록 조회 중 오류가 발생했습니다.", e);
+        }
     }
 
-    public BookResponseDTO findById(Long bookId){
-        return convert(bookRepository.findById(bookId).orElseThrow());
+
+
+    @Transactional(readOnly = true)
+    public BookResponseDTO findById(Long bookId) {
+
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new BookNotFoundException(bookId));
+
+        return convert(book);
     }
 
-    public List<BookResponseDTO> findByTitle(TitleRequestDTO req){
-        String title=req.getTitle();
-        List<Book>books=bookRepository.findByTitle(title);
 
-        return books.stream().map(this::convert).toList();
+    @Transactional(readOnly = true)
+    public Page<BookResponseDTO> findByTitle(String title, Pageable pageable) {
+
+        if (title == null || title.isBlank()) {
+            throw new IllegalArgumentException("title은 비어 있을 수 없습니다.");
+        }
+
+        try {
+            return bookRepository.findByTitle(title, pageable)
+                    .map(this::convert);
+        } catch (Exception e) {
+            throw new BookQueryException("제목 검색 중 오류가 발생했습니다.", e);
+        }
     }
 
-    public List<BookResponseDTO>findByCategory(CategoryRequestDTO req){
-        BookCategory category=req.getCategory();
-        List<Book>books=bookRepository.findByCategory(category);
 
-        return books.stream().map(this::convert).toList();
+
+    @Transactional(readOnly = true)
+    public Page<BookResponseDTO> findByCategory(BookCategory category, Pageable pageable) {
+
+
+        if (category == null) {
+            throw new IllegalArgumentException("category는 필수입니다.");
+        }
+
+        try {
+            return bookRepository.findByCategory(category, pageable)
+                    .map(this::convert);
+        } catch (Exception e) {
+            throw new BookQueryException("카테고리 검색 중 오류가 발생했습니다.", e);
+        }
     }
 
-    public List<BookResponseDTO>findByAuthor(AuthorRequestDTO req){
-        String author=req.getAuthor();
-        List<Book>books=bookRepository.findByAuthor(author);
-        return books.stream().map(this::convert).toList();
+
+
+    @Transactional(readOnly = true)
+    public Page<BookResponseDTO> findByAuthor(String author, Pageable pageable) {
+
+        if (author == null || author.isBlank()) {
+            throw new IllegalArgumentException("author는 비어 있을 수 없습니다.");
+        }
+
+        try {
+            return bookRepository.findByAuthor(author, pageable)
+                    .map(this::convert);
+        } catch (Exception e) {
+            throw new BookQueryException("저자 검색 중 오류가 발생했습니다.", e);
+        }
     }
+
 
 
 

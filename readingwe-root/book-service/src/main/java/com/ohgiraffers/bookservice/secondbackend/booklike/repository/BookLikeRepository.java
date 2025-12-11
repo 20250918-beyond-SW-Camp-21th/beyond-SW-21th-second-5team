@@ -2,6 +2,8 @@ package com.ohgiraffers.bookservice.secondbackend.booklike.repository;
 
 import com.ohgiraffers.bookservice.secondbackend.book.entity.Book;
 import com.ohgiraffers.bookservice.secondbackend.booklike.entity.BookLike;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -21,5 +23,5 @@ public interface BookLikeRepository extends JpaRepository<BookLike, Long> {
         GROUP BY bl.book
         ORDER BY COUNT(bl) DESC
     """)
-    List<Object[]> findBooksOrderByLikeCount();
+    Page<Object[]> findBooksOrderByLikeCount(Pageable pageable);
 }

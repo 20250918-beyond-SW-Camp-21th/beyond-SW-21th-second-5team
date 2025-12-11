@@ -8,6 +8,10 @@ import com.ohgiraffers.bookservice.secondbackend.book.entity.Book;
 import com.ohgiraffers.bookservice.secondbackend.book.entity.BookCategory;
 import com.ohgiraffers.bookservice.secondbackend.book.service.BookService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,30 +29,46 @@ public class BookController {
 
 
     @GetMapping("/booklist")
-    public List<Book> printBookList() {
-        return bookService.findAll();
+    public ResponseEntity<Page<Book>> printBookList(
+            @PageableDefault(page=0, size=10) Pageable pageable
+    ) {
+        return ResponseEntity.ok(bookService.findAll(pageable));
     }
 
     @GetMapping("/booklist/{bookid}")
     public BookResponseDTO printBookById(@PathVariable Long bookid){
+
         return bookService.findById(bookid);
     }
 
+
     @GetMapping("/booklist/title/{booktitle}")
-    public List<BookResponseDTO> printBookByTitle(@PathVariable String booktitle){
-        return bookService.findByTitle(new TitleRequestDTO(booktitle));
+    public Page<BookResponseDTO> printBookByTitle(
+            @PathVariable String booktitle,
+            @PageableDefault(page = 0, size = 10) Pageable pageable
+    ) {
+        return bookService.findByTitle(booktitle, pageable);
     }
+
 
     @GetMapping("/booklist/category/{category}")
-    public List<BookResponseDTO> printBookByCategory(@PathVariable String category){
-        BookCategory bookcategory=BookCategory.valueOf(category);
-        return bookService.findByCategory(new CategoryRequestDTO(bookcategory));
+    public Page<BookResponseDTO> printBookByCategory(
+            @PathVariable String category,
+            @PageableDefault(page = 0, size = 10) Pageable pageable
+    ) {
+        BookCategory bookcategory = BookCategory.valueOf(category);
+        return bookService.findByCategory(bookcategory, pageable);
     }
 
+
     @GetMapping("/booklist/author/{author}")
-    public List<BookResponseDTO>printBookByAuthor(@PathVariable String author){
-        return bookService.findByAuthor(new AuthorRequestDTO(author));
+    public Page<BookResponseDTO> printBookByAuthor(
+            @PathVariable String author,
+            @PageableDefault(page = 0, size = 10) Pageable pageable
+    ) {
+        return bookService.findByAuthor(author, pageable);
     }
+
 
 
     //Feign을 위한 api
