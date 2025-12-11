@@ -79,4 +79,10 @@ public class BookReportController {
 
         return ResponseEntity.status(HttpStatus.OK).body("정상적으로 삭제되었습니다.");
     }
+    // 독후감 조회(책 이름으로)
+    @GetMapping("/title/{bookName}")
+    public ResponseEntity<List<BookReportResponseDTO>> getBookReportByBookId(@PathVariable String bookName){
+        List<BookReportResponseDTO> response = bookReportService.getBookReportByBookName(bookName);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
 }
