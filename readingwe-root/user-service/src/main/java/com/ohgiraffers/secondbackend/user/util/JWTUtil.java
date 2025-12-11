@@ -3,6 +3,7 @@ package com.ohgiraffers.secondbackend.user.util;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
@@ -69,14 +70,15 @@ public class JWTUtil {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
             //문자열이 잘렸거나 변종됐다면
-        }catch(SecurityException | MalformedJwtException e){
-            //지원되지 않는 토큰
-        }catch(UnsupportedJwtException e){
-
-        }catch(IllegalArgumentException e){
-
+        }catch (SecurityException | MalformedJwtException e) {
+            throw new BadCredentialsException("Invalid JWT Token", e);
+        } catch (ExpiredJwtException e) {
+            throw new BadCredentialsException("Expired JWT Token", e);
+        } catch (UnsupportedJwtException e) {
+            throw new BadCredentialsException("Unsupported JWT Token", e);
+        } catch (IllegalArgumentException e) {
+            throw new BadCredentialsException("JWT Token claims empty", e);
         }
-        return false;
     }
 
 
