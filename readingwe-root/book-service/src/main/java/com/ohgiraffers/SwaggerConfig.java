@@ -17,8 +17,8 @@ public class SwaggerConfig {
     public OpenAPI openAPI() {
 
         Info info = new Info()
-                .title("User Service API")
-                .description("User Service API")
+                .title("Book Service API")
+                .description("Book Service API")
                 .version("1.0.0");
 
         String jwtSchemeName = "jwtAuth";
@@ -36,7 +36,7 @@ public class SwaggerConfig {
                 );
 
         Server gatewayServer = new Server()
-                .url("http://localhost:8000/api/v1/valetparker-user-service")
+                .url("http://localhost:8000/book/v3/api-docs")
                 .description("Gateway Server");
 
         Server localServer = new Server()
