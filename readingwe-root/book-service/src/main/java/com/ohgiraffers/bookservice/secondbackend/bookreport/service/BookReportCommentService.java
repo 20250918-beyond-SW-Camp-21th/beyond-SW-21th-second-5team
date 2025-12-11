@@ -1,7 +1,7 @@
 package com.ohgiraffers.bookservice.secondbackend.bookreport.service;
 
-import com.ohgiraffers.bookservice.secondbackend.bookreport.client.UserClient;
-import com.ohgiraffers.bookservice.secondbackend.bookreport.client.UserProfileResponseDto;
+import com.ohgiraffers.bookservice.secondbackend.client.UserClient;
+import com.ohgiraffers.bookservice.secondbackend.client.UserProfileResponseDto;
 import com.ohgiraffers.bookservice.secondbackend.bookreport.dto.request.BookReportCommentRequestDTO;
 import com.ohgiraffers.bookservice.secondbackend.bookreport.dto.response.BookReportCommentResponseDTO;
 import com.ohgiraffers.bookservice.secondbackend.bookreport.entity.BookReport;

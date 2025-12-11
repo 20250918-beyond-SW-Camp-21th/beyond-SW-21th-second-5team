@@ -43,7 +43,7 @@ public class SecurityConfig {
                                 .requestMatchers("/actuator/**").permitAll()
 
                                 //book-report관련
-                                .requestMatchers(HttpMethod.POST, "/book-report").hasAuthority("USER")       // 등록
+                                .requestMatchers(HttpMethod.POST, "/book-report").permitAll()         // 등록
                                 .requestMatchers(HttpMethod.PUT, "/book-report/**").hasAuthority("USER")     // 수정
                                 .requestMatchers(HttpMethod.DELETE, "/book-report/**").hasAuthority("USER")  // 삭제
                                 .requestMatchers(HttpMethod.GET, "/book-report/**").permitAll()              // 조회(단건/목록 모두 허용)

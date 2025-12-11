@@ -65,7 +65,7 @@ public class BookReportCommentController {
     // 댓글 전체 조회
     @GetMapping("/{bookReportId}/comments")
     public ResponseEntity<List<BookReportCommentResponseDTO>> getComments(
-            @PathVariable Long reportId){
+            @PathVariable("bookReportId") Long reportId){
         List<BookReportCommentResponseDTO> comments =
                 bookReportCommentService.getCommentsByReportId(reportId);
         return ResponseEntity.status(HttpStatus.OK).body(comments);
