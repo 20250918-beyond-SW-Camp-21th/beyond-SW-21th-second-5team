@@ -263,39 +263,6 @@ public class ReadingClubService {
         readingClubJoinRepository.delete(req);
     }
 
-    @Transactional
-    public void kickMember(long clubId, long hostId, long targetId){
-        ReadingClub club = readingClubRepository.findById(clubId).orElseThrow(
-                () -> new IllegalArgumentException("존재하지 않는 모임입니다.")
-        );
-        if(club.getUserId() != hostId){
-            throw new SecurityException("모임장만 회원을 강퇴할 수 있습니다.");
-        }
-        if(club.getUserId() == targetId){
-            throw new IllegalStateException("모임장은 강퇴할 수 없습니다.");
-        }
-
-        ReadingClubMember member = readingClubMemberRepository.findByClubIdAndUserId(clubId, targetId).orElseThrow(
-                () -> new IllegalArgumentException("해당 모임의 멤버가 아닙니다.")
-        );
-        if(member.getRole() == ReadingClubMemberRole.LEFT){
-            throw new IllegalStateException("이미 탈퇴/강퇴된 멤버입니다.");
-        }
-        club.removeMember();
-        member.changeRole(ReadingClubMemberRole.LEFT);
-
-        UserProfileResponse host = userFeignClient.getUserProfileById(club.getUserId());
-        UserProfileResponse targetUser = userFeignClient.getUserProfileById(targetId);
-
-        emailFeignClient.sendClubMemberLeave(
-                new ClubMemberLeaveMailRequest(
-                        host.getUsername(),
-                        club.getName(),
-                        targetUser.getNickName()
-                )
-        );
-    }
-
     @Transactional(readOnly = true)
     public List<JoinResponseDTO> getJoinRequestsForClub(long clubId, long hostId){
         ReadingClub club = readingClubRepository.findById(clubId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 모임입니다."));

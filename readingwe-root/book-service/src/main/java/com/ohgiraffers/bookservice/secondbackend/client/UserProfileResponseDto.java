@@ -1,4 +1,4 @@
-package com.ohgiraffers.bookservice.secondbackend.bookreport.client;
+package com.ohgiraffers.bookservice.secondbackend.client;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

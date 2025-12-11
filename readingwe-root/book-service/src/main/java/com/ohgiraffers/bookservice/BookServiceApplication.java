@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
-@EnableFeignClients(basePackageClasses = BookServiceApplication.class)
+@EnableFeignClients(basePackages = "com.ohgiraffers.bookservice.secondbackend")
 public class BookServiceApplication {
 
     public static void main(String[] args) {

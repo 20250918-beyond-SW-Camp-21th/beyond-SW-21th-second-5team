@@ -132,18 +132,6 @@ public class ReadingClubController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/kick/{clubId}/{userId}")
-    public ResponseEntity<Void> kickMember(
-            @PathVariable long clubId,
-            @PathVariable long userId,           // 강퇴 대상
-            HttpServletRequest request
-    ) {
-        long hostId = getCurrentUserId(request);   // 모임장 ID
-
-        readingClubService.kickMember(clubId, hostId, userId);
-        return ResponseEntity.noContent().build();
-    }
-
     @GetMapping("/join/{clubId}")
     public ResponseEntity<List<JoinResponseDTO>> getJoinRequests(
             @PathVariable long clubId,

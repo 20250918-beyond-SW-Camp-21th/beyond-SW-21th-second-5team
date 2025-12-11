@@ -1,6 +1,6 @@
 package com.ohgiraffers.bookservice.secondbackend.bookreport.entity;
 import com.ohgiraffers.bookservice.secondbackend.book.entity.Book;
-import com.ohgiraffers.bookservice.secondbackend.bookreport.client.UserProfileResponseDto;
+import com.ohgiraffers.bookservice.secondbackend.client.UserProfileResponseDto;
 import com.ohgiraffers.bookservice.secondbackend.bookreport.dto.response.BookReportResponseDTO;
 import jakarta.persistence.*;
 import lombok.Builder;
