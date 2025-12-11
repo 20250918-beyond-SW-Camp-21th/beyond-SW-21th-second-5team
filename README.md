@@ -1,10 +1,11 @@
 # 한화시스템 Beyond SW 21기 백엔드 프로젝트 - READWE
 
 ---
-# 😄 팀 구성
-| [김수진](https://github.com/whatimeisitnow) | [김세현](https://github.com/sekong11) | [이용우](https://github.com/L-dragon-woo) | [정재우](https://github.com/NoSa1e) |
-| :-: | :-: | :-: | :-: | 
-| <img src="https://github.com/user-attachments/assets/45e223f8-6216-4ea3-825b-45624d38bab9" width="200" /> | <img src="https://github.com/user-attachments/assets/a449cd98-e530-42fe-91ca-07c1ce519ddf" width="200" /> |<img src="https://github.com/user-attachments/assets/914bc401-29dd-4b04-98ac-107cbe153b6d" width="200" /> |<img src="https://github.com/user-attachments/assets/447ad558-3566-4a48-b20e-8cc100176de2" width="200" /> |
+# 😄 팀 소개
+| [김수진](https://github.com/whatimeisitnow) | [김세현](https://github.com/sekong11) | [이용우](https://github.com/L-dragon-woo) | [정재우](https://github.com/NoSa1e) | 
+| :-: | :-: | :-: | :-: |
+| <img src="https://github.com/user-attachments/assets/45e223f8-6216-4ea3-825b-45624d38bab9" width="200" /> | <img src="https://github.com/user-attachments/assets/a449cd98-e530-42fe-91ca-07c1ce519ddf" width="200" /> |<img src="https://github.com/user-attachments/assets/914bc401-29dd-4b04-98ac-107cbe153b6d" width="200" /> |<img src="https://github.com/user-attachments/assets/447ad558-3566-4a48-b20e-8cc100176de2" width="200" /> | 
+
 ---
 # 🛠️ 기술스택
 ---
@@ -229,12 +230,46 @@ ERD 링크
 </details>
 
 # 팀원 회고
-|     | 회고 내용|
-| --- | :-- |
-| 김수진 |    |
-| 김세현 |    |
-| 이용우 |    |
-| 정재우 |    |
+<details>
+<summary> 김수진 </summary>
+<div markdown="1">
+회고내용
+</div>
+</details>
+<details>
+<summary> 김세현 </summary>
+<div markdown="1">
+회고내용
+</div>
+</details>
+<details>
+<summary>이용우</summary>
+<div markdown="1">
 
+이번 프로젝트 아이디어는 제가 예전에 참여했던 독서모임 경험에서 출발했습니다.
+그때 여러 사람들과 책을 함께 읽고 이야기를 나누며 큰 즐거움을 느꼈고,
+“이런 모임이 더 많아지고 많은 사람들이 책을 통해 연결될 수 있으면 좋겠다”는 생각이 자연스럽게 들었습니다.
+팀원분들도 이 아이디어에 긍정적으로 공감해주셔서 프로젝트로 선정할 수 있었습니다.
+
+진행 과정에서 아쉽게도 팀원 한 분이 건강 문제로 함께하지 못하게 되었지만,
+남은 팀원들이 서로 힘을 모아 빠르게 일치단결했고
+각자 맡은 역할을 책임감 있게 수행해주어 프로젝트를 끝까지 이어갈 수 있었습니다.
+
+특히 밤을 새워가며 개발하고 문서를 정리하며
+서로 도와주는 모습을 보면서 진심으로 감동했고,
+그 모습이 저에게도 더 열심히 하고 싶다는 큰 동기부여가 되었습니다.
+
+함께 고생해준 팀원 모두에게 감사드리고,
+이 경험을 통해 협업의 소중함과 공동의 목표를 향해 나아가는 즐거움을 다시 한번 느낄 수 있었습니다.
+
+
+</div>
+</details>
+<details>
+<summary> 정재우 </summary>
+<div markdown="1">
+회고내용
+</div>
+</details>
 
 
