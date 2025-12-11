@@ -7,7 +7,10 @@ import com.ohgiraffers.bookservice.secondbackend.book.dto.response.BookResponseD
 import com.ohgiraffers.bookservice.secondbackend.book.entity.Book;
 import com.ohgiraffers.bookservice.secondbackend.book.entity.BookCategory;
 import com.ohgiraffers.bookservice.secondbackend.book.repository.BookRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -32,33 +35,48 @@ public class BookService {
     }
 
 
-    public List<Book> findAll(){
-        return bookRepository.findAll();
+    @Transactional(readOnly = true)
+    public Page<Book> findAll(Pageable pageable){
+        return bookRepository.findAll(pageable);
     }
 
-    public BookResponseDTO findById(Long bookId){
-        return convert(bookRepository.findById(bookId).orElseThrow());
+
+    @Transactional(readOnly = true)
+    public BookResponseDTO findById(Long bookId) {
+
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new BookNotFoundException(bookId));
+
+        return convert(book);
     }
 
-    public List<BookResponseDTO> findByTitle(TitleRequestDTO req){
-        String title=req.getTitle();
-        List<Book>books=bookRepository.findByTitle(title);
 
-        return books.stream().map(this::convert).toList();
+    @Transactional(readOnly = true)
+    public Page<BookResponseDTO> findByTitle(String title, Pageable pageable) {
+
+        return bookRepository.findByTitle(title, pageable)
+                .map(this::convert);
     }
 
-    public List<BookResponseDTO>findByCategory(CategoryRequestDTO req){
-        BookCategory category=req.getCategory();
-        List<Book>books=bookRepository.findByCategory(category);
 
-        return books.stream().map(this::convert).toList();
+
+    @Transactional(readOnly = true)
+    public Page<BookResponseDTO> findByCategory(BookCategory category, Pageable pageable) {
+
+        return bookRepository.findByCategory(category, pageable)
+                .map(this::convert);
     }
 
-    public List<BookResponseDTO>findByAuthor(AuthorRequestDTO req){
-        String author=req.getAuthor();
-        List<Book>books=bookRepository.findByAuthor(author);
-        return books.stream().map(this::convert).toList();
+
+
+    @Transactional(readOnly = true)
+    public Page<BookResponseDTO> findByAuthor(String author, Pageable pageable) {
+
+        return bookRepository.findByAuthor(author, pageable)
+                .map(this::convert);
     }
+
+
 
 
 
