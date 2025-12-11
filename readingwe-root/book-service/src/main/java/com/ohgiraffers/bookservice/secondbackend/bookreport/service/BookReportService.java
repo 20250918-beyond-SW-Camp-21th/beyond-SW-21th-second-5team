@@ -94,4 +94,23 @@ public class BookReportService {
         // 삭제
         bookReportRepository.delete(bookReport);
     }
+
+    //책 제목으로 조회
+    public List<BookReportResponseDTO> getBookReportByBookName(String bookName) {
+        List<Book> books = bookRepository.findByTitle(bookName);
+        if (books.isEmpty()) {
+            throw new IllegalArgumentException("해당 책 제목의 책이 존재하지 않습니다.");
+        }
+
+        // 2. 책 목록으로 독후감 조회
+        List<BookReport> reports = bookReportRepository.findByBookIn(books);
+
+        // 3. 사용자 정보 조회 후 DTO 변환
+        return reports.stream()
+                .map(report -> {
+                    UserProfileResponseDto userProfile = userClient.getUserById(report.getUserId());
+                    return report.toResponseDTO(userProfile);
+                })
+                .toList();
+    }
 }
