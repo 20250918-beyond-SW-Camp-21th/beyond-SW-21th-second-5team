@@ -12,7 +12,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<String> handleAccessDenied(AccessDeniedException ex) {
         return ResponseEntity
-                .status(HttpStatus.FORBIDDEN)  // 403
+                .status(HttpStatus.FORBIDDEN)
                 .body(ex.getMessage());
     }
 }

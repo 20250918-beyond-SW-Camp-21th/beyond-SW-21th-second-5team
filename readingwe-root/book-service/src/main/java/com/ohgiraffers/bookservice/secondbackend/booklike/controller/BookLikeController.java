@@ -58,6 +58,4 @@ public class BookLikeController {
         return ResponseEntity.ok(bookLikeService.getBookRanking(pageable));
     }
 
-
 }
-

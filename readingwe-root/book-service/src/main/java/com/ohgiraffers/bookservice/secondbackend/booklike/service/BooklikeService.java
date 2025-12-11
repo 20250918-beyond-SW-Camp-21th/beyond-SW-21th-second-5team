@@ -70,13 +70,8 @@ public class BooklikeService {
     public Page<BookRankingResponseDTO> getBookRanking(Pageable pageable) {
 
         Page<Object[]> resultPage =
-                bookLikeRepository.findBooksOrderByLikeCount(
-                        PageRequest.of(
-                                pageable.getPageNumber(),
-                                pageable.getPageSize(),
-                                Sort.by(Sort.Direction.DESC, "count")
-                        )
-                );
+                bookLikeRepository.findBooksOrderByLikeCount(pageable);
+
 
         return resultPage.map(row -> {
             Book book = (Book) row[0];
