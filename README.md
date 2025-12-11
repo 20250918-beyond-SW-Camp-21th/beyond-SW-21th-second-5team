@@ -220,6 +220,14 @@ ERD 링크
 
 ## MSA 아키텍처 구조도
 
+<details>
+<summary> MSA 아키텍처 구조도</summary>
+<div markdown="1">
+<img width="1852" height="881" alt="image" src="https://github.com/user-attachments/assets/e6791924-0358-418b-b608-c07393b07d98" />
+
+</div>
+</details>
+
 # 팀원 회고
 |     | 회고 내용|
 | --- | :-- |
@@ -227,5 +235,6 @@ ERD 링크
 | 김세현 |    |
 | 이용우 |    |
 | 정재우 |    |
+
 
 
