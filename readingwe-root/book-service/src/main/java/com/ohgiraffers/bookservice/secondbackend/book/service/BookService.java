@@ -33,6 +33,15 @@ public class BookService {
                 .build();
     }
 
+    @Transactional
+    public void deleteBook(Long bookId) {
+        bookRepository.deleteById(bookId);
+    }
+
+    @Transactional
+    public BookResponseDTO createBook(Book book) {
+        return convert(bookRepository.save(book));
+    }
 
     @Transactional(readOnly = true)
     public Page<Book> findAll(Pageable pageable) {
@@ -44,8 +53,6 @@ public class BookService {
         }
     }
 
-
-
     @Transactional(readOnly = true)
     public BookResponseDTO findById(Long bookId) {
 
@@ -54,7 +61,6 @@ public class BookService {
 
         return convert(book);
     }
-
 
     @Transactional(readOnly = true)
     public Page<BookResponseDTO> findByTitle(String title, Pageable pageable) {
@@ -70,8 +76,6 @@ public class BookService {
             throw new BookQueryException("제목 검색 중 오류가 발생했습니다.", e);
         }
     }
-
-
 
     @Transactional(readOnly = true)
     public Page<BookResponseDTO> findByCategory(BookCategory category, Pageable pageable) {
@@ -89,8 +93,6 @@ public class BookService {
         }
     }
 
-
-
     @Transactional(readOnly = true)
     public Page<BookResponseDTO> findByAuthor(String author, Pageable pageable) {
 
@@ -105,10 +107,6 @@ public class BookService {
             throw new BookQueryException("저자 검색 중 오류가 발생했습니다.", e);
         }
     }
-
-
-
-
 //    public List<BookResponseDTO> getSortedBooks(String sortBy, String direction) {
 //
 //        Sort sort = direction.equalsIgnoreCase("desc")
@@ -119,7 +117,4 @@ public class BookService {
 //                .map(this::convert)
 //                .toList();
 //    }
-
-
-
 }

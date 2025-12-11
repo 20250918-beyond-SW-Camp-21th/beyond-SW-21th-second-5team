@@ -12,10 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -39,6 +36,18 @@ public class BookController {
     public BookResponseDTO printBookById(@PathVariable Long bookid){
 
         return bookService.findById(bookid);
+    }
+
+    @PostMapping("/save-book")
+    public ResponseEntity<BookResponseDTO> saveBook(@RequestBody Book book){
+        bookService.createBook(book);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/delete-book/{bookid}")
+    public ResponseEntity<Void> deleteBook(@PathVariable Long bookid){
+        bookService.deleteBook(bookid);
+        return ResponseEntity.ok().build();
     }
 
 
