@@ -321,7 +321,7 @@ public class ReadingClubService {
         if(member.getRole() == ReadingClubMemberRole.LEFT){
             throw new SecurityException("탈퇴 혹은 강퇴 당한 멤버는 조회할 수 없습니다.");
         }
-        return readingClubMemberRepository.findByClubId(clubId).stream().filter(mem -> member.getRole() != ReadingClubMemberRole.LEFT)
+        return readingClubMemberRepository.findByClubId(clubId).stream().filter(mem -> mem.getRole() != ReadingClubMemberRole.LEFT)
                 .map(this::convertMember).toList();
     }
 
