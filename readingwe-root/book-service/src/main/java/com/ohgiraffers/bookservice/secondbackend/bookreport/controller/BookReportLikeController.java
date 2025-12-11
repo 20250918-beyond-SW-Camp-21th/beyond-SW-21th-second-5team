@@ -3,12 +3,14 @@ package com.ohgiraffers.bookservice.secondbackend.bookreport.controller;
 import com.ohgiraffers.bookservice.secondbackend.bookreport.dto.request.BookReportLikeRequestDTO;
 import com.ohgiraffers.bookservice.secondbackend.bookreport.dto.response.BookReportLikeResponseDTO;
 import com.ohgiraffers.bookservice.secondbackend.bookreport.service.BookReportLikeService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "BookReportLike API", description = "독후감 좋아요 API")
 @RestController
 @RequestMapping("/book-report-like")
 @RequiredArgsConstructor

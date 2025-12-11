@@ -3,6 +3,7 @@ package com.ohgiraffers.bookservice.secondbackend.bookreport.controller;
 import com.ohgiraffers.bookservice.secondbackend.bookreport.dto.request.BookReportRequestDTO;
 import com.ohgiraffers.bookservice.secondbackend.bookreport.dto.response.BookReportResponseDTO;
 import com.ohgiraffers.bookservice.secondbackend.bookreport.service.BookReportService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "BookReport API", description = "독후감을 등록, 수정, 삭제, 조회하는 API")
 @RestController
 @RequestMapping("/book-report")
 @RequiredArgsConstructor
