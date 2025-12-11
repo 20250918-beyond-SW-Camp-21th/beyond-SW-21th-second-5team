@@ -3,6 +3,7 @@ package com.ohgiraffers.secondbackend.userlike.controller;
 import com.ohgiraffers.secondbackend.userlike.dto.request.LikeCategoryDTO;
 import com.ohgiraffers.secondbackend.userlike.dto.response.UserLikeResponseDTO;
 import com.ohgiraffers.secondbackend.userlike.service.UserLikeService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "UserLike API", description = "선호 카테고리 추가 API")
 @RestController
 @RequestMapping("/userlike")
 @RequiredArgsConstructor

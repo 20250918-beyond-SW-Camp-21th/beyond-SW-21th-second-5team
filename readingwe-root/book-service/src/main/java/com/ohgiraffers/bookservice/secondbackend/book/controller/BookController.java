@@ -7,6 +7,7 @@ import com.ohgiraffers.bookservice.secondbackend.book.dto.response.BookResponseD
 import com.ohgiraffers.bookservice.secondbackend.book.entity.Book;
 import com.ohgiraffers.bookservice.secondbackend.book.entity.BookCategory;
 import com.ohgiraffers.bookservice.secondbackend.book.service.BookService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Arrays;
 import java.util.List;
 
+@Tag(name = "Book API", description = "책 등록, 조회, 카테고리 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/book")

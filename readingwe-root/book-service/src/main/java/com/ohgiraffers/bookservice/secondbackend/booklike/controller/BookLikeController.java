@@ -5,6 +5,7 @@ import com.ohgiraffers.bookservice.secondbackend.booklike.dto.request.LikeCancel
 import com.ohgiraffers.bookservice.secondbackend.booklike.dto.response.BookLikeResponseDTO;
 import com.ohgiraffers.bookservice.secondbackend.booklike.dto.response.BookRankingResponseDTO;
 import com.ohgiraffers.bookservice.secondbackend.booklike.service.BooklikeService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "BookLike API", description = "책 좋아요 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/booklike")

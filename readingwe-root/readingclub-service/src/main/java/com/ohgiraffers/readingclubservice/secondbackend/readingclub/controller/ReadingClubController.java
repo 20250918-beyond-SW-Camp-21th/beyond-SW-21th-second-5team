@@ -8,6 +8,7 @@ import com.ohgiraffers.readingclubservice.secondbackend.readingclub.dto.response
 import com.ohgiraffers.readingclubservice.secondbackend.readingclub.dto.response.ReadingClubMemberResponseDTO;
 import com.ohgiraffers.readingclubservice.secondbackend.readingclub.dto.response.ReadingClubResponseDTO;
 import com.ohgiraffers.readingclubservice.secondbackend.readingclub.service.ReadingClubService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "ReadingClub API", description = "모임 생성, 수정, 삭제, 조회, 참가 신청 관리 API")
 @RestController
 @RequestMapping("/reading-club")
 @RequiredArgsConstructor

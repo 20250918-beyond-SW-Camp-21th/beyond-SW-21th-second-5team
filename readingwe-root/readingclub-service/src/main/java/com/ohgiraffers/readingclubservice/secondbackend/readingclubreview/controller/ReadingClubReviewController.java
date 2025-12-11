@@ -3,6 +3,7 @@ package com.ohgiraffers.readingclubservice.secondbackend.readingclubreview.contr
 import com.ohgiraffers.readingclubservice.secondbackend.readingclubreview.dto.request.ReadingClubReviewRequestDTO;
 import com.ohgiraffers.readingclubservice.secondbackend.readingclubreview.dto.response.ReadingClubReviewResponseDTO;
 import com.ohgiraffers.readingclubservice.secondbackend.readingclubreview.service.ReadingClubReviewService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "Review API", description = "모임 리뷰 등록, 수정, 삭제, 조회 API")
 @RestController
 @RequestMapping("/review")
 @RequiredArgsConstructor
