@@ -37,8 +37,10 @@ public class BookController {
 
     @GetMapping("/booklist/{bookid}")
     public BookResponseDTO printBookById(@PathVariable Long bookid){
+
         return bookService.findById(bookid);
     }
+
 
     @GetMapping("/booklist/title/{booktitle}")
     public Page<BookResponseDTO> printBookByTitle(

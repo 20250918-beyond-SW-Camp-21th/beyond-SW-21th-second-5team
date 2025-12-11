@@ -10,6 +10,10 @@ import com.ohgiraffers.bookservice.secondbackend.booklike.dto.response.BookRanki
 import com.ohgiraffers.bookservice.secondbackend.booklike.entity.BookLike;
 import com.ohgiraffers.bookservice.secondbackend.booklike.repository.BookLikeRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -62,24 +66,36 @@ public class BooklikeService {
         bookLikeRepository.delete(bookLike);
     }
 
-    public List<BookRankingResponseDTO> getBookRanking() {
-        List<Object[]> results = bookLikeRepository.findBooksOrderByLikeCount();
+    @Transactional
+    public Page<BookRankingResponseDTO> getBookRanking(Pageable pageable) {
 
-        return results.stream()
-                .map(row -> {
-                    Book book = (Book) row[0];
-                    Long likeCount = (Long) row[1];
+        Page<Object[]> resultPage =
+                bookLikeRepository.findBooksOrderByLikeCount(
+                        PageRequest.of(
+                                pageable.getPageNumber(),
+                                pageable.getPageSize(),
+                                Sort.by(Sort.Direction.DESC, "count")
+                        )
+                );
 
-                    return BookRankingResponseDTO.builder()
-                            .bookId(book.getBookId())
-                            .title(book.getTitle())
-                            .author(book.getAuthor())
-                            .publisher(book.getPublisher())
-                            .likeCount(likeCount)
-                            .build();
-                })
-                .toList();
+        return resultPage.map(row -> {
+            Book book = (Book) row[0];
+            Long likeCount = (Long) row[1];
+
+            if (book == null) {
+                throw new IllegalStateException("랭킹 조회 중 책 정보가 없습니다.");
+            }
+
+            return BookRankingResponseDTO.builder()
+                    .bookId(book.getBookId())
+                    .title(book.getTitle())
+                    .author(book.getAuthor())
+                    .publisher(book.getPublisher())
+                    .likeCount(likeCount)
+                    .build();
+        });
     }
+
 
 
 

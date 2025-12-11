@@ -7,6 +7,9 @@ import com.ohgiraffers.bookservice.secondbackend.booklike.dto.response.BookRanki
 import com.ohgiraffers.bookservice.secondbackend.booklike.service.BooklikeService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,9 +52,12 @@ public class BookLikeController {
     }
 
     @GetMapping("/ranking")
-    public ResponseEntity<List<BookRankingResponseDTO>> getBookRanking() {
-        return ResponseEntity.ok(bookLikeService.getBookRanking());
+    public ResponseEntity<Page<BookRankingResponseDTO>> getBookRanking(
+            @PageableDefault(page = 0, size = 10) Pageable pageable
+    ) {
+        return ResponseEntity.ok(bookLikeService.getBookRanking(pageable));
     }
+
 
 }
 

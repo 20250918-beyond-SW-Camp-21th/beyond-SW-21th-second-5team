@@ -12,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 @Service
 public class BookService {
@@ -36,9 +35,15 @@ public class BookService {
 
 
     @Transactional(readOnly = true)
-    public Page<Book> findAll(Pageable pageable){
-        return bookRepository.findAll(pageable);
+    public Page<Book> findAll(Pageable pageable) {
+
+        try {
+            return bookRepository.findAll(pageable);
+        } catch (Exception e) {
+            throw new BookQueryException("책 목록 조회 중 오류가 발생했습니다.", e);
+        }
     }
+
 
 
     @Transactional(readOnly = true)
@@ -54,8 +59,16 @@ public class BookService {
     @Transactional(readOnly = true)
     public Page<BookResponseDTO> findByTitle(String title, Pageable pageable) {
 
-        return bookRepository.findByTitle(title, pageable)
-                .map(this::convert);
+        if (title == null || title.isBlank()) {
+            throw new IllegalArgumentException("title은 비어 있을 수 없습니다.");
+        }
+
+        try {
+            return bookRepository.findByTitle(title, pageable)
+                    .map(this::convert);
+        } catch (Exception e) {
+            throw new BookQueryException("제목 검색 중 오류가 발생했습니다.", e);
+        }
     }
 
 
@@ -63,8 +76,17 @@ public class BookService {
     @Transactional(readOnly = true)
     public Page<BookResponseDTO> findByCategory(BookCategory category, Pageable pageable) {
 
-        return bookRepository.findByCategory(category, pageable)
-                .map(this::convert);
+
+        if (category == null) {
+            throw new IllegalArgumentException("category는 필수입니다.");
+        }
+
+        try {
+            return bookRepository.findByCategory(category, pageable)
+                    .map(this::convert);
+        } catch (Exception e) {
+            throw new BookQueryException("카테고리 검색 중 오류가 발생했습니다.", e);
+        }
     }
 
 
@@ -72,10 +94,17 @@ public class BookService {
     @Transactional(readOnly = true)
     public Page<BookResponseDTO> findByAuthor(String author, Pageable pageable) {
 
-        return bookRepository.findByAuthor(author, pageable)
-                .map(this::convert);
-    }
+        if (author == null || author.isBlank()) {
+            throw new IllegalArgumentException("author는 비어 있을 수 없습니다.");
+        }
 
+        try {
+            return bookRepository.findByAuthor(author, pageable)
+                    .map(this::convert);
+        } catch (Exception e) {
+            throw new BookQueryException("저자 검색 중 오류가 발생했습니다.", e);
+        }
+    }
 
 
 
