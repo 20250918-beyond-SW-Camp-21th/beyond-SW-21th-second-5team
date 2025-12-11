@@ -61,7 +61,6 @@ public class BookReportController {
         return ResponseEntity.status(HttpStatus.OK).body(rList);
     }
 
-
      //독후감 수정
     @PutMapping("/{reportId}")
     public ResponseEntity<BookReportResponseDTO> modifyBookReport(
@@ -80,5 +79,4 @@ public class BookReportController {
 
         return ResponseEntity.status(HttpStatus.OK).body("정상적으로 삭제되었습니다.");
     }
-
 }
