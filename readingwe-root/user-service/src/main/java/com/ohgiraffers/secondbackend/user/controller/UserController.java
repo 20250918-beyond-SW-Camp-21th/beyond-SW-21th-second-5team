@@ -4,6 +4,7 @@ import com.ohgiraffers.secondbackend.user.dto.request.PasswordUpdateDTO;
 import com.ohgiraffers.secondbackend.user.dto.request.ProfileUpdateDTO;
 import com.ohgiraffers.secondbackend.user.dto.response.UserProfileResponse;
 import com.ohgiraffers.secondbackend.user.service.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.ForbiddenException;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "User API", description = "로그아웃, 회원 정보 수정, 조회 API")
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor

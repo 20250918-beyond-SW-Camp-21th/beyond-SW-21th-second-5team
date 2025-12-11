@@ -1,12 +1,14 @@
 package com.ohgiraffers.secondbackend.user.controller;
 
 import com.ohgiraffers.secondbackend.user.service.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+@Tag(name = "Auth API", description = "회원가입, 로그인 API")
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor

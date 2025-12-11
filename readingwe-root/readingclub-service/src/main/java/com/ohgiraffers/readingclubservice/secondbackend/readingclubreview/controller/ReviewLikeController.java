@@ -2,6 +2,7 @@ package com.ohgiraffers.readingclubservice.secondbackend.readingclubreview.contr
 
 import com.ohgiraffers.readingclubservice.secondbackend.readingclubreview.dto.response.ReviewLikeToggleResponseDTO;
 import com.ohgiraffers.readingclubservice.secondbackend.readingclubreview.service.ReviewLikeService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Review Like API", description = "모임 리뷰 좋아요 추가, 삭제, 조회 API")
 @RestController
 @RequestMapping("/review/like")
 @RequiredArgsConstructor
