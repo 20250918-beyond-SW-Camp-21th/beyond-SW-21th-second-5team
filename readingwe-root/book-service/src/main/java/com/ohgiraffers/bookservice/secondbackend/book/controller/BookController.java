@@ -8,11 +8,14 @@ import com.ohgiraffers.bookservice.secondbackend.book.entity.Book;
 import com.ohgiraffers.bookservice.secondbackend.book.entity.BookCategory;
 import com.ohgiraffers.bookservice.secondbackend.book.service.BookService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -40,17 +43,55 @@ public class BookController {
         return bookService.findById(bookid);
     }
 
-    @PostMapping("/save-book")
-    public ResponseEntity<BookResponseDTO> saveBook(@RequestBody Book book){
+    @PostMapping("/save")
+    public ResponseEntity<?> saveBook(
+            HttpServletRequest req,
+            @RequestBody Book book) {
+        System.out.println("===== BOOK SERVICE HEADER CHECK =====");
+        System.out.println("X-User-Name = " + req.getHeader("X-User-Name"));
+        System.out.println("X-User-Role = " + req.getHeader("X-User-Role"));
+        System.out.println("X-User-Id   = " + req.getHeader("X-User-Id"));
+        System.out.println("======================================");
+
+
+        String role = req.getHeader("X-User-Role");
+
+        if (role == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("인증 정보가 없습니다.");
+        }
+
+
+        if (!role.equals("ROLE_ADMIN")) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("관리자만 접근할 수 있습니다.");
+        }
+
+
         bookService.createBook(book);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/delete-book/{bookid}")
-    public ResponseEntity<Void> deleteBook(@PathVariable Long bookid){
+    @DeleteMapping("/delete/{bookid}")
+    public ResponseEntity<?> deleteBook(
+            HttpServletRequest req,
+            @PathVariable Long bookid) {
+
+
+        String role = req.getHeader("X-User-Role");
+
+        if (role == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("인증 정보가 없습니다.");
+        }
+
+
+        if (!role.equals("ROLE_ADMIN")) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("관리자만 접근할 수 있습니다.");
+        }
+
+
         bookService.deleteBook(bookid);
         return ResponseEntity.ok().build();
     }
+
 
 
     @GetMapping("/booklist/title/{booktitle}")

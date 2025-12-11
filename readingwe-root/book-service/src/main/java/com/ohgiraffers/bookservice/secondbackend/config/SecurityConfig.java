@@ -27,48 +27,32 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session
-                        -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        http
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(exception ->
-                        exception
-                                .authenticationEntryPoint(restAuthenticationEntryPoint)
+                        exception.authenticationEntryPoint(restAuthenticationEntryPoint)
                                 .accessDeniedHandler(restAccessDeniedHandler)
                 )
-                .authorizeHttpRequests(auth ->
-                        auth.requestMatchers(HttpMethod.POST, "/users", "/auth/login", "/auth/refresh", "/auth/signup"
-                                        , "/internal/mail/**","/book/**").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/users/me","/user/**","/booklike/**").hasAuthority("USER")
-                                .requestMatchers(HttpMethod.POST, "/users/me","/user/**","/booklike/**").hasAuthority("USER")
-                                .requestMatchers("/actuator/**").permitAll()
+                .authorizeHttpRequests(auth -> auth
+                        // 🔥 ADMIN 체크는 Controller가 직접 처리하므로 Security에서는 막지 않음
+                        .requestMatchers("/book/save", "/book/delete/**").permitAll()
 
-                                //book 관련
-                                .requestMatchers("/book/booklist","/book/booklist/**","/book/booklist/category/**"
-                                ,"/book/booklist/author/**","/book/booklist/title/**").permitAll()
-                                .requestMatchers("/book/save-book/**","/book/delete-book/**").hasAuthority("ADMIN")
+                        // 🔥 유저 관련은 전체 허용 (Gateway에서 role 전달)
+                        .requestMatchers("/book/**", "/booklike/**", "/book-report/**",
+                                "/book-report-comment/**", "/book-report-like/**").permitAll()
 
-                                .requestMatchers("/booklike/**").permitAll()
+                        // Swagger
+                        .requestMatchers("/swagger-ui.html","/swagger-ui/**",
+                                "/v3/api-docs/**","/swagger-resources/**").permitAll()
 
-                                //book-report관련
-                                .requestMatchers(HttpMethod.POST, "/book-report").permitAll()         // 등록
-                                .requestMatchers(HttpMethod.PUT, "/book-report/**").hasAuthority("USER")     // 수정
-                                .requestMatchers(HttpMethod.DELETE, "/book-report/**").hasAuthority("USER")  // 삭제
-                                .requestMatchers(HttpMethod.GET, "/book-report/**").permitAll()              // 조회(단건/목록 모두 허용)
+                        // 로그인/회원가입
+                        .requestMatchers("/auth/**","/users","/internal/mail/**").permitAll()
 
-                                // BookReportComment 권한 설정
-                                .requestMatchers(HttpMethod.POST, "/book-report-comment").hasAuthority("USER")          // 댓글 등록
-                                .requestMatchers(HttpMethod.PUT, "/book-report-comment/**").hasAuthority("USER")       // 댓글 수정
-                                .requestMatchers(HttpMethod.DELETE, "/book-report-comment/**").hasAuthority("USER")    // 댓글 삭제
-                                .requestMatchers(HttpMethod.GET, "/book-report-comment/**").permitAll()                 // 댓글 조회
-
-                                // BookReportLike 권한 설정
-                                .requestMatchers(HttpMethod.POST, "/book-report-like/**").hasAuthority("USER")
-
-                                .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**").permitAll()
-                                .requestMatchers( "/swagger-ui.html","/swagger-ui/**","/v3/api-docs/**","/swagger-resources/**").permitAll()
-                                .anyRequest().authenticated()
+                        // 나머지만 인증 필요
+                        .anyRequest().authenticated()
                 )
-                // 기존 JWT 검증 필터 대신, Gateway가 전달한 헤더를 이용하는 필터 추가
+
                 .addFilterBefore(headerAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

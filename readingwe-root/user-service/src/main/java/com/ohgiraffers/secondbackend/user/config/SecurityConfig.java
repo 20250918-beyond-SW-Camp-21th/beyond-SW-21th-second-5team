@@ -36,18 +36,8 @@ public class SecurityConfig {
                                 .accessDeniedHandler(restAccessDeniedHandler)
                 )
                 .authorizeHttpRequests(auth ->
-                        auth
-                                // 인증 없이 가능한 요청
-                                .requestMatchers(
-                                        "/auth/**",
-                                        "/swagger-ui/**",
-                                        "/v3/api-docs/**"
-                                ).permitAll()
+                        auth.requestMatchers("/**").permitAll()
 
-                                // ADMIN 전용 API
-                                .requestMatchers("/user/userId/**").hasAuthority("ADMIN")
-
-                                // 그 외 일반 요청은 인증 필요
                                 .anyRequest().authenticated()
                 )
                 // Gateway가 넣어준 X-User-Name, X-User-Role 기반 인증

@@ -78,24 +78,9 @@ public class UserController {
     public ResponseEntity<UserProfileResponse> getUserProfileByUsername(
             HttpServletRequest req,
             @PathVariable("username") String username) {
-
-        if (username == null || username.isBlank()) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        String requester = req.getHeader("X-User-Name");
-        if (requester == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
-        if (!requester.equals(username)) {
-            throw new ForbiddenException("본인만 조회 가능합니다.");
-        }
-
-
-
-        UserProfileResponse profile = userService.getProfileByUsername(username);
-        return ResponseEntity.ok(profile);
+            UserProfileResponse profile
+                    = userService.getProfileByUsername(username);
+            return ResponseEntity.ok(profile);
     }
 
     @GetMapping("/userId/{userId}")
@@ -103,18 +88,8 @@ public class UserController {
             HttpServletRequest req,
             @PathVariable("userId") Long userId) {
 
-        if (userId == null ) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        String requester = req.getHeader("X-User-Name");
-
-        if (requester == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
-
-        UserProfileResponse profile = userService.getProfileById(userId);
+        UserProfileResponse profile=
+                userService.getProfileById(userId);
         return ResponseEntity.ok(profile);
     }
 

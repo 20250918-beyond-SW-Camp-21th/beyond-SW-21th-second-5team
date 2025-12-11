@@ -40,8 +40,9 @@ public class JwtUtil {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
-        } catch (Exception e) {
-            throw new RuntimeException("Invalid JWT token",e);
+        } catch (JwtException | IllegalArgumentException e) {
+            return false; // 실패는 false로 반환해야 Gateway가 정상 분기 가능
         }
     }
+
 }
