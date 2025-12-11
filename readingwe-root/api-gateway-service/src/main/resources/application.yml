@@ -2,6 +2,12 @@ spring:
   application:
     name: api-gateway
 
+
+  data:
+    redis:
+      host: dev.macacolabs.site
+      port: 6789
+
   cloud:
     gateway:
       server:

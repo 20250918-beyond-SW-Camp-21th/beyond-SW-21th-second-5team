@@ -244,16 +244,39 @@ class UserServiceTest {
     // logout
     // =========================
 
-    @DisplayName("logout - redis에서 refresh 키 삭제")
+    @DisplayName("logout - refresh 삭제 & access token 블랙리스트 등록")
     @Test
     void logout_success() {
+        // given
         String username = "user1";
-        String expectedKey = "refresh:" + username;
+        String accessToken = "access-token-example";
+        String refreshKey = "refresh:" + username;
+        String blacklistKey = "blacklist:" + accessToken;
 
-        userService.logout(username);
+        long expiration = 10000L; // 예시 TTL
 
-        verify(redisTemplate, times(1)).delete(expectedKey);
+        // jwtUtil.getExpiration(accessToken) 호출 시 expiration 반환하도록 설정
+        when(jwtUtil.getExpriation(accessToken)).thenReturn(expiration);
+
+        // Redis opsForValue Mock 설정
+        ValueOperations<String, Object> valueOps = mock(ValueOperations.class);
+        when(redisTemplate.opsForValue()).thenReturn(valueOps);
+
+        // when
+        userService.logout(accessToken, username);
+
+        // then — Refresh 삭제 확인
+        verify(redisTemplate, times(1)).delete(refreshKey);
+
+        // then — Access Token 블랙리스트 저장 확인
+        verify(valueOps, times(1)).set(
+                eq(blacklistKey),
+                eq("logout"),
+                eq(expiration),
+                eq(TimeUnit.MILLISECONDS)
+        );
     }
+
 
     // =========================
     // updateNickname

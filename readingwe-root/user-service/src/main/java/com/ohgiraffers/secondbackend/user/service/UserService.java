@@ -102,11 +102,24 @@ public class UserService  implements UserDetailsService{
         return new String[]{accessToken,refreshToken};
     }
 
-    /*로그아웃*/
-    public void logout(String username) {
-        String refreshKey = "refresh:" + username;
-        redisTemplate.delete(refreshKey);
+    /* 로그아웃 */
+    public void logout(String accessToken, String username) {
+
+        // Refresh Token 삭제
+        redisTemplate.delete("refresh:" + username);
+
+        // Access Token 남은 유효시간 계산
+        long expiration = jwtUtil.getExpriation(accessToken);
+
+        // Access Token 블랙리스트 등록
+        redisTemplate.opsForValue().set(
+                "blacklist:" + accessToken,
+                "logout",
+                expiration,
+                TimeUnit.MILLISECONDS
+        );
     }
+
 
 
     /*닉네임 변경*/

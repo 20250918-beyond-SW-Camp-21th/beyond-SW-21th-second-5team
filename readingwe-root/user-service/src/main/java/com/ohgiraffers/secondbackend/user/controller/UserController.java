@@ -21,20 +21,26 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(
-            HttpServletRequest req
-    ){
+    public ResponseEntity<String> logout(HttpServletRequest req){
         String username = req.getHeader("X-User-Name");
+        String accessToken = req.getHeader("Authorization");
 
-        if(username==null || username.isBlank()){
-            return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
+        if(accessToken == null || !accessToken.startsWith("Bearer ")){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("AccessToken이 없습니다.");
+        }
+
+        accessToken = accessToken.substring(7);
+
+        if(username == null || username.isBlank()){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body("인증정보가 없습니다.");
         }
 
-        userService.logout(username);
+        userService.logout(accessToken, username);
         return ResponseEntity.ok("logout 성공");
     }
+
 
     @PatchMapping("/update-nickname")
     public ResponseEntity<String> updateNickname(
