@@ -283,66 +283,80 @@ ERD 링크
 ### 독후감 기능
 <details>
 <summary> 독후감 등록 </summary>
-
+    
 ![Image](https://github.com/user-attachments/assets/94c50d81-9896-45c1-a02f-0d0b53f68381)
+</details>
 
+<details>
+<summary> 독후감 전체 조회 </summary>
+    
+![Image](https://github.com/user-attachments/assets/47156f19-84d0-470a-b979-6ace16e9dff6)
+</details>
+
+<details>
+<summary> 독후감 단건 조회(id) </summary>
+    
+![Image](https://github.com/user-attachments/assets/3862248c-3c39-468d-8364-f6ada39c6580)
+</details>
+
+<details>
+<summary> 독후감 조회(책제목) </summary>
+    
+![Image](https://github.com/user-attachments/assets/f232966d-909b-4a18-a2ab-bd6b14197ef2)
 </details>
 
 <details>
 <summary> 독후감 수정 </summary>
-<div markdown="1">
-이미지
-</div>
+
+![Image](https://github.com/user-attachments/assets/1ec148d8-3c04-4f43-933f-6e4cbc8e7145)
 </details>
 
 <details>
 <summary> 독후감 삭제 </summary>
-<div markdown="1">
-이미지
-</div>
+
+![Image](https://github.com/user-attachments/assets/dcdf8937-dcb4-4be2-9431-ef4a10e56f37)
+
 </details>
 
 <details>
-<summary> 독후감 조회 </summary>
-<div markdown="1">
-이미지
-</div>
+<summary> 독후감 좋아요 등록 </summary>
+
+![Image](https://github.com/user-attachments/assets/c097f7cb-5711-4c2b-99db-80c0f25e0677)
+
+</details>
+
+<details>
+<summary> 독후감 좋아요 취소 </summary>
+
+![Image](https://github.com/user-attachments/assets/9a4b29a5-df0c-4c5e-90e2-0b6170c48fd9)
+
 </details>
 
 <details>
 <summary> 독후감 댓글 생성 </summary>
-<div markdown="1">
-이미지
-</div>
+
+![Image](https://github.com/user-attachments/assets/9b627edb-4c92-420c-b227-631c323142da)
 </details>
 
 <details>
 <summary> 독후감 댓글 조회 </summary>
-<div markdown="1">
-이미지
-</div>
+
+![Image](https://github.com/user-attachments/assets/1f21762b-c603-446d-a3ef-81be81484330)
+
 </details>
 
 <details>
 <summary> 독후감 댓글 수정 </summary>
-<div markdown="1">
-이미지
-</div>
+
+![Image](https://github.com/user-attachments/assets/e595fc3c-b40d-4964-a6f4-497f8fce5700)
 </details>
 
 <details>
 <summary> 독후감 댓글 삭제 </summary>
-<div markdown="1">
-이미지
-</div>
+
+![Image](https://github.com/user-attachments/assets/eda7d37c-f3c5-4339-baa9-004eee4f3f2f)
 </details>
 
-<details>
-<summary> 독후감 좋아요 </summary>
-<div markdown="1">
-토글 내용, 이미지
-</div>
-</details>
 
 ### 독서 모임 기능
 <details>
@@ -458,6 +472,7 @@ ERD 링크
 회고내용
 </div>
 </details>
+
 
 
 
