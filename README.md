@@ -56,7 +56,8 @@ ReadWe는 독서를 좋아하는 사람들이 더욱 편리하게 소통하고, 
 <div markdown="1">
 <img width="1939" height="1266" alt="image" src="https://github.com/user-attachments/assets/e9c58178-45b5-404b-b19f-7492f292ca45" />
 <img width="1653" height="1272" alt="image" src="https://github.com/user-attachments/assets/4069786f-7cac-4f6d-b708-17ef912aae94" />
-<img width="1653" height="1272" alt="image" src="https://github.com/user-attachments/assets/d1e80771-e5ea-48d6-9cdf-7509625e8a8e" />
+<img width="1705" height="1311" alt="image" src="https://github.com/user-attachments/assets/8da3f999-992d-4c6e-8fe3-6bbf8851266e" />
+
 
 </div>
 </details>
@@ -289,11 +290,62 @@ ERD 링크
 
 ### 독서 모임 기능
 <details>
-<summary> 토글 이름 </summary>
-<div markdown="1">
-토글 내용, 이미지
-</div>
+<summary> 독서 모임 생성 </summary>
+
+![Image](https://github.com/user-attachments/assets/302d3868-9ef2-4010-b511-0830cbbbeef8)
+
 </details>
+<details>
+<summary> 독서 모임 수정 </summary>
+
+![Image](https://github.com/user-attachments/assets/7de0d8e6-064f-46eb-bbf6-f51a2cb976ba)
+
+</details>
+<details>
+<summary> 독서 모임 신청 </summary>
+
+![Image](https://github.com/user-attachments/assets/b0d9d0aa-3845-42cf-8c65-51fbf8929209)
+
+</details>
+<details>
+<summary> 독서 모임 신청 승인 </summary>
+
+![Image](https://github.com/user-attachments/assets/cdae9f38-fa0f-4bf7-8157-1f4dcf133309)
+
+</details>
+<details>
+<summary> 모임이 받은 신청 조회 </summary>
+
+![Image](https://github.com/user-attachments/assets/63e5c34d-84d3-4251-aaaa-b15de3c493da)
+
+</details>
+<details>
+<summary> 모임 멤버 조회 </summary>
+
+![Image](https://github.com/user-attachments/assets/a47a0344-8cbc-41b4-ad9f-af9722230d5e)
+
+</details>
+<details>
+<summary> 내 모임 조회 </summary>
+
+![Image](https://github.com/user-attachments/assets/70be826a-0d8f-47f1-8620-181cd169ae73)
+
+</details>
+<details>
+<summary> 내 가입 신청 조회 </summary>
+
+![Image](https://github.com/user-attachments/assets/f93f76ed-61e9-444c-8042-b291a85dffa4)
+
+</details>
+<details>
+<summary> 모임 해산 </summary>
+
+![Image](https://github.com/user-attachments/assets/37242566-7c1c-4b91-af84-f739be24bd2d)
+
+</details>
+
+
+
 
 </div>
 </details>
@@ -350,6 +402,7 @@ ERD 링크
 회고내용
 </div>
 </details>
+
 
 
 
