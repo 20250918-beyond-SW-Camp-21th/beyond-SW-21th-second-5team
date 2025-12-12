@@ -282,7 +282,63 @@ ERD 링크
 
 ### 독후감 기능
 <details>
-<summary> 토글 이름 </summary>
+<summary> 독후감 등록 </summary>
+<div markdown="1">
+이미지
+</div>
+</details>
+
+<details>
+<summary> 독후감 수정 </summary>
+<div markdown="1">
+이미지
+</div>
+</details>
+
+<details>
+<summary> 독후감 삭제 </summary>
+<div markdown="1">
+이미지
+</div>
+</details>
+
+<details>
+<summary> 독후감 조회 </summary>
+<div markdown="1">
+이미지
+</div>
+</details>
+
+<details>
+<summary> 독후감 댓글 생성 </summary>
+<div markdown="1">
+이미지
+</div>
+</details>
+
+<details>
+<summary> 독후감 댓글 조회 </summary>
+<div markdown="1">
+이미지
+</div>
+</details>
+
+<details>
+<summary> 독후감 댓글 수정 </summary>
+<div markdown="1">
+이미지
+</div>
+</details>
+
+<details>
+<summary> 독후감 댓글 삭제 </summary>
+<div markdown="1">
+이미지
+</div>
+</details>
+
+<details>
+<summary> 독후감 좋아요 </summary>
 <div markdown="1">
 토글 내용, 이미지
 </div>
@@ -402,6 +458,7 @@ ERD 링크
 회고내용
 </div>
 </details>
+
 
 
 
