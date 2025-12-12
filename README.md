@@ -4,6 +4,7 @@
 # 😄 팀 소개
 | [김수진](https://github.com/whatimeisitnow) | [김세현](https://github.com/sekong11) | [이용우](https://github.com/L-dragon-woo) | [정재우](https://github.com/NoSa1e) | 
 | :-: | :-: | :-: | :-: |
+| 독후감 작성 에디터 개발 <br>좋아요 기능과 댓글 기능 구현|모임후기 작성 및 관리<br>좋아요 기능과 댓글 기능 구현|사용자 인증 및 권한 관리<br>도서 DB 설계 및 보안 구축<br>개인정보 암호화 및 보호 |독서 모임 생성/참여 로직<br>이메일 알림 서비스 연동 |
 | <img src="https://github.com/user-attachments/assets/45e223f8-6216-4ea3-825b-45624d38bab9" width="200" /> | <img src="https://github.com/user-attachments/assets/a449cd98-e530-42fe-91ca-07c1ce519ddf" width="200" /> |<img src="https://github.com/user-attachments/assets/914bc401-29dd-4b04-98ac-107cbe153b6d" width="200" /> |<img src="https://github.com/user-attachments/assets/447ad558-3566-4a48-b20e-8cc100176de2" width="200" /> | 
 
 ---
@@ -307,7 +308,18 @@ ERD 링크
 </details>
 
 ### 관리자 기능
-
+<details>
+<summary> 책 추가</summary>
+        
+![Image](https://github.com/user-attachments/assets/5a0388a2-905c-4e45-bf04-c96b3084ef5a)
+        
+</details>
+<details>
+<summary> 책 삭제</summary>
+        
+![Image](https://github.com/user-attachments/assets/87016c68-2a12-4d26-9e24-3cda18f82aaf)
+        
+</details>
 ### 책 기능
 <details>
 <summary> 책 랭킹 조회</summary>
@@ -326,6 +338,30 @@ ERD 링크
 <summary> 책 선호 삭제</summary>
         
 ![Image](https://github.com/user-attachments/assets/439c5667-b078-4d2d-a097-217b78a52ead)
+    
+</details>
+<details>
+<summary> 책 검색(아이디)</summary>
+        
+![Image](https://github.com/user-attachments/assets/c22ae969-3a8f-4c63-9b22-2b0e3810d4ee)
+    
+</details>
+<details>
+<summary> 책 검색(제목)</summary>
+        
+![Image](https://github.com/user-attachments/assets/baa529fb-3899-4257-84c4-aed5c2088b75)
+    
+</details>
+<details>
+<summary> 책 검색(작가명)</summary>
+        
+![Image](https://github.com/user-attachments/assets/a1dd6541-3573-4575-8c5b-9befd93d530d)
+    
+</details>
+<details>
+<summary> 책 검색(카테고리)</summary>
+        
+![Image](https://github.com/user-attachments/assets/b826e72e-f04f-4b15-93b8-e8dc68ba9843)
     
 </details>
 
@@ -560,13 +596,19 @@ ERD 링크
 <details>
 <summary> 김수진 </summary>
 <div markdown="1">
-회고내용
+이번 백엔드 프로젝트를 진행하면서 MSA라는 개념을 처음 알게 되었다. 그동안은 모놀리식 구조로만 프로젝트를 진행해 온 터라 다소 낯설었지만, 직접 부딪히며 겪어보니 오히려 더 자세히 이해할 수 있었다. 독후감이라는 비교적 간단한 기능이었지만 댓글과 좋아요 기능을 구현하면서 백엔드의 기본적인 기능은 충분히 구현할 수 있다는 자신감도 생겼다.
+
+프로젝트 과정 중 가장 힘들었던 부분은 문서 작업이었다. 단순히 코드를 작성하는 것만으로 프로젝트가 완성되는 것이 아니라, 팀원들끼리 같은 언어를 사용하며 소통하는 과정이 얼마나 중요한지 깨닫게 되었다.
+
+이번 경험을 통해 기술뿐 아니라 협업과 소통의 중요성까지 배울 수 있었고, 다음 프로젝트에서는 더 나은 방식으로 팀과 함께 성장할 수 있을 것이라 기대한다.
 </div>
 </details>
 <details>
 <summary> 김세현 </summary>
 <div markdown="1">
-회고내용
+이번 프로젝트에서 처음으로 스프링 부트와 MSA 구조를 적용해 백엔드 개발에 도전했습니다. 처음 접해보는 기술 스택이 많았기 때문에 어려움이 컸지만 팀원들과 협력하며 결과물을 완성해낸 점에서 보람을 느꼈습니다. MSA 구조 자체가 생소했을 뿐만 아니라 보안 설정, Feign Client 통신, API Gateway 구성, 서비스 간 인증 흐름 등 모든 요소가 낯설고 복잡했습니다. 특히 하나의 설정이 전체 서비스에 영향을 미치다 보니 실수 하나가 전체 기능 오류로 이어지는 경우가 많았고 디버깅과 테스트를 반복하며 많은 것을 배웠습니다. 이런 과정을 통해 명확한 소통, 규칙 설정 그리고 주석 작성의 중요성을 크게 체감했습니다. 
+
+비록 많은 시행 착오가 있었지만 모두가 밤 늦게까지 함께 문제를 해결해 나가며 끝까지 완주한 경험은 앞으로의 발판이 될 것 같습니다. 덕분에 깃헙 기반 협업에 익숙해졌고 어떤 프로젝트를 하든 이 경험이 큰 밑거름이 될 것 같습니다.
 </div>
 </details>
 <details>
@@ -595,9 +637,17 @@ ERD 링크
 <details>
 <summary> 정재우 </summary>
 <div markdown="1">
-회고내용
+이번 프로젝트는 시작부터 팀원이 5명에서 4명으로 줄어들면서, 큰 규모보다는 작지만 완성도 있는 프로젝트에 집중하는 방향으로 출발했다. 그 과정에서 적절한 규모의 프로젝트 주제를 제안해준 용우님께 감사의 말을 전하고 싶다.
+
+이번 프로젝트는 특히 보안을 비롯한 여러 문제들이 동시에 존재했으며, 이를 해결하는 과정에서 각자가 알고 있는 지식을 공유하며 협력하는 것이 얼마나 중요한지 실감하게 되었다. 개발 방향을 잡는 과정이 쉽지는 않았지만, 그만큼 많은 것을 배우고 고민할 수 있었던 프로젝트였다.
+
+우여곡절도 많았지만, 결과물이 잘 마무리되었고 모두가 밤늦게까지, 때로는 밤을 새워가며 임해준 열정과 책임감을 보며 많은 자극을 받았다. 또한 이번 프로젝트를 통해 기존에 사용해보지 못했던 협업 도구와 GitHub 관리 방식 등을 경험하며 전반적인 개발 프로세스에 대한 이해도 넓힐 수 있었다. 이 경험을 바탕으로 다음 프로젝트에서는 더 효과적이고 효율적으로 협업하고 싶다는 욕심도 생겼다.
+
+마지막으로, 개인적으로 발표 경험이 많지 않아 발표에 참여했는데, 이를 통해 발표 역시 충분한 연습과 준비가 필요한 과정이라는 점을 뼈저리게 느꼈다. 앞으로는 개발뿐만 아니라 발표 준비에도 더 많은 시간을 투자해야겠다는 교훈을 얻은 프로젝트였다. 
+
 </div>
 </details>
+
 
 
 
