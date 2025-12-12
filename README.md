@@ -320,6 +320,7 @@ ERD 링크
 ![Image](https://github.com/user-attachments/assets/87016c68-2a12-4d26-9e24-3cda18f82aaf)
         
 </details>
+
 ### 책 기능
 <details>
 <summary> 책 랭킹 조회</summary>
@@ -647,6 +648,7 @@ ERD 링크
 
 </div>
 </details>
+
 
 
 
