@@ -320,7 +320,7 @@ ERD 링크
 
 </details>
 <details>
-<summary> 모임 멤버 조회 </summary>
+<summary> 모임 회원 조회 </summary>
 
 ![Image](https://github.com/user-attachments/assets/a47a0344-8cbc-41b4-ad9f-af9722230d5e)
 
@@ -402,6 +402,7 @@ ERD 링크
 회고내용
 </div>
 </details>
+
 
 
 
