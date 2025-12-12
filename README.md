@@ -258,164 +258,290 @@ ERD 링크
 
 ### 회원 관리 기능
 <details>
-<summary> 토글 이름 </summary>
-<div markdown="1">
-토글 내용, 이미지
-</div>
+<summary> 회원가입 </summary>
+        
+![Image](https://github.com/user-attachments/assets/f2a2246d-5b7b-4020-b5ab-ada5b3ef28b9)
+        
+</details>
+<details>
+<summary> 로그인 </summary>
+        
+![Image](https://github.com/user-attachments/assets/0fa046a8-c8f6-430f-9485-85bbfc9dc0e4)
+        
+</details>
+<details>
+<summary> 로그아웃 </summary>
+        
+![Image](https://github.com/user-attachments/assets/723649ba-fda2-4f54-941d-1a0b46b87337)
+        
+</details>
+<details>
+<summary> 닉네임 변경 </summary>
+        
+![Image](https://github.com/user-attachments/assets/ee829ed2-5645-4df7-9012-db8af305ef46)
+        
+</details>
+<details>
+<summary> 비밀번호 변경 </summary>
+        
+![Image](https://github.com/user-attachments/assets/1eb9c77a-4f20-4554-8272-7202cb0413bd)
+        
+</details>
+<details>
+<summary> 유저 선호 카테고리 추가 </summary>
+        
+![Image](https://github.com/user-attachments/assets/65221b29-59a3-4569-b7bb-b899de945581)
+        
+</details>
+<details>
+<summary> 유저 선호 카테고리 조회</summary>
+        
+![Image](https://github.com/user-attachments/assets/a6a3d911-99cd-4644-867e-8f10356d9361)
+        
+</details>
+<details>
+<summary> 유저 선호 카테고리 삭제</summary>
+        
+![Image](https://github.com/user-attachments/assets/fe4711b0-f505-49b1-864c-8eaf872ecbe8)
+        
 </details>
 
 ### 관리자 기능
-<details>
-<summary> 토글 이름 </summary>
-<div markdown="1">
-토글 내용, 이미지
-</div>
-</details>
 
 ### 책 기능
 <details>
-<summary> 토글 이름 </summary>
-<div markdown="1">
-토글 내용, 이미지
-</div>
+<summary> 책 랭킹 조회</summary>
+        
+![Image](https://github.com/user-attachments/assets/e3bd8a9d-3ffa-41c4-8857-38e99f1b4a52)
+    
+</details>
+<details>
+<summary> 책 선호 추가</summary>
+        
+![Image](https://github.com/user-attachments/assets/244324fb-02c6-42e5-91a7-4b11b4e79ab2)
+    
+</details>
+
+<details>
+<summary> 책 선호 삭제</summary>
+        
+![Image](https://github.com/user-attachments/assets/439c5667-b078-4d2d-a097-217b78a52ead)
+    
 </details>
 
 ### 독후감 기능
 <details>
 <summary> 독후감 등록 </summary>
-    
+        
 ![Image](https://github.com/user-attachments/assets/94c50d81-9896-45c1-a02f-0d0b53f68381)
 </details>
 
 <details>
 <summary> 독후감 전체 조회 </summary>
-    
+        
 ![Image](https://github.com/user-attachments/assets/47156f19-84d0-470a-b979-6ace16e9dff6)
 </details>
 
 <details>
 <summary> 독후감 단건 조회(id) </summary>
-    
+        
 ![Image](https://github.com/user-attachments/assets/3862248c-3c39-468d-8364-f6ada39c6580)
 </details>
 
 <details>
 <summary> 독후감 조회(책제목) </summary>
-    
+        
 ![Image](https://github.com/user-attachments/assets/f232966d-909b-4a18-a2ab-bd6b14197ef2)
 </details>
 
 <details>
 <summary> 독후감 수정 </summary>
-
+    
 ![Image](https://github.com/user-attachments/assets/1ec148d8-3c04-4f43-933f-6e4cbc8e7145)
 </details>
 
 <details>
 <summary> 독후감 삭제 </summary>
-
+    
 ![Image](https://github.com/user-attachments/assets/dcdf8937-dcb4-4be2-9431-ef4a10e56f37)
-
+    
 </details>
 
 <details>
 <summary> 독후감 좋아요 등록 </summary>
-
+    
 ![Image](https://github.com/user-attachments/assets/c097f7cb-5711-4c2b-99db-80c0f25e0677)
-
+    
 </details>
 
 <details>
 <summary> 독후감 좋아요 취소 </summary>
-
+    
 ![Image](https://github.com/user-attachments/assets/9a4b29a5-df0c-4c5e-90e2-0b6170c48fd9)
-
+    
 </details>
 
 <details>
 <summary> 독후감 댓글 생성 </summary>
-
+    
 ![Image](https://github.com/user-attachments/assets/9b627edb-4c92-420c-b227-631c323142da)
 </details>
 
 <details>
 <summary> 독후감 댓글 조회 </summary>
-
+    
 ![Image](https://github.com/user-attachments/assets/1f21762b-c603-446d-a3ef-81be81484330)
-
+    
 </details>
 
 <details>
 <summary> 독후감 댓글 수정 </summary>
-
+    
 ![Image](https://github.com/user-attachments/assets/e595fc3c-b40d-4964-a6f4-497f8fce5700)
+
 </details>
 
 <details>
 <summary> 독후감 댓글 삭제 </summary>
-
+    
 ![Image](https://github.com/user-attachments/assets/eda7d37c-f3c5-4339-baa9-004eee4f3f2f)
-</details>
 
+</details>
 
 ### 독서 모임 기능
 <details>
 <summary> 독서 모임 생성 </summary>
-
+    
 ![Image](https://github.com/user-attachments/assets/302d3868-9ef2-4010-b511-0830cbbbeef8)
-
+    
 </details>
 <details>
 <summary> 독서 모임 수정 </summary>
-
+    
 ![Image](https://github.com/user-attachments/assets/7de0d8e6-064f-46eb-bbf6-f51a2cb976ba)
-
+    
 </details>
 <details>
 <summary> 독서 모임 신청 </summary>
-
+    
 ![Image](https://github.com/user-attachments/assets/b0d9d0aa-3845-42cf-8c65-51fbf8929209)
-
+    
 </details>
 <details>
 <summary> 독서 모임 신청 승인 </summary>
-
+    
 ![Image](https://github.com/user-attachments/assets/cdae9f38-fa0f-4bf7-8157-1f4dcf133309)
-
+    
 </details>
 <details>
 <summary> 모임이 받은 신청 조회 </summary>
-
+    
 ![Image](https://github.com/user-attachments/assets/63e5c34d-84d3-4251-aaaa-b15de3c493da)
-
+    
 </details>
 <details>
 <summary> 모임 회원 조회 </summary>
-
+    
 ![Image](https://github.com/user-attachments/assets/a47a0344-8cbc-41b4-ad9f-af9722230d5e)
-
+    
 </details>
 <details>
 <summary> 내 모임 조회 </summary>
-
+    
 ![Image](https://github.com/user-attachments/assets/70be826a-0d8f-47f1-8620-181cd169ae73)
-
+    
 </details>
 <details>
 <summary> 내 가입 신청 조회 </summary>
-
+    
 ![Image](https://github.com/user-attachments/assets/f93f76ed-61e9-444c-8042-b291a85dffa4)
-
+    
 </details>
 <details>
 <summary> 모임 해산 </summary>
-
+    
 ![Image](https://github.com/user-attachments/assets/37242566-7c1c-4b91-af84-f739be24bd2d)
-
+    
 </details>
+<details>
+<summary> 독서모임 후기 생성 </summary>
+    
+![Image](https://github.com/user-attachments/assets/9b78fff3-8dfa-465d-9f03-1644b0d9830a)
+    
+</details>
+<details>
+<summary> 독서모임 후기 수정 </summary>
+    
+![Image](https://github.com/user-attachments/assets/f1deb29c-0b52-4a68-82e3-fe1a27528526)
+    
+</details>
+<details>
+<summary> 독서모임 후기 삭제 </summary>
+    
+![Image](https://github.com/user-attachments/assets/ab2c4d52-9a82-4157-9d8e-511142a8fed0)
+    
+</details>
+<details>
+<summary> 독서모임 후기 댓글 생성 </summary>
+    
+![Image](https://github.com/user-attachments/assets/1030d46f-f841-4eb9-9099-c57cbc7d5026)
+    
+</details>
+<details>
+<summary> 독서모임 후기 댓글 수정 </summary>
+    
+![Image](https://github.com/user-attachments/assets/1b47dce6-6bf5-4eac-ae01-f4d5c7e3cb9c)
+    
+</details>
+<details>
+<summary> 독서모임 후기 댓글 삭제 </summary>
+    
+![Image](https://github.com/user-attachments/assets/04443eac-30b0-4899-85b3-4bbf5647926e)
+    
+</details>
+<details>
+<summary> 독서모임 후기별 댓글 조회 </summary>
+    
+![Image](https://github.com/user-attachments/assets/61fe8caf-11dc-45d1-a6be-c544916ce28c)
+    
+</details>
+<details>
+<summary> 독서모임 후기 좋아요 추가 </summary>
+    
+![Image](https://github.com/user-attachments/assets/b2191094-2760-49a0-8f0e-82af51bcaa5b)
+    
+</details>
+<details>
+<summary> 독서모임 후기 좋아요 취소 </summary>
+    
+![Image](https://github.com/user-attachments/assets/ab0bb023-903b-46b5-b9c8-6282f785d55b)
+    
+</details>
+<details>
+<summary> 독서모임 후기 좋아요순 조회 </summary>
+    
+![Image](https://github.com/user-attachments/assets/819ec6ae-4bfe-4b48-b008-38ef54a7a742)
+    
+</details>
+<details>
+<summary> 독서모임 후기 최신순 조회 </summary>
 
-
-
+![Image](https://github.com/user-attachments/assets/483e43a6-02a0-4d22-a42f-0d6feddf6a21)
+    
+</details>
+<details>
+<summary> 내가 쓴 후기글 조회 </summary>
+    
+![Image](https://github.com/user-attachments/assets/02fec2e0-79ea-4de7-8899-4df26cef3a31)
+    
+</details>
+    
+<details>
+<summary> 내 후기글에 좋아요 누른 사람의 닉네임 조회 </summary>
+    
+![Image](https://github.com/user-attachments/assets/622acc2b-7a4a-4c79-bf64-8ae5976bb33a)
+    
+</details>
 
 </div>
 </details>
@@ -472,6 +598,7 @@ ERD 링크
 회고내용
 </div>
 </details>
+
 
 
 
