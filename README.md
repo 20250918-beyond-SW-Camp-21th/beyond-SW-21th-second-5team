@@ -283,9 +283,9 @@ ERD 링크
 ### 독후감 기능
 <details>
 <summary> 독후감 등록 </summary>
-<div markdown="1">
-이미지
-</div>
+
+![Image](https://github.com/user-attachments/assets/94c50d81-9896-45c1-a02f-0d0b53f68381)
+
 </details>
 
 <details>
@@ -458,6 +458,7 @@ ERD 링크
 회고내용
 </div>
 </details>
+
 
 
 
