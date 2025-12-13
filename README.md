@@ -190,9 +190,29 @@ ReadWe는 독서를 좋아하는 사람들이 더욱 편리하게 소통하고, 
 </details>
 
 # 기대 효과
-
+- 기록의 지속성
+    
+    사용자는 독후감과 리뷰를 플랫폼 내에 저장하여 개인의 독서 역사를 체계적으로 남길 수 있습니다.
+    
+- 공유와 소통의 확대
+    
+    다른 사용자의 독후감을 읽고 댓글을 통해 의견을 주고받으며 자연스러운 독서 커뮤니티 활동이 가능합니다.
+    
+- 독서모임 기획 기능 제공
+    
+    기존 독서플랫폼에서 다루기 어려웠던 ‘독서모임 생성’기능을 제공하여 단순 기록을 넘어 함께 읽기 활동 까지 확장된 경험을 제공합니다.
+  
 # ERD 및 주요 도메인
 ## 요구사항 명세서
+<details>
+<summary>요구사항 명세서</summary>
+<div markdown="1">
+    
+<img width="433" height="693" alt="스크린샷 2025-12-13 오후 9 03 34" src="https://github.com/user-attachments/assets/4a943d89-038f-4cdc-b3c9-ae992e1fe4ee" />
+
+</div>
+</details>
+
 ## DDD
 <details>
 <summary>miro</summary>
@@ -214,10 +234,6 @@ ERD 링크
 
 </div>
 </details>
-
-## API 구조
-
-## POST MAN
 
 ## Swagger
 
@@ -648,6 +664,7 @@ ERD 링크
 
 </div>
 </details>
+
 
 
 
